@@ -1,7 +1,7 @@
 <p align="center">
   <img src="/source/images/logo.png" alt="JDI Light" width="226">
   <br>
-  <a href="https://travis-ci.org/jdi-docs/introduction"><img src="https://travis-ci.org/jdi-docs/introduction.svg?branch=master" alt="Build Status"></a>
+  <a href="https://travis-ci.org/jdi-docs/jdi-dark"><img src="https://travis-ci.org/jdi-docs/jdi-dark.svg?branch=master" alt="Build Status"></a>
 </p>
 
 # JDI Framework
