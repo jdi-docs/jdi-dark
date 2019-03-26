@@ -66,7 +66,7 @@ parse_args() {
   default_email=${GIT_DEPLOY_EMAIL:-}
 
   #repository to deploy to. must be readable and writable.
-  repo=https://$GITHUB_TOKEN@github.com/jdi-docs/introduction.git
+  repo=https://$GITHUB_TOKEN@github.com/jdi-docs/jdi-dark.git
 
   #append commit hash to the end of message by default
   append_hash=${GIT_DEPLOY_APPEND_HASH:-true}
