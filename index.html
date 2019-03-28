@@ -201,7 +201,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;java&quot;,&quot;csharp&quot;,&quot;python&quot;]">
+  <body class="index" data-languages="[&quot;java&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -212,8 +212,6 @@
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="java">java</a>
-              <a href="#" data-language-name="csharp">csharp</a>
-              <a href="#" data-language-name="python">python</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -221,205 +219,151 @@
         <ul class="search-results"></ul>
       <ul id="toc" class="toc-list-h1">
           <li>
-            <a href="#jdi-framework" class="toc-h1 toc-link" data-title="JDI Framework">JDI Framework</a>
+            <a href="#jdi-dark-framework" class="toc-h1 toc-link" data-title="JDI Dark Framework">JDI Dark Framework</a>
           </li>
           <li>
             <a href="#highlights" class="toc-h1 toc-link" data-title="Highlights">Highlights</a>
-          </li>
-          <li>
-            <a href="#simple-jdi-examples" class="toc-h1 toc-link" data-title="Simple JDI examples">Simple JDI examples</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#1-create-simple-login-test" class="toc-h2 toc-link" data-title="1. Create simple Login test">1. Create simple Login test</a>
+                    <a href="#there-would-be-techie-documentation-for-jdi-dark" class="toc-h2 toc-link" data-title="There would be techie documentation for JDI Dark.">There would be techie documentation for JDI Dark.</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#simple-jdi-dark-examples" class="toc-h1 toc-link" data-title="Simple JDI Dark examples">Simple JDI Dark examples</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#1-service-object-model" class="toc-h2 toc-link" data-title="1. Service Object Model">1. Service Object Model</a>
                   </li>
                   <li>
-                    <a href="#test-scenario" class="toc-h2 toc-link" data-title="Test Scenario">Test Scenario</a>
+                    <a href="#2-create-simple-test-using-service-object" class="toc-h2 toc-link" data-title="2. Create simple test using Service Object">2. Create simple test using Service Object</a>
                   </li>
                   <li>
-                    <a href="#2-ui-pageobjects" class="toc-h2 toc-link" data-title="2. UI PageObjects">2. UI PageObjects</a>
+                    <a href="#3-create-tests-without-using-service-object" class="toc-h2 toc-link" data-title="3. Create tests without using Service Object">3. Create tests without using Service Object</a>
                   </li>
                   <li>
-                    <a href="#3-short-term-non-page-objects-style" class="toc-h2 toc-link" data-title="3. Short term non Page Objects style">3. Short term non Page Objects style</a>
+                    <a href="#4-query-parameters-headers-cookies-support" class="toc-h2 toc-link" data-title="4. Query Parameters, Headers, Cookies support">4. Query Parameters, Headers, Cookies support</a>
                   </li>
                   <li>
-                    <a href="#4-standard-test-locators" class="toc-h2 toc-link" data-title="4. Standard Test locators">4. Standard Test locators</a>
-                  </li>
-                  <li>
-                    <a href="#5-asserts-matchers-integrated-in-elements" class="toc-h2 toc-link" data-title="5. Asserts/Matchers integrated in elements">5. Asserts/Matchers integrated in elements</a>
+                    <a href="#5-performance-testing-support" class="toc-h2 toc-link" data-title="5. Performance testing support">5. Performance testing support</a>
                   </li>
               </ul>
           </li>
       </ul>
         <ul class="toc-footer">
-            <li><a href='#' target="_blank">Facebook</a></li>
-            <li><a href='https://github.com/jdi-testing/jdi-light' target="_blank">Java Github</a></li>
-            <li><a href='https://github.com/jdi-testing/jdi-light-csharp' target="_blank">C# Github</a></li>
-            <li><a href='https://join.skype.com/u2Cel0MWHkAO' target="_blank">Skype EN</a></li>
-            <li><a href='https://join.skype.com/clvyVvnZvWqc' target="_blank">Skype RU</a></li>
-            <li><a href='#'>Youtube</a></li>
+            <li><a href='https://www.facebook.com/groups/jdi.framework/' target="_blank">Facebook</a> |</li>
+            <li><a href='https://github.com/jdi-testing/jdi-dark' target="_blank">Github</a> |</li>
+            <li><a href='https://join.skype.com/u2Cel0MWHkAO' target="_blank">Skype EN</a> |</li>
+            <li><a href='https://join.skype.com/clvyVvnZvWqc' target="_blank">Skype RU</a> |</li>
             <li><a href="mailto:roman.iovlev.jdi@gmail.com?Subject=JDI question" target="_blank">Send Mail</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='jdi-framework'>JDI Framework</h1>
-<p>JDI – is powerfull Test Automation Framework that helps to makes your tests fast, sustainable and provide obvious and predictable test run result
-JDI powered by Selenium and has simple integration with Selenium based projects
-<img src="images/intro/allure-report.png" alt="Allure Report" />
-<img src="images/intro/allure-report-log.png" alt="Allure Log" /></p>
+        <h1 id='jdi-dark-framework'>JDI Dark Framework</h1>
+<p>JDI Dark is Simple Test Automation Framework for Web Services Testing powered by REST Assured.</p>
 <h1 id='highlights'>Highlights</h1>
 <ul>
-<li>Has simple integration with any Selenium based project that allows to increase projects stability, add user actions logs and enrich standard WebElements capabilities with new features in minutes (TBD add Guide)</li>
-<li>Extends Page Objects pattern with powerful UI Elements: Buttons, TextFields, Forms, Tables etc ( TBD add good links to examples)</li>
-<li>Write stable and predictable tests that fail only because of changing business logic or layout. No more waits, thread sleep and other flaky staff</li>
-<li>Increase your tests execution speed in general and especially for complex cases like search in big tables, dropdowns with hundreds elements or enter text with thousand lines</li>
-<li>Get detailed logs and good reports of all user actions with no effort</li>
-<li>All UI elements has assertions/matchers that powered by Hamcrest and wait expected condition during timeout</li>
-<li>Easy integration with all modern Automation tools: CI (Jenkins, TC etc.), Logging (Log4j or any other slf4j based logs), Reporting (Allure or Report Portal); Browser/Devices farms (Selenium Grid, Browser Stack, Selenoid etc.), Test Runners (TestNG, JUnit) etc.</li>
+<li>Obvious Service Object model that helps to reduce test development effort and increase its speed</li>
+<li>Extended capabilities of REST Assured framework with all its features kept</li>
+<li>Simple interface for sending requests and response analysis</li>
+<li>Performance testing support</li>
+<li>Detailed logging of requests and response in JSON format which can be used in your reports</li>
 </ul>
-<h1 id='simple-jdi-examples'>Simple JDI examples</h1><h2 id='1-create-simple-login-test'>1. Create simple Login test</h2>
-<p>For the beginning I would like to show you how tipycal problems can be solved with JDI. Let&#39;s start from Login, most of the tests starts from this you need to login on site.</p>
+<h2 id='there-would-be-techie-documentation-for-jdi-dark'>There would be techie documentation for JDI Dark.</h2>
+<p>Stay tuned!</p>
+<h1 id='simple-jdi-dark-examples'>Simple JDI Dark examples</h1><h2 id='1-service-object-model'>1. Service Object Model</h2>
+<p>JDI Dark provides capability to describe your API as a simple Service Object.
+That gives you an ability to unify and combine your REST methods and endpoints in one class
+(similar to UI Page Object pattern).</p>
 
-<p>Java code example can be found by link <a href="https://github.com/jdi-examples/jdi-introduction">https://github.com/jdi-examples/jdi-introduction</a></p>
-<h2 id='test-scenario'>Test Scenario</h2><pre class="highlight java tab-java"><code><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">loginTest</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">homePage</span><span class="o">.</span><span class="na">open</span><span class="o">();</span>
-    <span class="n">userIcon</span><span class="o">.</span><span class="na">click</span><span class="o">();</span>
-    <span class="n">loginForm</span><span class="o">.</span><span class="na">loginAs</span><span class="o">(</span><span class="n">DEFAULT_USER</span><span class="o">);</span>
-    <span class="n">homePage</span><span class="o">.</span><span class="na">checkOpened</span><span class="o">();</span>
+<p>Let&#39;s say we have a website for REST testing located by the following address: http://httpbin.org/ and we need to test some of its endpoints. We can create the Java class and describe methods we want to test in a following way:</p>
+<pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"http://httpbin.org/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceExample</span> <span class="o">{</span> 
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
+    <span class="nd">@POST</span><span class="o">(</span><span class="s">"/post"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">post</span><span class="o">;</span>
+    <span class="nd">@PUT</span><span class="o">(</span><span class="s">"/put"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">put</span><span class="o">;</span>
+    <span class="nd">@PATCH</span><span class="o">(</span><span class="s">"/patch"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">patch</span><span class="o">;</span>
+    <span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/delete"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">delete</span><span class="o">;</span>
 <span class="o">}</span>
 </code></pre>
-<ol>
-<li>Open HomePage (<a href="https://epam.github.io/JDI/index.html">https://epam.github.io/JDI/index.html</a>)</li>
-<li>Click on User Icon (to open login dialog)</li>
-<li>Login as some default user
+<p>So simple, isn&#39;t that right?</p>
+<h2 id='2-create-simple-test-using-service-object'>2. Create simple test using Service Object</h2>
+<p>Based on the Service Object class we created before, we can create a simple test to exercise HTTP GET method and validate the response body.</p>
 
-<ul>
-<li>Enter &#39;epam&#39; in login textfield</li>
-<li>Enter &#39;1234&#39; in password textfield</li>
-<li>Press &#39;Enter&#39; button</li>
-</ul></li>
-<li>Validate that HomePage is openned</li>
-</ol>
-<pre class="highlight plaintext"><code>[22:17.102  STEP] : Open 'Home Page'(url=https://epam.github.io/JDI/index.html)
-[22:23.617  STEP] : Click on 'User Icon'
-[22:23.727  STEP] : Login as User(userName:epam; password:1234)
-[22:24.516  STEP] : Check that 'Home Page' is opened (url CONTAINS '/index.html'; title EQUALS 'Home Page')
-</code></pre>
-<p><strong>So simple!</strong>
-But this is not all, just Run this test in your IDE and what you will get?</p>
+<p>Here is the example:
+<code>java
+@Test
+public void simpleRestTest() {
+    RestResponse resp = ServiceExample.getInfo.call();
+    resp.isOk().
+      body(&quot;url&quot;, equalTo(&quot;http://httpbin.org/get&quot;)).
+      body(&quot;headers.Host&quot;, equalTo(&quot;httpbin.org&quot;)).
+      body(&quot;headers.Id&quot;, equalTo(&quot;Test&quot;));
+    resp.assertThat().header(&quot;Connection&quot;, &quot;keep-alive&quot;);
+}
+</code></p>
 
-<ol>
-<li>Detailed log in Console output:</li>
-</ol>
+<p>The HTTP GET method described in service class is being called here. Next, the response is being validated.</p>
 
-<p><strong>Nice!</strong> Isn&#39;t it? :ok_hand:</p>
+<p>You can check other tests by the following link:</p>
 
-<ol>
-<li>Same log in log file (src/test/.logs/) if you would like to see test execution results remotely (require log4j2.xml in src/test/resources)</li>
-<li>Nice Allure report of your test execution! (require Allure settings in pom.xml)
-<img src="images/intro/allure-report.png" alt="Allure Report" />
-<img src="images/intro/allure-report-log.png" alt="Allure Log" /></li>
-</ol>
-
-<p>Just move allure-results folder in target folder and run maven &gt; Plugins &gt; allure &gt; allure:serve
-<img src="images/intro/allure-serve.png" alt="Allure Serve" /></p>
-<pre class="highlight java tab-java"><code><span class="nd">@JSite</span><span class="o">(</span><span class="s">"https://epam.github.io/JDI/"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JdiTestSite</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="n">HomePage</span> <span class="n">homePage</span><span class="o">;</span>
-<span class="o">}</span>
-<span class="nd">@BeforeSuite</span><span class="o">(</span><span class="n">alwaysRun</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">initElements</span><span class="o">(</span><span class="n">JdiTestSite</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-<span class="o">}</span>
-
-<span class="nd">@Url</span><span class="o">(</span><span class="s">"/index.html"</span><span class="o">)</span> <span class="nd">@Title</span><span class="o">(</span><span class="s">"Home Page"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HomePage</span> <span class="kd">extends</span> <span class="n">WebPage</span> <span class="o">{</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"form"</span><span class="o">)</span> <span class="kd">public</span> <span class="kd">static</span> <span class="n">LoginForm</span> <span class="n">loginForm</span><span class="o">;</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"img#user-icon"</span><span class="o">)</span> <span class="kd">public</span> <span class="kd">static</span> <span class="n">Icon</span> <span class="n">userIcon</span><span class="o">;</span>
-<span class="o">}</span>
-
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginForm</span> <span class="kd">extends</span> <span class="n">Form</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="o">{</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"#name"</span><span class="o">)</span> <span class="n">TextField</span> <span class="n">userName</span><span class="o">;</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"#password"</span><span class="o">)</span>  <span class="n">TextField</span> <span class="n">password</span><span class="o">;</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"[type=submit]"</span><span class="o">)</span> <span class="n">Button</span> <span class="n">enter</span><span class="o">;</span>
-<span class="o">}</span>
-</code></pre><h2 id='2-ui-pageobjects'>2. UI PageObjects</h2>
-<p>So now let&#39;s look on PageObjects we have in JDI. In example above for &quot;Login test&quot; we have following PageObjects:
-* Site - entity for your application. Collects all the Pages of your application, that can be init in one command</p>
-
-<ul>
-<li>HomePage - Pages collects elements: common, complex and composite. Pages already have meta information about Url and Title and you can execute common actions with this Pages like: open, checkOpenned, get Url/Titile, zoom, scroll, work with cookies etc.</li>
-<li>LoginForm - Forms and Sections are logical parts of pages, they can include other sections or just elements. Forms also have additional actions like fill, submit, check etc.</li>
-<li>UI elements (Typified elements) like Button, TextField, Checkbox, Icon etc. - are simple elements that represents real elements on UI</li>
-</ul>
-
-<p>This is common JDI project structure</p>
+<p><a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-httpTests">JDI Dark test examples</a></p>
+<h2 id='3-create-tests-without-using-service-object'>3. Create tests without using Service Object</h2>
+<p>As it has been mentioned, you are still able to write tests without using Service Object model.
+It is possible to call HTTP methods directly from your tests as in the following example:</p>
 <pre class="highlight java tab-java"><code><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">nonPageObjectTest</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">WebPage</span><span class="o">.</span><span class="na">openUrl</span><span class="o">(</span><span class="s">"https://epam.github.io/JDI/index.html"</span><span class="o">);</span>
-    <span class="err">$</span><span class="o">(</span><span class="s">"img#user-icon"</span><span class="o">).</span><span class="na">click</span><span class="o">();</span>
-    <span class="err">$</span><span class="o">(</span><span class="s">"form #name"</span><span class="o">).</span><span class="na">input</span><span class="o">(</span><span class="s">"epam"</span><span class="o">);</span>
-    <span class="err">$</span><span class="o">(</span><span class="s">"form #password"</span><span class="o">).</span><span class="na">input</span><span class="o">(</span><span class="s">"1234"</span><span class="o">);</span>
-    <span class="err">$</span><span class="o">(</span><span class="s">"form [type=submit]"</span><span class="o">).</span><span class="na">click</span><span class="o">();</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="n">WebPage</span><span class="o">.</span><span class="na">getUrl</span><span class="o">(),</span> <span class="s">"https://epam.github.io/JDI/index.html"</span><span class="o">);</span>
-<span class="o">}</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginForm</span> <span class="kd">extends</span> <span class="n">Form</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="o">{</span>
-    <span class="n">TextField</span> <span class="n">userName</span> <span class="o">=</span> <span class="err">$</span><span class="o">(</span><span class="s">"#name"</span><span class="o">);</span>
-    <span class="n">TextField</span> <span class="n">password</span> <span class="o">=</span> <span class="err">$</span><span class="o">(</span><span class="s">"#password"</span><span class="o">);</span>
-    <span class="n">Button</span> <span class="n">enter</span> <span class="o">=</span> <span class="err">$</span><span class="o">(</span><span class="s">"[type=submit]"</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre><h2 id='3-short-term-non-page-objects-style'>3. Short term non Page Objects style</h2>
-<p>If you need to check somethhing fast and won&#39;t write Page Objects you can use simple like &quot;JQuery/Selenide&quot; style without any additional code</p>
-
-<p>You also can init your Page Objects directly with elements if don&#39;t like annotations</p>
-<h2 id='4-standard-test-locators'>4. Standard Test locators</h2><pre class="highlight plaintext"><code>&lt;input type="text" id="name"&gt;
-&lt;input type="text" id="last-name"&gt;
-&lt;input type="text" id="passport-code"&gt;
-&lt;input type="text" id="passport-number"&gt;
-&lt;button id="submit-button"&gt;
-</code></pre><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserCard</span> <span class="kd">extends</span> <span class="n">Form</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="o">{</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"#name"</span><span class="o">)</span> <span class="n">TextField</span> <span class="n">name</span><span class="o">;</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"#last-name"</span><span class="o">)</span> <span class="n">TextField</span> <span class="n">lastName</span><span class="o">;</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"#passport-code"</span><span class="o">)</span> <span class="n">TextField</span> <span class="n">passportCode</span><span class="o">;</span>
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"#passport-number"</span><span class="o">)</span> <span class="n">TextField</span> <span class="n">passportNumber</span><span class="o">;</span>   
-    <span class="nd">@Css</span><span class="o">(</span><span class="s">"#submit-button"</span><span class="o">)</span> <span class="n">Button</span> <span class="n">submitButton</span><span class="o">;</span> 
-<span class="o">}</span>
-<span class="n">If</span> <span class="n">Smart</span> <span class="n">locator</span> <span class="n">rule</span> <span class="n">is</span> <span class="n">id</span>
-<span class="n">WebSettings</span><span class="o">.</span><span class="na">SMART_SEARCH_LOCATORS</span> <span class="o">=</span> <span class="n">asList</span><span class="o">(</span><span class="s">"#%s"</span><span class="o">);</span>
-<span class="n">and</span> <span class="n">convertation</span> <span class="n">rule</span> <span class="n">is</span> <span class="n">hyphen</span> <span class="n">to</span> <span class="n">java</span> <span class="n">name</span>
-<span class="n">WebSettings</span><span class="o">.</span><span class="na">SMART_SEARCH_NAME</span> <span class="o">=</span> <span class="nl">StringUtils:</span><span class="o">:</span><span class="n">splitHyphen</span><span class="o">;</span>
-<span class="n">So</span> <span class="n">you</span> <span class="n">can</span> <span class="n">write</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserCard</span> <span class="kd">extends</span> <span class="n">Form</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="o">{</span>
-    <span class="n">TextField</span> <span class="n">name</span><span class="o">;</span>
-    <span class="n">TextField</span> <span class="n">lastName</span><span class="o">;</span>
-    <span class="n">TextField</span> <span class="n">passportCode</span>
-    <span class="n">TextField</span> <span class="n">passportNumber</span><span class="o">;</span>  
-    <span class="n">Button</span> <span class="n">submitButton</span><span class="o">;</span> 
-<span class="o">}</span>
-<span class="n">or</span> <span class="n">just</span> <span class="n">write</span> <span class="n">all</span> <span class="n">TextFields</span> <span class="n">in</span> <span class="n">one</span> <span class="n">line</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserCard</span> <span class="kd">extends</span> <span class="n">Form</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="o">{</span>
-    <span class="n">TextField</span> <span class="n">name</span><span class="o">,</span> <span class="n">lastName</span><span class="o">,</span> <span class="n">passportCode</span><span class="o">,</span> <span class="n">passportNumber</span><span class="o">;</span>  
-    <span class="n">Button</span> <span class="n">submitButton</span><span class="o">;</span> 
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">noServiceObjectTest</span><span class="o">(){</span>
+    <span class="n">RestResponse</span> <span class="n">resp</span><span class="o">=</span><span class="n">GET</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
+      <span class="n">rd</span><span class="o">-&gt;{</span><span class="n">rd</span><span class="o">.</span><span class="na">url</span><span class="o">=</span><span class="s">"http://httpbin.org/get"</span><span class="o">;</span>
+           <span class="n">rd</span><span class="o">.</span><span class="na">headers</span><span class="o">=</span><span class="k">new</span> <span class="n">MapArray</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{</span>
+              <span class="o">{</span><span class="s">"Name"</span><span class="o">,</span><span class="s">"Roman"</span><span class="o">},</span>
+              <span class="o">{</span><span class="s">"Id"</span><span class="o">,</span><span class="s">"TestTest"</span><span class="o">}</span>
+           <span class="o">});}</span>
+      <span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
-<p>If you have your developers follow some standard way to mark ui elements or you have an agreement to add special attribute you can even avoid to write locators for elements and make your page objects much more compact.</p>
+<p>In this test we make an HTTP GET request with invoked request data, which contains just URL and headers.</p>
+<h2 id='4-query-parameters-headers-cookies-support'>4. Query Parameters, Headers, Cookies support</h2>
+<p>JDI Dark has support for query parameters, you can specify them in your service class.
+You just need to use @QueryParameter annotation in your method or service class description.</p>
+<pre class="highlight java tab-java"><code><span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">)</span>
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
+</code></pre>
+<p>If you need to specify several query parameters, then use @QueryParameters annotation, where you can put all of your request parameters.</p>
+<pre class="highlight java tab-java"><code><span class="nd">@QueryParameters</span><span class="o">({</span>
+    <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"param1"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">),</span>
+    <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"param2"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">)</span>
+<span class="o">})</span>
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
+</code></pre>
+<p>Just the same way you can specify headers and cookies. JDI Dark has special annotation for them as well.
+<code>java
+@Headers({
+    @Header(name = &quot;Name&quot;, value = &quot;Roman&quot;),
+    @Header(name = &quot;Id&quot;, value = &quot;Test&quot;)
+})
+@Cookie(name = &quot;session_id&quot;, value = &quot;1234&quot;)
+@GET(&quot;/get&quot;) RestMethod getInfo;
+</code></p>
+<h2 id='5-performance-testing-support'>5. Performance testing support</h2>
+<p>There is the support for measuring time your requests take.
+Consider an example:</p>
+<pre class="highlight java tab-java"><code> <span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">simplePerformanceTest</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">PerformanceResult</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">loadService</span><span class="o">(</span><span class="mi">3600</span><span class="o">,</span> <span class="n">getInfo</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Average time: "</span> <span class="o">+</span> <span class="n">pr</span><span class="o">.</span><span class="na">AverageResponseTime</span> <span class="o">+</span> <span class="s">"ms"</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Requests amount: "</span> <span class="o">+</span> <span class="n">pr</span><span class="o">.</span><span class="na">NumberOfRequests</span><span class="o">);</span>
+    <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">pr</span><span class="o">.</span><span class="na">NoFails</span><span class="o">(),</span> <span class="s">"Number of fails: "</span> <span class="o">+</span> <span class="n">pr</span><span class="o">.</span><span class="na">NumberOfFails</span><span class="o">);</span> 
+<span class="o">}</span>
+</code></pre>
+<p>You can load your service and analyse the response time.</p>
 
-<p>You can manage how to create locator from field name using </p>
-
-<p><strong>WebSettings.SMART_SEARCH</strong> - Function that invoked if you have element has no locator or just setting a list of used locators using</p>
-
-<p><strong>WebSettings.SMART_SEARCH_LOCATORS</strong> - list of locators that can be used to try to find element</p>
-
-<p><strong>WebSettings.SMART_SEARCH_NAME</strong> - function how to create locator name from filed name (this value will be passed as %s parameter in SMART_SEARCH_LOCATORS)</p>
-<h2 id='5-asserts-matchers-integrated-in-elements'>5. Asserts/Matchers integrated in elements</h2>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="java">java</a>
-                <a href="#" data-language-name="csharp">csharp</a>
-                <a href="#" data-language-name="python">python</a>
           </div>
       </div>
     </div>
