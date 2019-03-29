@@ -223,11 +223,6 @@
           </li>
           <li>
             <a href="#highlights" class="toc-h1 toc-link" data-title="Highlights">Highlights</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#there-would-be-techie-documentation-for-jdi-dark" class="toc-h2 toc-link" data-title="There would be techie documentation for JDI Dark.">There would be techie documentation for JDI Dark.</a>
-                  </li>
-              </ul>
           </li>
           <li>
             <a href="#simple-jdi-dark-examples" class="toc-h1 toc-link" data-title="Simple JDI Dark examples">Simple JDI Dark examples</a>
@@ -251,10 +246,10 @@
           </li>
       </ul>
         <ul class="toc-footer">
-            <li><a href='https://www.facebook.com/groups/jdi.framework/' target="_blank">Facebook</a> |</li>
-            <li><a href='https://github.com/jdi-testing/jdi-dark' target="_blank">Github</a> |</li>
-            <li><a href='https://join.skype.com/u2Cel0MWHkAO' target="_blank">Skype EN</a> |</li>
-            <li><a href='https://join.skype.com/clvyVvnZvWqc' target="_blank">Skype RU</a> |</li>
+            <li><a href='https://www.facebook.com/groups/jdi.framework/' target="_blank">Facebook</a></li>
+            <li><a href='https://github.com/jdi-testing/jdi-dark' target="_blank">Github</a></li>
+            <li><a href='https://join.skype.com/u2Cel0MWHkAO' target="_blank">Skype EN</a></li>
+            <li><a href='https://join.skype.com/clvyVvnZvWqc' target="_blank">Skype RU</a></li>
             <li><a href="mailto:roman.iovlev.jdi@gmail.com?Subject=JDI question" target="_blank">Send Mail</a></li>
         </ul>
     </div>
@@ -271,14 +266,13 @@
 <li>Performance testing support</li>
 <li>Detailed logging of requests and response in JSON format which can be used in your reports</li>
 </ul>
-<h2 id='there-would-be-techie-documentation-for-jdi-dark'>There would be techie documentation for JDI Dark.</h2>
-<p>Stay tuned!</p>
 <h1 id='simple-jdi-dark-examples'>Simple JDI Dark examples</h1><h2 id='1-service-object-model'>1. Service Object Model</h2>
 <p>JDI Dark provides capability to describe your API as a simple Service Object.
 That gives you an ability to unify and combine your REST methods and endpoints in one class
 (similar to UI Page Object pattern).</p>
 
-<p>Let&#39;s say we have a website for REST testing located by the following address: http://httpbin.org/ and we need to test some of its endpoints. We can create the Java class and describe methods we want to test in a following way:</p>
+<p>Let&#39;s say we have a website for REST testing located by the following address: <a href="http://httpbin.org/">http://httpbin.org</a> and we need to test some of its endpoints.
+We can create the Java class and describe methods we want to test.</p>
 <pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"http://httpbin.org/"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceExample</span> <span class="o">{</span> 
     <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
@@ -288,23 +282,24 @@ That gives you an ability to unify and combine your REST methods and endpoints i
     <span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/delete"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">delete</span><span class="o">;</span>
 <span class="o">}</span>
 </code></pre>
-<p>So simple, isn&#39;t that right?</p>
+<p><em>So simple, isn&#39;t that right?</em></p>
 <h2 id='2-create-simple-test-using-service-object'>2. Create simple test using Service Object</h2>
 <p>Based on the Service Object class we created before, we can create a simple test to exercise HTTP GET method and validate the response body.</p>
 
-<p>Here is the example:
-<code>java
-@Test
-public void simpleRestTest() {
-    RestResponse resp = ServiceExample.getInfo.call();
-    resp.isOk().
-      body(&quot;url&quot;, equalTo(&quot;http://httpbin.org/get&quot;)).
-      body(&quot;headers.Host&quot;, equalTo(&quot;httpbin.org&quot;)).
-      body(&quot;headers.Id&quot;, equalTo(&quot;Test&quot;));
-    resp.assertThat().header(&quot;Connection&quot;, &quot;keep-alive&quot;);
-}
-</code></p>
-
+<ol>
+<li>Make a request call to HTTP method described in your Service Object class.</li>
+<li>Validate the response body.</li>
+</ol>
+<pre class="highlight java tab-java"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">simpleRestTest</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">ServiceExample</span><span class="o">.</span><span class="na">getInfo</span><span class="o">.</span><span class="na">call</span><span class="o">();</span>
+    <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span>
+      <span class="n">body</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"http://httpbin.org/get"</span><span class="o">)).</span>
+      <span class="n">body</span><span class="o">(</span><span class="s">"headers.Host"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"httpbin.org"</span><span class="o">)).</span>
+      <span class="n">body</span><span class="o">(</span><span class="s">"headers.Id"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Test"</span><span class="o">));</span>
+    <span class="n">resp</span><span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">header</span><span class="o">(</span><span class="s">"Connection"</span><span class="o">,</span> <span class="s">"keep-alive"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
 <p>The HTTP GET method described in service class is being called here. Next, the response is being validated.</p>
 
 <p>You can check other tests by the following link:</p>
@@ -312,11 +307,11 @@ public void simpleRestTest() {
 <p><a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-httpTests">JDI Dark test examples</a></p>
 <h2 id='3-create-tests-without-using-service-object'>3. Create tests without using Service Object</h2>
 <p>As it has been mentioned, you are still able to write tests without using Service Object model.
-It is possible to call HTTP methods directly from your tests as in the following example:</p>
+It is possible to call HTTP methods directly from your tests. You just need to provide required information within the method arguments.</p>
 <pre class="highlight java tab-java"><code><span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">noServiceObjectTest</span><span class="o">(){</span>
-    <span class="n">RestResponse</span> <span class="n">resp</span><span class="o">=</span><span class="n">GET</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
-      <span class="n">rd</span><span class="o">-&gt;{</span><span class="n">rd</span><span class="o">.</span><span class="na">url</span><span class="o">=</span><span class="s">"http://httpbin.org/get"</span><span class="o">;</span>
+    <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">GET</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
+      <span class="n">rd</span> <span class="o">-&gt;</span> <span class="o">{</span><span class="n">rd</span><span class="o">.</span><span class="na">url</span><span class="o">=</span><span class="s">"http://httpbin.org/get"</span><span class="o">;</span>
            <span class="n">rd</span><span class="o">.</span><span class="na">headers</span><span class="o">=</span><span class="k">new</span> <span class="n">MapArray</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{</span>
               <span class="o">{</span><span class="s">"Name"</span><span class="o">,</span><span class="s">"Roman"</span><span class="o">},</span>
               <span class="o">{</span><span class="s">"Id"</span><span class="o">,</span><span class="s">"TestTest"</span><span class="o">}</span>
@@ -324,7 +319,7 @@ It is possible to call HTTP methods directly from your tests as in the following
       <span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
-<p>In this test we make an HTTP GET request with invoked request data, which contains just URL and headers.</p>
+<p>In this test we make an HTTP GET request with invoked request data, which contains URL and headers.</p>
 <h2 id='4-query-parameters-headers-cookies-support'>4. Query Parameters, Headers, Cookies support</h2>
 <p>JDI Dark has support for query parameters, you can specify them in your service class.
 You just need to use @QueryParameter annotation in your method or service class description.</p>
@@ -338,18 +333,17 @@ You just need to use @QueryParameter annotation in your method or service class 
 <span class="o">})</span>
 <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
 </code></pre>
-<p>Just the same way you can specify headers and cookies. JDI Dark has special annotation for them as well.
-<code>java
-@Headers({
-    @Header(name = &quot;Name&quot;, value = &quot;Roman&quot;),
-    @Header(name = &quot;Id&quot;, value = &quot;Test&quot;)
-})
-@Cookie(name = &quot;session_id&quot;, value = &quot;1234&quot;)
-@GET(&quot;/get&quot;) RestMethod getInfo;
-</code></p>
-<h2 id='5-performance-testing-support'>5. Performance testing support</h2>
-<p>There is the support for measuring time your requests take.
-Consider an example:</p>
+<p>Just the same way you can specify headers and cookies. JDI Dark has special annotation for them as well.</p>
+<pre class="highlight java tab-java"><code><span class="nd">@Headers</span><span class="o">({</span>
+    <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Name"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Roman"</span><span class="o">),</span>
+    <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Id"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Test"</span><span class="o">)</span>
+<span class="o">})</span>
+<span class="nd">@Cookie</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"session_id"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"1234"</span><span class="o">)</span>
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
+</code></pre><h2 id='5-performance-testing-support'>5. Performance testing support</h2>
+<p>There is the support for measuring time your requests take.</p>
+
+<p>It is possible to call your service several times and get the descriptive results.</p>
 <pre class="highlight java tab-java"><code> <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">simplePerformanceTest</span><span class="o">()</span> <span class="o">{</span>
     <span class="n">PerformanceResult</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">loadService</span><span class="o">(</span><span class="mi">3600</span><span class="o">,</span> <span class="n">getInfo</span><span class="o">);</span>
