@@ -5,15 +5,15 @@ language_tabs:
   - java
   
 toc_footers:
-  - <a href='https://www.facebook.com/groups/jdi.framework/' target="_blank">Facebook</a> | 
-  - <a href='https://github.com/jdi-testing/jdi-dark' target="_blank">Github</a> | 
-  - <a href='https://join.skype.com/u2Cel0MWHkAO' target="_blank">Skype EN</a> | 
-  - <a href='https://join.skype.com/clvyVvnZvWqc' target="_blank">Skype RU</a> | 
+  - <a href='https://www.facebook.com/groups/jdi.framework/' target="_blank">Facebook</a>
+  - <a href='https://github.com/jdi-testing/jdi-dark' target="_blank">Github</a>
+  - <a href='https://join.skype.com/u2Cel0MWHkAO' target="_blank">Skype EN</a>
+  - <a href='https://join.skype.com/clvyVvnZvWqc' target="_blank">Skype RU</a>
   - <a href="mailto:roman.iovlev.jdi@gmail.com?Subject=JDI question" target="_blank">Send Mail</a>
 
 includes:
-  - technical
   - tutorial
+  - technical_documentation
 
 search: true
 ---
