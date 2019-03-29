@@ -65,14 +65,14 @@ In this test we make an HTTP GET request with invoked request data, which contai
 
 ## 4. Query Parameters, Headers, Cookies support
 JDI Dark has support for query parameters, you can specify them in your service class.
-You just need to use @QueryParameter annotation in your method or service class description.
+You just need to use *@QueryParameter* annotation in your method or service class description.
 
 ```java
 @QueryParameter(name = "test", value = "test")
 @GET("/get") RestMethod getInfo;
 ```
 
-If you need to specify several query parameters, then use @QueryParameters annotation, where you can put all of your request parameters.
+If you need to specify several query parameters, then use *@QueryParameters* annotation, where you can put all of your request parameters.
 
 ```java
 @QueryParameters({

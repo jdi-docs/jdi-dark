@@ -13,6 +13,7 @@ toc_footers:
 
 includes:
   - tutorial
+  - technical_documentation
 
 search: true
 ---
