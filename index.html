@@ -244,6 +244,35 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#documentation" class="toc-h1 toc-link" data-title="Documentation">Documentation</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#framework-usage" class="toc-h2 toc-link" data-title="Framework usage">Framework usage</a>
+                  </li>
+                  <li>
+                    <a href="#http-methods" class="toc-h2 toc-link" data-title="HTTP methods">HTTP methods</a>
+                  </li>
+                  <li>
+                    <a href="#request-data" class="toc-h2 toc-link" data-title="Request Data">Request Data</a>
+                  </li>
+                  <li>
+                    <a href="#tests-without-service-object" class="toc-h2 toc-link" data-title="Tests without Service Object">Tests without Service Object</a>
+                  </li>
+                  <li>
+                    <a href="#response-data" class="toc-h2 toc-link" data-title="Response data">Response data</a>
+                  </li>
+                  <li>
+                    <a href="#response-as-java-objects" class="toc-h2 toc-link" data-title="Response as Java objects">Response as Java objects</a>
+                  </li>
+                  <li>
+                    <a href="#performance-testing" class="toc-h2 toc-link" data-title="Performance testing">Performance testing</a>
+                  </li>
+                  <li>
+                    <a href="#reporting" class="toc-h2 toc-link" data-title="Reporting">Reporting</a>
+                  </li>
+              </ul>
+          </li>
       </ul>
         <ul class="toc-footer">
             <li><a href='https://www.facebook.com/groups/jdi.framework/' target="_blank">Facebook</a></li>
@@ -322,11 +351,11 @@ It is possible to call HTTP methods directly from your tests. You just need to p
 <p>In this test we make an HTTP GET request with invoked request data, which contains URL and headers.</p>
 <h2 id='4-query-parameters-headers-cookies-support'>4. Query Parameters, Headers, Cookies support</h2>
 <p>JDI Dark has support for query parameters, you can specify them in your service class.
-You just need to use @QueryParameter annotation in your method or service class description.</p>
+You just need to use <em>@QueryParameter</em> annotation in your method or service class description.</p>
 <pre class="highlight java tab-java"><code><span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">)</span>
 <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
 </code></pre>
-<p>If you need to specify several query parameters, then use @QueryParameters annotation, where you can put all of your request parameters.</p>
+<p>If you need to specify several query parameters, then use <em>@QueryParameters</em> annotation, where you can put all of your request parameters.</p>
 <pre class="highlight java tab-java"><code><span class="nd">@QueryParameters</span><span class="o">({</span>
     <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"param1"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">),</span>
     <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"param2"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">)</span>
@@ -353,6 +382,52 @@ You just need to use @QueryParameter annotation in your method or service class 
 <span class="o">}</span>
 </code></pre>
 <p>You can load your service and analyse the response time.</p>
+<h1 id='documentation'>Documentation</h1><h2 id='framework-usage'>Framework usage</h2>
+<p>For effective usage of JDI Dark framework it is recommended to statically import the init() method of ServiceInit class.</p>
+<pre class="highlight plaintext"><code>import static com.epam.http.requests.ServiceInit.init;
+</code></pre>
+<p>This is an entry point for initialising your Service Object class.</p>
+<h2 id='http-methods'>HTTP methods</h2>
+<p>JDI Dark supports the following HTTP methods:
+* GET
+* POST
+* PUT
+* PATCH
+* DELETE
+* OPTIONS
+* HEAD</p>
+
+<p>For all of these methods there are annotations named after methods in <em>com.epam.http.annotations.</em>* package.
+All of these annotations take a value of URI to make request call to. Those annotations are supposed to be used in your Service Object class.</p>
+
+<p>To point the base URI of your service it&#39;s convenient to use <em>@ServiceDomain</em> annotation with provided URL as a value.
+Then values in your methods annotations might be just specific URL paths.</p>
+<h2 id='request-data'>Request Data</h2>
+<p>You might need to use specific request data in your requests. Cookies, headers, query parameters and Content-type are available in annotation form.</p>
+
+<p>... smth about invoking request data from tests when you make a request call, and the methods available to do that...</p>
+<h2 id='tests-without-service-object'>Tests without Service Object</h2>
+<p>All HTTP methods are available not only in annotation form. You can directly call those from your tests with provided info as arguments...</p>
+
+<p>... description on methods to do that...</p>
+<h2 id='response-data'>Response data</h2>
+<p>How to access response data and validation...</p>
+
+<p>All methods for doing that...</p>
+
+<p>Smth about access to Rest Assured response and its methods...</p>
+<h2 id='response-as-java-objects'>Response as Java objects</h2>
+<p>Convert response into java objects...</p>
+
+<p>Methods .as() and .asData()...</p>
+<h2 id='performance-testing'>Performance testing</h2>
+<p>How to make it...</p>
+
+<p>Which methods are available for loading the service and analysing its data...</p>
+<h2 id='reporting'>Reporting</h2>
+<p>Allure reporting is supported. Requests and response are being saved as json and can be inserted in your Allure reports if you use Allure.</p>
+
+<p>Smth about that...</p>
 
       </div>
       <div class="dark-box">
