@@ -388,14 +388,17 @@ You just need to use <em>@QueryParameter</em> annotation in your method or servi
 
 <p>This is an entry point for initialising your Service Object class.</p>
 <h2 id='http-methods'>HTTP methods</h2>
-<p>JDI Dark supports the following HTTP methods:
- - GET
- - POST
- - PUT
- - PATCH
- - DELETE
- - OPTIONS
- - HEAD</p>
+<p>JDI Dark supports the following HTTP methods:</p>
+
+<ul>
+<li>GET</li>
+<li>POST</li>
+<li>PUT</li>
+<li>PATCH</li>
+<li>DELETE</li>
+<li>OPTIONS</li>
+<li>HEAD</li>
+</ul>
 
 <p>For all of these methods there are annotations named after methods in <em>com.epam.http.annotations.</em>* package.
 All of these annotations take a value of URI to make request call to. Those annotations are supposed to be used in your Service Object class.</p>
@@ -413,22 +416,25 @@ So you can specify them in your Service Object class with provided name and valu
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">requestData</span><span class="o">(</span><span class="n">JAction1</span><span class="o">&lt;</span><span class="n">RequestData</span><span class="o">&gt;</span> <span class="n">valueFunc</span><span class="o">)</span>
 </code></pre>
 <p>Request body can be set when making a request call. Just pass it as argument to the <em>call()</em> method or within the RequestData object,
-that contains the next fields:
- - String url
- - String body
- - ContentType contentType
- - MapArray<String, String> headers
- - MapArray<String, String> pathParams
- - MapArray<String, String> queryParams
- - MapArray<String, String> cookies</p>
+that contains the next fields:</p>
+
+<ul>
+<li>String url</li>
+<li>String body</li>
+<li>ContentType contentType</li>
+<li>MapArray<String, String> headers</li>
+<li>MapArray<String, String> pathParams</li>
+<li>MapArray<String, String> queryParams</li>
+<li>MapArray<String, String> cookies</li>
+</ul>
 
 <p>All of these fields can be set/updated from call() method as well.</p>
 
 <p>You may need to statically import <em>com.epam.http.requests.RequestData.</em>* package.</p>
-
+<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">RestResponse</span> <span class="nf">call</span><span class="o">(</span><span class="n">RequestSpecification</span> <span class="n">requestSpecification</span><span class="o">)</span> 
+</code></pre>
 <p>There is also support to make a request call with Rest Assured request specification.</p>
-<pre class="highlight java tab-java"><code> <span class="kd">public</span> <span class="n">RestResponse</span> <span class="nf">call</span><span class="o">(</span><span class="n">RequestSpecification</span> <span class="n">requestSpecification</span><span class="o">)</span> 
-</code></pre><h3 id='path-parameters'>Path parameters</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">requestPathParams</span><span class="o">(</span><span class="n">String</span> <span class="n">paramName</span><span class="o">,</span> <span class="n">String</span> <span class="n">paramValue</span><span class="o">)</span> 
+<h3 id='path-parameters'>Path parameters</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">requestPathParams</span><span class="o">(</span><span class="n">String</span> <span class="n">paramName</span><span class="o">,</span> <span class="n">String</span> <span class="n">paramValue</span><span class="o">)</span> 
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">requestPathParams</span><span class="o">(</span><span class="n">Object</span><span class="o">[][]</span> <span class="n">params</span><span class="o">)</span>
 </code></pre>
 <p>A URL can have several path parameters, each denoted with curly braces, e.g. <em>/get/{board_id}</em>. You can use them in your Service Object methods and 
@@ -442,10 +448,13 @@ replace it with values when making a request call.</p>
 <p>All the HTTP methods mentioned before are available not only in annotation form.
 There are the same methods accessible from <em>com.epam.http.requests.RestMethods.</em>* with several signatures.</p>
 
-<p>You can call these methods with either of given arguments:
- - <em>com.epam.http.requests.RequestData</em>
- - String URL
- - Rest Assured request specification: <em>io.restassured.specification.RequestSpecification</em></p>
+<p>You can call these methods with either of given arguments:</p>
+
+<ul>
+<li><em>com.epam.http.requests.RequestData</em></li>
+<li>String URL</li>
+<li>Rest Assured request specification: <em>io.restassured.specification.RequestSpecification</em></li>
+</ul>
 <h2 id='response-data'>Response data</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isOk</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">hasErrors</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isStatus</span><span class="o">(</span><span class="n">ResponseStatusType</span> <span class="n">type</span><span class="o">)</span>
@@ -481,9 +490,20 @@ several classes and methods for collecting requests statistics.</p>
 <p>You can load your service and get average response time and number of fails comparing to amount of requests. Just use <em>loadService()</em> method with suitable signature. </p>
 <h2 id='reporting'>Reporting</h2>
 <p>If you want to use Allure framework for reporting, JDI Dark has out-of-the-box support for generating attachments for Allure reports.
-All test execution results are being saved to <strong>/allure-results</strong> folder.</p>
+Just simply install Allure as you would always do, those attachments will be automatically added to report.</p>
 
+<p>All test execution results are being saved to <strong>base_directory/allure-results</strong> folder.</p>
+
+<p>If you use maven, then you will need to configure Allure maven plugin to take results from appropriate folder.</p>
+<pre class="highlight plaintext"><code>&lt;configuration&gt;
+    &lt;resultsDirectory&gt;${basedir}/allure-results&lt;/resultsDirectory&gt;
+&lt;/configuration&gt;
+</code></pre>
 <p>After generating allure results, the full request and response information will be attached to every test that was executed.</p>
+
+<p>Here is the example of Allure report with attached request body:</p>
+
+<p><img src="images/allure_request.png" alt="Allure Request" /></p>
 
       </div>
       <div class="dark-box">
