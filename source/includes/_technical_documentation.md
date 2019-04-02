@@ -10,6 +10,7 @@ For effective usage of JDI Dark framework it is recommended to statically import
 This is an entry point for initialising your Service Object class.
 ## HTTP methods
 JDI Dark supports the following HTTP methods:
+
  - GET
  - POST
  - PUT
@@ -39,6 +40,7 @@ public static RequestData requestData(JAction1<RequestData> valueFunc)
  
 Request body can be set when making a request call. Just pass it as argument to the *call()* method or within the RequestData object,
 that contains the next fields:
+
  - String url
  - String body
  - ContentType contentType
@@ -51,11 +53,11 @@ All of these fields can be set/updated from call() method as well.
 
 You may need to statically import *com.epam.http.requests.RequestData.** package.
 
-There is also support to make a request call with Rest Assured request specification.
-
  ```java
- public RestResponse call(RequestSpecification requestSpecification) 
+public RestResponse call(RequestSpecification requestSpecification) 
  ```
+
+There is also support to make a request call with Rest Assured request specification.
 ### Path parameters
 
 ```java
@@ -79,6 +81,7 @@ All the HTTP methods mentioned before are available not only in annotation form.
 There are the same methods accessible from *com.epam.http.requests.RestMethods.** with several signatures.
 
 You can call these methods with either of given arguments:
+
  - *com.epam.http.requests.RequestData*
  - String URL
  - Rest Assured request specification: *io.restassured.specification.RequestSpecification*
@@ -136,6 +139,20 @@ several classes and methods for collecting requests statistics.
 You can load your service and get average response time and number of fails comparing to amount of requests. Just use *loadService()* method with suitable signature. 
 ## Reporting
 If you want to use Allure framework for reporting, JDI Dark has out-of-the-box support for generating attachments for Allure reports.
-All test execution results are being saved to __/allure-results__ folder.
+Just simply install Allure as you would always do, those attachments will be automatically added to report.
+
+All test execution results are being saved to __base_directory/allure-results__ folder.
+
+If you use maven, then you will need to configure Allure maven plugin to take results from appropriate folder.
+
+```dtd
+<configuration>
+    <resultsDirectory>${basedir}/allure-results</resultsDirectory>
+</configuration>
+```
 
 After generating allure results, the full request and response information will be attached to every test that was executed.
+
+Here is the example of Allure report with attached request body:
+
+![Allure Request](../images/allure_request.png)
