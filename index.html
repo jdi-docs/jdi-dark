@@ -389,13 +389,13 @@ You just need to use <em>@QueryParameter</em> annotation in your method or servi
 <p>This is an entry point for initialising your Service Object class.</p>
 <h2 id='http-methods'>HTTP methods</h2>
 <p>JDI Dark supports the following HTTP methods:
-* GET
-* POST
-* PUT
-* PATCH
-* DELETE
-* OPTIONS
-* HEAD</p>
+ - GET
+ - POST
+ - PUT
+ - PATCH
+ - DELETE
+ - OPTIONS
+ - HEAD</p>
 
 <p>For all of these methods there are annotations named after methods in <em>com.epam.http.annotations.</em>* package.
 All of these annotations take a value of URI to make request call to. Those annotations are supposed to be used in your Service Object class.</p>
@@ -471,14 +471,19 @@ There are the same methods accessible from <em>com.epam.http.requests.RestMethod
 <span class="kd">public</span> <span class="n">T</span> <span class="nf">asData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
 </code></pre>
 <p>JDI Dark provides support for deserialization response into Java object. Just use method <em>callAsData()</em> instead of <em>call()</em> and provide the class as argument.</p>
-<h2 id='performance-testing'>Performance testing</h2>
-<p>How to make it...</p>
+<h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeMSec</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">weightRequests</span><span class="o">)</span>
+</code></pre>
+<p>Simple performance testing is supported by JDI Dark. There is <em>com.epam.http.performance</em> package available that contains
+several classes and methods for collecting requests statistics.</p>
 
-<p>Which methods are available for loading the service and analysing its data...</p>
+<p>You can load your service and get average response time and number of fails comparing to amount of requests. Just use <em>loadService()</em> method with suitable signature. </p>
 <h2 id='reporting'>Reporting</h2>
-<p>Allure reporting is supported. Requests and response are being saved as json and can be inserted in your Allure reports if you use Allure.</p>
+<p>If you want to use Allure framework for reporting, JDI Dark has out-of-the-box support for generating attachments for Allure reports.
+All test execution results are being saved to <strong>/allure-results</strong> folder.</p>
 
-<p>Smth about that...</p>
+<p>After generating allure results, the full request and response information will be attached to every test that was executed.</p>
 
       </div>
       <div class="dark-box">
