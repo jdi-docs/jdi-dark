@@ -10,13 +10,13 @@ For effective usage of JDI Dark framework it is recommended to statically import
 This is an entry point for initialising your Service Object class.
 ## HTTP methods
 JDI Dark supports the following HTTP methods:
-* GET
-* POST
-* PUT
-* PATCH
-* DELETE
-* OPTIONS
-* HEAD
+ - GET
+ - POST
+ - PUT
+ - PATCH
+ - DELETE
+ - OPTIONS
+ - HEAD
 
 For all of these methods there are annotations named after methods in *com.epam.http.annotations.** package.
 All of these annotations take a value of URI to make request call to. Those annotations are supposed to be used in your Service Object class.
@@ -124,11 +124,18 @@ public T asData(Class<T> c)
 
 JDI Dark provides support for deserialization response into Java object. Just use method *callAsData()* instead of *call()* and provide the class as argument.
 ## Performance testing
-How to make it...
+```java
+public static PerformanceResult loadService(long liveTimeSec, RestMethod... requests)
+public static PerformanceResult loadService(RestMethod... requests)
+public static PerformanceResult loadService(long liveTimeMSec, Map<RestMethod, Integer> weightRequests)
+```
 
-Which methods are available for loading the service and analysing its data...
+Simple performance testing is supported by JDI Dark. There is *com.epam.http.performance* package available that contains
+several classes and methods for collecting requests statistics.
 
+You can load your service and get average response time and number of fails comparing to amount of requests. Just use *loadService()* method with suitable signature. 
 ## Reporting
-Allure reporting is supported. Requests and response are being saved as json and can be inserted in your Allure reports if you use Allure.
+If you want to use Allure framework for reporting, JDI Dark has out-of-the-box support for generating attachments for Allure reports.
+All test execution results are being saved to __/allure-results__ folder.
 
-Smth about that...
+After generating allure results, the full request and response information will be attached to every test that was executed.
