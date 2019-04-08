@@ -1,6 +1,5 @@
 # Simple JDI Dark examples
 ## 1. Service Object Model
-
 ```java
 @ServiceDomain("http://httpbin.org/")
 public class ServiceExample { 
@@ -22,7 +21,6 @@ We can create the Java class and describe methods we want to test.
 *So simple, isn't that right?*
 
 ## 2. Create simple test using Service Object
-
 ```java
 @Test
 public void simpleRestTest() {
@@ -47,7 +45,6 @@ You can check other tests by the following link:
  [JDI Dark test examples](https://github.com/jdi-testing/jdi-dark/tree/master/jdi-httpTests)
 
 ## 3. Create tests without using Service Object
-
 ```java
 @Test
 public void noServiceObjectTest(){
@@ -67,7 +64,6 @@ It is possible to call HTTP methods directly from your tests. You just need to p
 In this test we make an HTTP GET request with invoked request data, which contains URL and headers.
 
 ## 4. Query Parameters, Headers, Cookies support
-
 ```java
 @QueryParameter(name = "test", value = "test")
 @GET("/get") RestMethod getInfo;
@@ -98,7 +94,6 @@ If you need to specify several query parameters, then use *@QueryParameters* ann
 Just the same way you can specify headers and cookies. JDI Dark has special annotation for them as well.
 
 ## 5. Performance testing support
-
 ```java
  @Test
 public void simplePerformanceTest() {
