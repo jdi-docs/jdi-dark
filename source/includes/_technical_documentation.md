@@ -156,3 +156,5 @@ After generating allure results, the full request and response information will 
 Here is the example of Allure report with attached request body:
 
 ![Allure Request](../images/allure_request.png)
+## Access RestAssured
+TBD
