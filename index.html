@@ -297,6 +297,12 @@
                   <li>
                     <a href="#reporting" class="toc-h2 toc-link" data-title="Reporting">Reporting</a>
                   </li>
+                  <li>
+                    <a href="#access-restassured" class="toc-h2 toc-link" data-title="Access RestAssured">Access RestAssured</a>
+                  </li>
+                  <li>
+                    <a href="#review-guide" class="toc-h2 toc-link" data-title="Review Guide">Review Guide</a>
+                  </li>
               </ul>
           </li>
       </ul>
@@ -546,6 +552,121 @@ Just simply install Allure as you would always do, those attachments will be aut
 <p>Here is the example of Allure report with attached request body:</p>
 
 <p><img src="images/allure_request.png" alt="Allure Request" /></p>
+<h2 id='access-restassured'>Access RestAssured</h2>
+<p>TBD</p>
+<h2 id='review-guide'>Review Guide</h2><h3 id='easy-way-to-pass-review'>Easy way to pass review</h3>
+<ul>
+<li>Good code style</li>
+<li>No Wildcards imports (with asterisk *). You can use settings from the picture below
+<img src="images/review-wildcard-imports.png" alt="Wildcard Imports" /></li>
+<li><code>Ctrl+Alt+O</code> &amp; <code>Ctrl+Alt+L</code> in IDEA IDE before any commit</li>
+<li>Right branch and label in PR</li>
+</ul>
+<h3 id='short-checklist'>Short checklist</h3>
+<ol>
+<li>Branch</li>
+<li>Label</li>
+<li>Codacy</li>
+<li>*Other checks</li>
+<li>Changed files</li>
+</ol>
+<h3 id='detailed-list'>Detailed list</h3>
+<ol>
+<li>Codacy check should be OK. If not then you need to see what&#39;s wrong</li>
+<li>*When Travis would be fixed</li>
+<li>Also reviewing files you can mark them with checkboxes. Should be checked:
+
+<ul>
+<li>Code style</li>
+<li>Understandable naming</li>
+<li>Unnecessary empty lines and spaces</li>
+<li>Unnecessary or forgotten comments</li>
+<li>Chaining should be separated by lines</li>
+</ul></li>
+</ol>
+<h3 id='recommended-tools'>Recommended tools</h3>
+<ol>
+<li>Intellij IDEA</li>
+<li>Git</li>
+</ol>
+<h3 id='using-libraries'>Using libraries</h3>
+<ol>
+<li>As log library: slf4j + logback-classic (TO_VERIFY)</li>
+<li>As tests runner: TestNG (TO_VERIFY)</li>
+<li>As reporter: Allure Framework (TO_VERIFY)</li>
+<li>As test framework: JDI (TO_VERIFY)</li>
+</ol>
+<h3 id='intellij-idea-preferences'>Intellij IDEA Preferences</h3>
+<ol>
+<li>Preferences -&gt; Version Control -&gt; Commit Dialog &gt; Before commit block, setup checkboxes: Reformat Code, Rearrange code, Optimize imports</li>
+<li>In app press hotkeys: <code>Ctrl+Shift+Alt+L</code>, choose checkboxes: Optimize imports, Rearrange Code</li>
+<li>When you work to apply autoreformatting please use (on file, on directory or inside file) <code>Ctrl-Alt-L</code> hotkey</li>
+<li>To fast open any class by its name use <code>Ctrl+N</code>/<code>Cmd+O</code></li>
+<li>Be sure that NOT checked: Settings-&gt;Editor-&gt; Code Style -&gt; Java -&gt; Tabs and Indents -&gt; Use tab character</li>
+<li>Be sure that equals to 4: Settings-&gt;Editor-&gt; Code Style -&gt; Java -&gt; Tabs and Indents -&gt; Tab size field and Indent field</li>
+<li>Turn off wildcard imports: set to 999 for Settings -&gt; Editor -&gt; Code style -&gt; Java -&gt; Imports -&gt; Class count to use imports with <code>*</code> field and Names count to use static imports with <code>*</code></li>
+</ol>
+<h3 id='cvs-section'>CVS section</h3>
+<ol>
+<li>Use Git
+
+<ul>
+<li>Name branches with useful names </li>
+</ul></li>
+<li>Merge code into any branch only through GitHub pull request (PR)
+
+<ul>
+<li>Name PR with useful name</li>
+</ul></li>
+<li>Before add reviewers to your PR be ensure: 
+
+<ul>
+<li>no codacy issues</li>
+<li>code is ready to review</li>
+<li>you push the last changes</li>
+<li>you have last changes from target branch</li>
+<li>there is no merge conflicts</li>
+<li>you take into account all review comments (if such were)</li>
+</ul></li>
+<li>Add DarkReviewTeam as reviewers or re-request review (if there is already reviewers in PR)</li>
+<li>When you get review changes request you should resolve all issues and re-request code review from the same reviewers</li>
+<li>Repeat until branch will be merged by reviewers</li>
+<li>Keep actual <strong>.gitignore</strong> file</li>
+</ol>
+<h3 id='code-style'>Code style</h3>
+<ol>
+<li>Use spaces, 1 tab size equals to 4</li>
+<li>Don&#39;t use wildcard imports</li>
+<li>Use Intellij&#39;s autoreformatting, imports optimization and rearrange option</li>
+<li>Fix all Codacy issues</li>
+<li>If Codacy issue shouldn&#39;t be resolved use warnings suppressions</li>
+<li>Use semantic-value names for classes , variables, methods and so on. Use full version of words (human instead of h and so on). Common abbreviations (as id, uid and so on are applied). Use valuable names, for example instead of accountList use accounts and so on</li>
+<li>Remove double empty lines, use empty lines only when it make sense (additionally to autoreformatting)</li>
+<li>Use correct line breaks: (PROVIDE_SAMPLES)</li>
+<li>Try to use lines with no more 100-120 symbols (including indents) </li>
+<li>Use chaining style, recommended sample:
+<code>java 
+object
+.method(1)
+.otherMethod();
+</code></li>
+<li>Always use <code>{}</code> braces for even empty if, for, etc.</li>
+<li>Follow to the sequence of keywords: public protected private abstract default static final transient volatile synchronized native strictfp</li>
+<li>Don&#39;t use such conveniences as: <code>mValue</code>, <code>_value</code>, and so on. Acceptable <code>__</code> as unused argument of data provider in test methods</li>
+<li>Feel free to smart refactoring</li>
+<li>Feel free to use smart ?:</li>
+<li>Use <code>UpperCamelCase</code> naming style for classes, <code>lowerCamelCase</code> for fields and methods, <code>UPPERCASE</code> for enums, <code>lowercase</code> for packages</li>
+<li>Always use <code>@Override</code> annotation</li>
+<li>Don&#39;t leave empty <code>catch{}</code>, use relevant exceptions with messages</li>
+<li>Try to not use global variables</li>
+<li>Use variables for integer, string and other values (for instance, <code>int piNumber=3.14; println(piNumber)</code>)</li>
+<li>Write comments in English</li>
+<li>It&#39;s better to write code than create task to write code</li>
+<li>It&#39;s better to create task and <code>TODO</code> with this task number than to write simple <code>TODO</code> in code</li>
+<li>It&#39;s better to write simple understandable <code>TODO</code> in code than to tell about problem to someone</li>
+<li>It&#39;s better to tell about a problem to someone than to not take actions at all</li>
+<li>Always leave newline symbol as a last symbol of file</li>
+</ol>
 
       </div>
       <div class="dark-box">
