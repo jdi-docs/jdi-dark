@@ -61,14 +61,37 @@ There is also support to make a request call with Rest Assured request specifica
 ### Path parameters
 
 ```java
-public static RequestData requestPathParams(String paramName, String paramValue) 
-public static RequestData requestPathParams(Object[][] params)
+@ContentType(JSON) @GET("/boards/{board_id}")
+static RestMethod getBoardById;
+
+@ContentType(JSON) @GET("/boards/{board_id}/cards/{short_card_id}/")
+static RestMethod getBoardCardById;
+
+@Test
+public void getBoardById() {
+    RestResponse response = getBoardById
+        .call(requestPathParams("board_id", BOARD_ID));
+    response.isOk().body("id", equalTo(BOARD_ID));
+}
+
+@Test
+public void getCardByShortId() {
+    getBoardCardById.call(requestPathParams(new Object[][] {{"board_id", BOARD_ID}, {"short_card_id", "1"}}))
+        .isOk().assertThat().body("name", equalTo("Lorem ipsum dolor sit amet"));
+}
 ```
 
-A URL can have several path parameters, each denoted with curly braces, e.g. */get/{board_id}*. You can use them in your Service Object methods and 
+A URL can have one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. You can use them in your Service Object methods and 
 replace it with values when making a request call.
 
-There is method *requestPathParams()* provided for such case, where arguments are path parameters name and value.
+There are methods provided for such cases:
+
+|Method | Description | Return Type
+--- | --- | ---
+**requestPathParams(String paramName, String paramValue)** | pass one parameter to a path | RequestData
+**requestPathParams(Object[][] params)** | pass several parameters to a path | RequestData
+
+
 ## Tests without Service Object
 
 ```java
