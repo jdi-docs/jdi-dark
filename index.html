@@ -482,13 +482,48 @@ that contains the next fields:</p>
 <pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">RestResponse</span> <span class="nf">call</span><span class="o">(</span><span class="n">RequestSpecification</span> <span class="n">requestSpecification</span><span class="o">)</span> 
 </code></pre>
 <p>There is also support to make a request call with Rest Assured request specification.</p>
-<h3 id='path-parameters'>Path parameters</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">requestPathParams</span><span class="o">(</span><span class="n">String</span> <span class="n">paramName</span><span class="o">,</span> <span class="n">String</span> <span class="n">paramValue</span><span class="o">)</span> 
-<span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">requestPathParams</span><span class="o">(</span><span class="n">Object</span><span class="o">[][]</span> <span class="n">params</span><span class="o">)</span>
+<h3 id='path-parameters'>Path parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span> <span class="nd">@GET</span><span class="o">(</span><span class="s">"/boards/{board_id}"</span><span class="o">)</span>
+<span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getBoardById</span><span class="o">;</span>
+
+<span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span> <span class="nd">@GET</span><span class="o">(</span><span class="s">"/boards/{board_id}/cards/{short_card_id}/"</span><span class="o">)</span>
+<span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getBoardCardById</span><span class="o">;</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">getBoardById</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getBoardById</span>
+        <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestPathParams</span><span class="o">(</span><span class="s">"board_id"</span><span class="o">,</span> <span class="n">BOARD_ID</span><span class="o">));</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"id"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="n">BOARD_ID</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">getCardByShortId</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">getBoardCardById</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestPathParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]</span> <span class="o">{{</span><span class="s">"board_id"</span><span class="o">,</span> <span class="n">BOARD_ID</span><span class="o">},</span> <span class="o">{</span><span class="s">"short_card_id"</span><span class="o">,</span> <span class="s">"1"</span><span class="o">}}))</span>
+        <span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Lorem ipsum dolor sit amet"</span><span class="o">));</span>
+<span class="o">}</span>
 </code></pre>
-<p>A URL can have several path parameters, each denoted with curly braces, e.g. <em>/get/{board_id}</em>. You can use them in your Service Object methods and 
+<p>A URL can have one or several path parameters, each denoted with curly braces, e.g. <em>/get/{board_id}</em>, <em>/boards/{board_id}/cards/{short_card_id}/</em>. You can use them in your Service Object methods and 
 replace it with values when making a request call.</p>
 
-<p>There is method <em>requestPathParams()</em> provided for such case, where arguments are path parameters name and value.</p>
+<p>There are methods provided for such cases:</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>requestPathParams(String paramName, String paramValue)</strong></td>
+<td>pass one parameter to a path</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>requestPathParams(Object[][] params)</strong></td>
+<td>pass several parameters to a path</td>
+<td>RequestData</td>
+</tr>
+</tbody></table>
 <h2 id='tests-without-service-object'>Tests without Service Object</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">RestResponse</span> <span class="nf">GET</span><span class="o">(</span><span class="n">RequestData</span> <span class="n">data</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestResponse</span> <span class="nf">GET</span><span class="o">(</span><span class="n">String</span> <span class="n">url</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestResponse</span> <span class="nf">GET</span><span class="o">(</span><span class="n">String</span> <span class="n">url</span><span class="o">,</span> <span class="n">RequestSpecification</span> <span class="n">requestSpecification</span><span class="o">)</span> 
