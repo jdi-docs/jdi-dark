@@ -109,6 +109,84 @@ You can call these methods with either of given arguments:
  - String URL
  - Rest Assured request specification: *io.restassured.specification.RequestSpecification*
 
+
+## Tests with Service Object
+
+It's possible to describe tested web service as Service Object class using annotations.
+
+```java
+@ServiceDomain("https://httpbin.org/")
+public class ServiceExample {
+    @ContentType(JSON) @GET("/get")
+    @Headers({
+        @Header(name = "Name", value = "Roman"),
+        @Header(name = "Id", value = "Test")
+    })
+    static RestMethod<Info> getInfo;
+
+    @Header(name = "Type", value = "Test")
+    @POST("/post")
+    RestMethod postMethod;
+
+    @PUT("/put") RestMethod putMethod;
+    @PATCH("/patch") RestMethod patch;
+    @DELETE("/delete") RestMethod delete;
+    @GET("/status/%s") RestMethod status;
+
+} 
+```
+This class can be initialized in tests.
+Fields of initialized object can be used to send requests from tests.
+
+```java
+public class ServiceTest {
+
+    private ServiceExample service;
+
+    @BeforeClass
+    public void before() {
+        service = init(ServiceExample.class);
+    }
+
+    @Test
+    public void simpleRestTest() {
+        RestResponse resp = ServiceExample.getInfo.call();
+        resp.isOk().
+                body("url", equalTo("https://httpbin.org/get")).
+                body("headers.Host", equalTo("httpbin.org")).
+                body("headers.Id", equalTo("Test"));
+        resp.assertThat().header("Connection", "keep-alive");
+    }
+
+    @Test
+    public void serviceInitTest() {
+        RestResponse resp = service.postMethod.call();
+        resp.isOk().assertThat().
+                body("url", equalTo("https://httpbin.org/post")).
+                body("headers.Host", equalTo("httpbin.org"));
+    }
+
+}
+```
+
+It's possible to setup used RestSpecification. 
+Predefined settings will be used in all endpoints of that service.
+```java
+public class ServiceTest {
+
+    private RequestSpecification requestSpecification;
+    private ServiceExample service;
+
+    @BeforeClass
+    public void before() {
+        requestSpecification = given().filter(new AllureRestAssured());
+        requestSpecification.auth().basic("user", "password");
+        service = init(ServiceExample.class, requestSpecification);
+    }
+}
+```
+In this example basic-auth credentials will be passed to all endpoints.  
+
 ## Response data
 
 ```java
