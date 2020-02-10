@@ -286,6 +286,9 @@
                     <a href="#tests-without-service-object" class="toc-h2 toc-link" data-title="Tests without Service Object">Tests without Service Object</a>
                   </li>
                   <li>
+                    <a href="#tests-with-service-object" class="toc-h2 toc-link" data-title="Tests with Service Object">Tests with Service Object</a>
+                  </li>
+                  <li>
                     <a href="#response-data" class="toc-h2 toc-link" data-title="Response data">Response data</a>
                   </li>
                   <li>
@@ -538,6 +541,76 @@ There are the same methods accessible from <em>com.epam.http.requests.RestMethod
 <li>String URL</li>
 <li>Rest Assured request specification: <em>io.restassured.specification.RequestSpecification</em></li>
 </ul>
+<h2 id='tests-with-service-object'>Tests with Service Object</h2>
+<p>It&#39;s possible to describe tested web service as Service Object class using annotations.</p>
+<pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://httpbin.org/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceExample</span> <span class="o">{</span>
+    <span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span> <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span>
+    <span class="nd">@Headers</span><span class="o">({</span>
+        <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Name"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Roman"</span><span class="o">),</span>
+        <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Id"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Test"</span><span class="o">)</span>
+    <span class="o">})</span>
+    <span class="kd">static</span> <span class="n">RestMethod</span><span class="o">&lt;</span><span class="n">Info</span><span class="o">&gt;</span> <span class="n">getInfo</span><span class="o">;</span>
+
+    <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Type"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Test"</span><span class="o">)</span>
+    <span class="nd">@POST</span><span class="o">(</span><span class="s">"/post"</span><span class="o">)</span>
+    <span class="n">RestMethod</span> <span class="n">postMethod</span><span class="o">;</span>
+
+    <span class="nd">@PUT</span><span class="o">(</span><span class="s">"/put"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">putMethod</span><span class="o">;</span>
+    <span class="nd">@PATCH</span><span class="o">(</span><span class="s">"/patch"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">patch</span><span class="o">;</span>
+    <span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/delete"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">delete</span><span class="o">;</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/status/%s"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">status</span><span class="o">;</span>
+
+<span class="o">}</span> 
+</code></pre>
+<p>This class can be initialized in tests.
+Fields of initialized object can be used to send requests from tests.</p>
+<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">ServiceExample</span> <span class="n">service</span><span class="o">;</span>
+
+    <span class="nd">@BeforeClass</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">service</span> <span class="o">=</span> <span class="n">init</span><span class="o">(</span><span class="n">ServiceExample</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">simpleRestTest</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">ServiceExample</span><span class="o">.</span><span class="na">getInfo</span><span class="o">.</span><span class="na">call</span><span class="o">();</span>
+        <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span>
+                <span class="n">body</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"https://httpbin.org/get"</span><span class="o">)).</span>
+                <span class="n">body</span><span class="o">(</span><span class="s">"headers.Host"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"httpbin.org"</span><span class="o">)).</span>
+                <span class="n">body</span><span class="o">(</span><span class="s">"headers.Id"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Test"</span><span class="o">));</span>
+        <span class="n">resp</span><span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">header</span><span class="o">(</span><span class="s">"Connection"</span><span class="o">,</span> <span class="s">"keep-alive"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">serviceInitTest</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">postMethod</span><span class="o">.</span><span class="na">call</span><span class="o">();</span>
+        <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span>
+                <span class="n">body</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"https://httpbin.org/post"</span><span class="o">)).</span>
+                <span class="n">body</span><span class="o">(</span><span class="s">"headers.Host"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"httpbin.org"</span><span class="o">));</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+<p>It&#39;s possible to setup used RestSpecification. 
+Predefined settings will be used in all endpoints of that service.
+```java
+public class ServiceTest {</p>
+
+<p>private RequestSpecification requestSpecification;
+    private ServiceExample service;</p>
+
+<p>@BeforeClass
+    public void before() {
+        requestSpecification = given().filter(new AllureRestAssured());
+        requestSpecification.auth().basic(&quot;user&quot;, &quot;password&quot;);
+        service = init(ServiceExample.class, requestSpecification);
+    }
+}
+```
+In this example basic-auth credentials will be passed to all endpoints.  </p>
 <h2 id='response-data'>Response data</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isOk</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">hasErrors</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isStatus</span><span class="o">(</span><span class="n">ResponseStatusType</span> <span class="n">type</span><span class="o">)</span>
