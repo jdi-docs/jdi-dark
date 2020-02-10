@@ -541,7 +541,7 @@ There are the same methods accessible from <em>com.epam.http.requests.RestMethod
 <li>String URL</li>
 <li>Rest Assured request specification: <em>io.restassured.specification.RequestSpecification</em></li>
 </ul>
-<h2 id='tests-with-service-object'>Tests with Service Object</h2><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://httpbin.org/"</span><span class="o">)</span>
+<h2 id='tests-with-service-object'>Tests with Service Object</h2><h3 id='create-service'>Create service</h3><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://httpbin.org/"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceExample</span> <span class="o">{</span>
     <span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span> <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span>
     <span class="nd">@Headers</span><span class="o">({</span>
@@ -562,7 +562,7 @@ There are the same methods accessible from <em>com.epam.http.requests.RestMethod
 <span class="o">}</span> 
 </code></pre>
 <p>It&#39;s possible to describe tested web service as Service Object class using annotations.</p>
-<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
+<h3 id='create-tests-for-service'>Create tests for service</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="n">ServiceExample</span> <span class="n">service</span><span class="o">;</span>
 
@@ -593,7 +593,7 @@ There are the same methods accessible from <em>com.epam.http.requests.RestMethod
 </code></pre>
 <p>This class can be initialized in tests.
 Fields of initialized object can be used to send requests from tests.</p>
-<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
+<h3 id='use-predefined-restspecification'>Use predefined RestSpecification</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="n">RequestSpecification</span> <span class="n">requestSpecification</span><span class="o">;</span>
     <span class="kd">private</span> <span class="n">ServiceExample</span> <span class="n">service</span><span class="o">;</span>
