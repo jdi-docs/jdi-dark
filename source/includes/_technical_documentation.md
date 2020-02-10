@@ -112,8 +112,6 @@ You can call these methods with either of given arguments:
 
 ## Tests with Service Object
 
-It's possible to describe tested web service as Service Object class using annotations.
-
 ```java
 @ServiceDomain("https://httpbin.org/")
 public class ServiceExample {
@@ -135,8 +133,8 @@ public class ServiceExample {
 
 } 
 ```
-This class can be initialized in tests.
-Fields of initialized object can be used to send requests from tests.
+
+It's possible to describe tested web service as Service Object class using annotations.
 
 ```java
 public class ServiceTest {
@@ -169,8 +167,9 @@ public class ServiceTest {
 }
 ```
 
-It's possible to setup used RestSpecification. 
-Predefined settings will be used in all endpoints of that service.
+This class can be initialized in tests.
+Fields of initialized object can be used to send requests from tests.
+
 ```java
 public class ServiceTest {
 
@@ -185,6 +184,9 @@ public class ServiceTest {
     }
 }
 ```
+
+It's possible to setup used RestSpecification. 
+Predefined settings will be used in all endpoints of that service.
 In this example basic-auth credentials will be passed to all endpoints.  
 
 ## Response data
