@@ -541,9 +541,7 @@ There are the same methods accessible from <em>com.epam.http.requests.RestMethod
 <li>String URL</li>
 <li>Rest Assured request specification: <em>io.restassured.specification.RequestSpecification</em></li>
 </ul>
-<h2 id='tests-with-service-object'>Tests with Service Object</h2>
-<p>It&#39;s possible to describe tested web service as Service Object class using annotations.</p>
-<pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://httpbin.org/"</span><span class="o">)</span>
+<h2 id='tests-with-service-object'>Tests with Service Object</h2><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://httpbin.org/"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceExample</span> <span class="o">{</span>
     <span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span> <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span>
     <span class="nd">@Headers</span><span class="o">({</span>
@@ -563,8 +561,7 @@ There are the same methods accessible from <em>com.epam.http.requests.RestMethod
 
 <span class="o">}</span> 
 </code></pre>
-<p>This class can be initialized in tests.
-Fields of initialized object can be used to send requests from tests.</p>
+<p>It&#39;s possible to describe tested web service as Service Object class using annotations.</p>
 <pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="n">ServiceExample</span> <span class="n">service</span><span class="o">;</span>
@@ -594,22 +591,23 @@ Fields of initialized object can be used to send requests from tests.</p>
 
 <span class="o">}</span>
 </code></pre>
+<p>This class can be initialized in tests.
+Fields of initialized object can be used to send requests from tests.</p>
+<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">RequestSpecification</span> <span class="n">requestSpecification</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">ServiceExample</span> <span class="n">service</span><span class="o">;</span>
+
+    <span class="nd">@BeforeClass</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">requestSpecification</span> <span class="o">=</span> <span class="n">given</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="k">new</span> <span class="n">AllureRestAssured</span><span class="o">());</span>
+        <span class="n">requestSpecification</span><span class="o">.</span><span class="na">auth</span><span class="o">().</span><span class="na">basic</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span> <span class="s">"password"</span><span class="o">);</span>
+        <span class="n">service</span> <span class="o">=</span> <span class="n">init</span><span class="o">(</span><span class="n">ServiceExample</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">requestSpecification</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
 <p>It&#39;s possible to setup used RestSpecification. 
 Predefined settings will be used in all endpoints of that service.
-```java
-public class ServiceTest {</p>
-
-<p>private RequestSpecification requestSpecification;
-    private ServiceExample service;</p>
-
-<p>@BeforeClass
-    public void before() {
-        requestSpecification = given().filter(new AllureRestAssured());
-        requestSpecification.auth().basic(&quot;user&quot;, &quot;password&quot;);
-        service = init(ServiceExample.class, requestSpecification);
-    }
-}
-```
 In this example basic-auth credentials will be passed to all endpoints.  </p>
 <h2 id='response-data'>Response data</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isOk</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">hasErrors</span><span class="o">()</span>
