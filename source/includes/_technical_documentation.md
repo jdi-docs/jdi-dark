@@ -111,6 +111,7 @@ You can call these methods with either of given arguments:
 
 
 ## Tests with Service Object
+### Create service
 
 ```java
 @ServiceDomain("https://httpbin.org/")
@@ -135,6 +136,7 @@ public class ServiceExample {
 ```
 
 It's possible to describe tested web service as Service Object class using annotations.
+### Create tests for service
 
 ```java
 public class ServiceTest {
@@ -169,6 +171,7 @@ public class ServiceTest {
 
 This class can be initialized in tests.
 Fields of initialized object can be used to send requests from tests.
+### Use predefined RestSpecification
 
 ```java
 public class ServiceTest {
