@@ -225,6 +225,53 @@ Methods *cookie()* and *headers()* return response cookies and headers values.
 Method *getFromHtml()* returns html content of the page by provided path.
 
 Methods *raResponse* and *assertThat()* returns Rest Assured Response and ValidatableResponse, so it is possible to use Rest Assured methods for validating the response body.
+
+## Cookies
+
+JDI Dark supports addition of Cookies to Service endpoints.
+
+Cookies with no value and with multiple values can be added as well.
+
+```java
+@GET("/cookie")
+@Cookies({@Cookie(name = "username", value = "John"),
+@Cookie(name = "token", value = "1234")})
+public static RestMethod getCookie;
+
+
+@GET("/cookie_with_no_value")
+@Cookie(name = "some_cookie")
+public static RestMethod getCookieWithNoValueWithCookies;
+
+@GET("/multiCookieRequest")
+@Cookie(name = "key1", value = "value1", additionalValues = "value2")
+public static RestMethod getMultiCookieWithCookies;
+```
+
+There are methods to add cookies to Request Data. Cookies can be passed as name and value, as name and value pairs, as maps, as arrays of objects.
+Cookies without value and with multiple values can be added as well.
+
+|Method | Description | Return Type
+--- | --- | ---
+**addCookie(String name, String value, String... additionalValues)** | pass name and value of cookie. If additional values are specified than several cookies will be created with same name (multivalue cookie) | RequestData
+**addCookie(String name)** | pass name of cookie to cookie without value | RequestData
+**addCookies(String name, Object value, Object... cookieNameValuePairs)** | pass several pairs of cookie name and value | RequestData
+**addCookies(Object[][] objects)** | pass array with cookie names and values | RequestData
+**addCookies(MapArray mapArray)** | pass MapArray with cookie names and values | RequestData
+**addCookies(Map map)** | pass map with cookie names and values | RequestData
+
+```java
+public RequestData addCookie(String name, String value, String... additionalValues)
+public RequestData addCookie(String name)
+public RequestData addCookies(String name, Object value, Object... cookieNameValuePairs)
+public RequestData addCookies(Object[][] objects)
+public RequestData addCookies(MapArray mapArray)
+public RequestData addCookies(Map map)
+
+RestResponse response = MyService.getHello.call(requestData(
+                requestData -> requestData.addCookie("key1", "value1")));
+```
+
 ## Deserialization
 ```java
 public T callAsData(Class<T> c)
