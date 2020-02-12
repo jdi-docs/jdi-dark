@@ -226,6 +226,73 @@ Method *getFromHtml()* returns html content of the page by provided path.
 
 Methods *raResponse* and *assertThat()* returns Rest Assured Response and ValidatableResponse, so it is possible to use Rest Assured methods for validating the response body.
 
+## Headers
+
+JDI Dark supports addition of Headers to Service endpoints.
+
+Here's a simple example of adding a header to an endpoint:
+
+```java
+@GET("/header")
+@Header(name = "Header_name", value = "Header_value2")
+public static RestMethod getHeader;
+```
+
+Multiple headers are also supported:
+
+```java
+@GET("/multiHeaderReflect")
+@Headers({@Header(name = "Header_name", value = "Header_value"),
+@Header(name = "Header_name2", value = "Header_value2")})
+public static RestMethod getMultiHeaderReflect;
+```
+
+Headers with same name, with no value and with multiple values can be added as well.
+
+```java
+@GET("/header")
+@Headers({@Header(name = "Header_name", value = "Header_value"),
+@Header(name = "Header_name", value = "Header_value2")})
+public static RestMethod getHeader;
+
+
+@GET("/header")
+@Header(name = "some_header")
+public static RestMethod getHeaderWithNoValue;
+
+@GET("/multiHeaderReflect")
+@Header(name = "MultiValueHeader", value = "Header_value_1", additionalValues = "Header_value_2")
+public static RestMethod getMultiValueHeader;
+```
+
+There are methods to add cookies to Request Data. 
+Cookies can be passed as strings, as header objects, as maps, as arrays of objects.
+Cookies without value and with multiple values can be added as well.
+
+|Method | Description | Return Type
+--- | --- | ---
+**addHeader(String name, String value, String... additionalValues)** | pass name and value of the header. If additional values are specified than several cookies will be created with same name (multivalue header) | RequestData
+**addHeader(String name)** | pass name of a header without value | RequestData
+**addHeaders(Object[][] objects)** | pass array with header names and values | RequestData
+**addHeaders(MapArray mapArray)** | pass MapArray with header names and values | RequestData
+**addHeaders(Map map)** | pass map with header names and values | RequestData
+**addHeaders(Map map)** | pass map with header names and values | RequestData
+**addHeaders(List list)** | pass list of headers | RequestData
+**addHeaders(Header... header)** | pass header object | RequestData
+
+```java
+public RequestData addHeader(String name, String value, String... additionalValues)
+public RequestData addHeader(String name)
+public RequestData addHeaders(String name, Object value, Object... cookieNameValuePairs)
+public RequestData addHeaders(Object[][] objects)
+public RequestData addHeaders(MapArray mapArray)
+public RequestData addHeaders(Map map)
+public RequestData addHeaders(List<Header> headers)
+public RequestData addHeaders(Header... headers)
+
+RestResponse response = MyService.getHello.call(requestData(
+                requestData -> requestData.addHeader("Header_example", "Test_value")));
+```
 ## Cookies
 
 JDI Dark supports addition of Cookies to Service endpoints.
@@ -271,44 +338,6 @@ public RequestData addCookies(Map map)
 RestResponse response = MyService.getHello.call(requestData(
                 requestData -> requestData.addCookie("key1", "value1")));
 ```
-## Delete
-
-For sending DELETE request you can use RestMethod class with @DELETE annotation.
-
-```java
-@DELETE("/body")
-public static RestMethod deleteBody;
-@DELETE("/cookie")
-public static RestMethod deleteCookie;
-
-@Test
-public void deleteSupportsStringBody() {
-    RestResponse response = deleteBody.call(requestBody(TEST_BODY_VALUE));
-    response.assertThat().body(is(TEST_BODY_VALUE));
-}
-
-@Test
-public void requestSpecificationAllowsSpecifyingCookie() {
-    RestResponse response = deleteCookie.call(requestData(requestData ->
-            requestData.addCookies(new MapArray<>(new Object[][]{
-                    {USERNAME, FIRST_NAME_VALUE},
-                    {TOKEN, TOKEN_VALUE}
-            }))));
-    assertEquals(response.body, "username, token");
-}
-
-
-```
-
-|Method | Description | Return Type
---- | --- | ---
-**call(RequestData requestData)**| make request with parameters indicated by Request Data | RestResponse
-
-<br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
-<br>
-
-
 
 ## Deserialization
 ```java
