@@ -292,6 +292,9 @@
                     <a href="#response-data" class="toc-h2 toc-link" data-title="Response data">Response data</a>
                   </li>
                   <li>
+                    <a href="#cookies" class="toc-h2 toc-link" data-title="Cookies">Cookies</a>
+                  </li>
+                  <li>
                     <a href="#deserialization" class="toc-h2 toc-link" data-title="Deserialization">Deserialization</a>
                   </li>
                   <li>
@@ -630,7 +633,75 @@ In this example basic-auth credentials will be passed to all endpoints.  </p>
 <p>Method <em>getFromHtml()</em> returns html content of the page by provided path.</p>
 
 <p>Methods <em>raResponse</em> and <em>assertThat()</em> returns Rest Assured Response and ValidatableResponse, so it is possible to use Rest Assured methods for validating the response body.</p>
-<h2 id='deserialization'>Deserialization</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">T</span> <span class="nf">callAsData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
+<h2 id='cookies'>Cookies</h2>
+<p>JDI Dark supports addition of Cookies to Service endpoints.</p>
+
+<p>Cookies with no value and with multiple values can be added as well.</p>
+<pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/cookie"</span><span class="o">)</span>
+<span class="nd">@Cookies</span><span class="o">({</span><span class="nd">@Cookie</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"username"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"John"</span><span class="o">),</span>
+<span class="nd">@Cookie</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"token"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"1234"</span><span class="o">)})</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getCookie</span><span class="o">;</span>
+
+
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/cookie_with_no_value"</span><span class="o">)</span>
+<span class="nd">@Cookie</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"some_cookie"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getCookieWithNoValueWithCookies</span><span class="o">;</span>
+
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/multiCookieRequest"</span><span class="o">)</span>
+<span class="nd">@Cookie</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"key1"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"value1"</span><span class="o">,</span> <span class="n">additionalValues</span> <span class="o">=</span> <span class="s">"value2"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getMultiCookieWithCookies</span><span class="o">;</span>
+</code></pre>
+<p>There are methods to add cookies to Request Data. Cookies can be passed as name and value, as name and value pairs, as maps, as arrays of objects.
+Cookies without value and with multiple values can be added as well.</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>addCookie(String name, String value, String... additionalValues)</strong></td>
+<td>pass name and value of cookie. If additional values are specified than several cookies will be created with same name (multivalue cookie)</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>addCookie(String name)</strong></td>
+<td>pass name of cookie to cookie without value</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>addCookies(String name, Object value, Object... cookieNameValuePairs)</strong></td>
+<td>pass several pairs of cookie name and value</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>addCookies(Object[][] objects)</strong></td>
+<td>pass array with cookie names and values</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>addCookies(MapArray mapArray)</strong></td>
+<td>pass MapArray with cookie names and values</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>addCookies(Map map)</strong></td>
+<td>pass map with cookie names and values</td>
+<td>RequestData</td>
+</tr>
+</tbody></table>
+<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookie</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">value</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">additionalValues</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookie</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookies</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Object</span> <span class="n">value</span><span class="o">,</span> <span class="n">Object</span><span class="o">...</span> <span class="n">cookieNameValuePairs</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookies</span><span class="o">(</span><span class="n">Object</span><span class="o">[][]</span> <span class="n">objects</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookies</span><span class="o">(</span><span class="n">MapArray</span> <span class="n">mapArray</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookies</span><span class="o">(</span><span class="n">Map</span> <span class="n">map</span><span class="o">)</span>
+
+<span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">MyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
+                <span class="n">requestData</span> <span class="o">-&gt;</span> <span class="n">requestData</span><span class="o">.</span><span class="na">addCookie</span><span class="o">(</span><span class="s">"key1"</span><span class="o">,</span> <span class="s">"value1"</span><span class="o">)));</span>
+</code></pre><h2 id='deserialization'>Deserialization</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">T</span> <span class="nf">callAsData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
 <span class="kd">public</span> <span class="n">T</span> <span class="nf">asData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
 </code></pre>
 <p>JDI Dark provides support for deserialization response into Java object. Just use method <em>callAsData()</em> instead of <em>call()</em> and provide the class as argument.</p>
