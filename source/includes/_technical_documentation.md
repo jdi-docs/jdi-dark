@@ -228,22 +228,22 @@ Methods *raResponse* and *assertThat()* returns Rest Assured Response and Valida
 
 ## Headers
 
-JDI Dark supports addition of Headers to Service endpoints.
+JDI Dark supports headers addition to Service endpoints using annotations.
 
-### Here's a simple example of adding a header to an endpoint:
+### Single header can be added with usage of @Header annotation:
 
 ```java
 @GET("/header")
 @Header(name = "Header_name", value = "Header_value2")
 public static RestMethod getHeader;
 ```
-<br />
+Here's a simple example of adding a header to an endpoint
 <br />
 <br />
 <br />
 
 
-### Multiple headers are also supported:
+### Multiple headers are also supported through @Headers annotation:
 
 ```java
 @GET("/multiHeaderReflect")
@@ -269,20 +269,23 @@ public static RestMethod getHeader;
 @Header(name = "some_header")
 public static RestMethod getHeaderWithNoValue;
 
+
 @GET("/multiHeaderReflect")
 @Header(name = "MultiValueHeader", value = "Header_value_1", additionalValues = "Header_value_2")
 public static RestMethod getMultiValueHeader;
 ```
+@Headers annotation is used to add 2 headers with the same name "Header_name"
 <br />
 <br />
 <br />
 <br />
 <br />
+@Header is used in this example to pass a header with name only
 <br />
 <br />
 <br />
 <br />
-<br />
+@Header is used here to pass mutivalue header
 <br />
 <br />
 
