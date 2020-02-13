@@ -290,17 +290,6 @@ public static RestMethod getMultiValueHeader;
 Headers can be passed as strings, as header objects, as maps, as arrays of objects.
 Headers without value and with multiple values can be added as well.
 
-|Method | Description | Return Type
---- | --- | ---
-**addHeader(String name, String value, String... additionalValues)** | pass name and value of the header. If additional values are specified than several cookies will be created with same name (multivalue header) | RequestData
-**addHeader(String name)** | pass name of a header without value | RequestData
-**addHeaders(Object[][] objects)** | pass array with header names and values | RequestData
-**addHeaders(MapArray mapArray)** | pass MapArray with header names and values | RequestData
-**addHeaders(Map map)** | pass map with header names and values | RequestData
-**addHeaders(Map map)** | pass map with header names and values | RequestData
-**addHeaders(List list)** | pass list of headers | RequestData
-**addHeaders(Header... header)** | pass header object | RequestData
-
 ```java
 public RequestData addHeader(String name, String value, String... additionalValues)
 public RequestData addHeader(String name)
@@ -314,6 +303,18 @@ public RequestData addHeaders(Header... headers)
 RestResponse response = MyService.getHello.call(requestData(
                 requestData -> requestData.addHeader("Header_example", "Test_value")));
 ```
+
+|Method | Description | Return Type
+--- | --- | ---
+**addHeader(String name, String value, String... additionalValues)** | pass name and value of the header. If additional values are specified than several cookies will be created with same name (multivalue header) | RequestData
+**addHeader(String name)** | pass name of a header without value | RequestData
+**addHeaders(Object[][] objects)** | pass array with header names and values | RequestData
+**addHeaders(MapArray mapArray)** | pass MapArray with header names and values | RequestData
+**addHeaders(Map map)** | pass map with header names and values | RequestData
+**addHeaders(Map map)** | pass map with header names and values | RequestData
+**addHeaders(List list)** | pass list of headers | RequestData
+**addHeaders(Header... header)** | pass header object | RequestData
+
 ## Cookies
 
 JDI Dark supports addition of Cookies to Service endpoints.
