@@ -298,6 +298,9 @@
                     <a href="#cookies" class="toc-h2 toc-link" data-title="Cookies">Cookies</a>
                   </li>
                   <li>
+                    <a href="#delete" class="toc-h2 toc-link" data-title="Delete">Delete</a>
+                  </li>
+                  <li>
                     <a href="#deserialization" class="toc-h2 toc-link" data-title="Deserialization">Deserialization</a>
                   </li>
                   <li>
@@ -796,7 +799,49 @@ Cookies without value and with multiple values can be added as well.</p>
 
 <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">MyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
                 <span class="n">requestData</span> <span class="o">-&gt;</span> <span class="n">requestData</span><span class="o">.</span><span class="na">addCookie</span><span class="o">(</span><span class="s">"key1"</span><span class="o">,</span> <span class="s">"value1"</span><span class="o">)));</span>
-</code></pre><h2 id='deserialization'>Deserialization</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">T</span> <span class="nf">callAsData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
+</code></pre><h2 id='delete'>Delete</h2>
+<p>For sending DELETE request you can use RestMethod class with @DELETE annotation.</p>
+<pre class="highlight java tab-java"><code><span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/body"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">deleteBody</span><span class="o">;</span>
+<span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/cookie"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">deleteCookie</span><span class="o">;</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteSupportsStringBody</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">deleteBody</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestBody</span><span class="o">(</span><span class="n">TEST_BODY_VALUE</span><span class="o">));</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="n">TEST_BODY_VALUE</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">requestSpecificationAllowsSpecifyingCookie</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">deleteCookie</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span><span class="n">requestData</span> <span class="o">-&gt;</span>
+            <span class="n">requestData</span><span class="o">.</span><span class="na">addCookies</span><span class="o">(</span><span class="k">new</span> <span class="n">MapArray</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{</span>
+                    <span class="o">{</span><span class="n">USERNAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">},</span>
+                    <span class="o">{</span><span class="n">TOKEN</span><span class="o">,</span> <span class="n">TOKEN_VALUE</span><span class="o">}</span>
+            <span class="o">}))));</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">body</span><span class="o">,</span> <span class="s">"username, token"</span><span class="o">);</span>
+<span class="o">}</span>
+
+
+</code></pre>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>call(RequestData requestData)</strong></td>
+<td>make request with parameters indicated by Request Data</td>
+<td>RestResponse</td>
+</tr>
+</tbody></table>
+
+<p><br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
+<br></p>
+<h2 id='deserialization'>Deserialization</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">T</span> <span class="nf">callAsData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
 <span class="kd">public</span> <span class="n">T</span> <span class="nf">asData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
 </code></pre>
 <p>JDI Dark provides support for deserialization response into Java object. Just use method <em>callAsData()</em> instead of <em>call()</em> and provide the class as argument.</p>
