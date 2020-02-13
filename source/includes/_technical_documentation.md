@@ -199,6 +199,7 @@ public ValidatableResponse isOk()
 public ValidatableResponse hasErrors()
 public ValidatableResponse isStatus(ResponseStatusType type)
 public RestResponse assertStatus(ResponseStatus rs)
+public ValidatableResponse isEmpty()
 ```
 
 ```java
@@ -211,20 +212,53 @@ public String getFromHtml(String path)
 ```
 
 ```java
-public Response raResponse()
+public Response getRaResponse()
 public ValidatableResponse assertThat()
+
+public Map<String, String> cookies()
+public String cookie(String name)
+public Headers headers()
+public String header(String name)
+
+public String getBody()
+public ResponseStatus getStatus()
+public String getContentType() 
+
 ```
-The class *com.epam.http.response.RestResponse* represents the Response data in JDI Dark.
 
-There are methods for checking status code of response. Methods *isOk()* and *hasErrors()* verify that status code is 2** or 4**, respectively.
+```java
+RestResponse response = JettyService.getHello.call();
+assertThat(response.body, containsString("{\"hello\":\"Hello Scalatra\"}"));
+String body = response.getBody();
 
-Response body can be verified using method *assertBody()*.
+String hello = JettyService.getHello.call().getRaResponse().jsonPath().getString("hello");
+```
 
-Methods *cookie()* and *headers()* return response cookies and headers values.
+The class **com.epam.http.response.RestResponse** represents the Response data in JDI Dark.
 
-Method *getFromHtml()* returns html content of the page by provided path.
+Below listed the methods that allows to work with response data:
 
-Methods *raResponse* and *assertThat()* returns Rest Assured Response and ValidatableResponse, so it is possible to use Rest Assured methods for validating the response body.
+**isOk()** and **hasErrors()** -  verify that status code is 2** or 4**, respectively.
+
+**isStatus(ResponseStatusType type)** and **assertStatus(ResponseStatus rs)** - verity response status type and response 
+status respectively against expected result. 
+
+**assertBody(Object[][] params)** and **assertBody(MapArray<String, Matcher<?>> params)** - allow to verify response body
+
+**cookies()** and **headers()** - return response cookies and headers values.
+
+**cookie(String name)** and **header(String name)** - return cookie and header values respectively corresponding to specified name.
+
+**getFromHtml()** -  returns html content of the page by provided path.
+
+**getRaResponse()** and **assertThat()** returns Rest Assured Response and ValidatableResponse, 
+so it is possible to use Rest Assured methods for validating the response body.
+
+**getBody()**, **getStatus()**, **getContentType()** - allow get response body, status and content type. 
+Response body and status can be also retrieved using fields *body* and *status* of RestResponse class.
+
+**isEmpty()** - verifies that response body is empty.
+
 
 ## Headers
 
