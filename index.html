@@ -622,23 +622,52 @@ In this example basic-auth credentials will be passed to all endpoints.  </p>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">hasErrors</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isStatus</span><span class="o">(</span><span class="n">ResponseStatusType</span> <span class="n">type</span><span class="o">)</span>
 <span class="kd">public</span> <span class="n">RestResponse</span> <span class="nf">assertStatus</span><span class="o">(</span><span class="n">ResponseStatus</span> <span class="n">rs</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isEmpty</span><span class="o">()</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">assertBody</span><span class="o">(</span><span class="n">MapArray</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Matcher</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">params</span><span class="o">)</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">assertBody</span><span class="o">(</span><span class="n">Object</span><span class="o">[][]</span> <span class="n">params</span><span class="o">)</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">String</span> <span class="nf">getFromHtml</span><span class="o">(</span><span class="n">String</span> <span class="n">path</span><span class="o">)</span>
-</code></pre><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">Response</span> <span class="nf">raResponse</span><span class="o">()</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">Response</span> <span class="nf">getRaResponse</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">assertThat</span><span class="o">()</span>
+
+<span class="kd">public</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="nf">cookies</span><span class="o">()</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">cookie</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Headers</span> <span class="nf">headers</span><span class="o">()</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">header</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
+
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">getBody</span><span class="o">()</span>
+<span class="kd">public</span> <span class="n">ResponseStatus</span> <span class="nf">getStatus</span><span class="o">()</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">getContentType</span><span class="o">()</span> 
+
+</code></pre><pre class="highlight java tab-java"><code><span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">JettyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">();</span>
+<span class="n">assertThat</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">body</span><span class="o">,</span> <span class="n">containsString</span><span class="o">(</span><span class="s">"{\"hello\":\"Hello Scalatra\"}"</span><span class="o">));</span>
+<span class="n">String</span> <span class="n">body</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getBody</span><span class="o">();</span>
+
+<span class="n">String</span> <span class="n">hello</span> <span class="o">=</span> <span class="n">JettyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">().</span><span class="na">getRaResponse</span><span class="o">().</span><span class="na">jsonPath</span><span class="o">().</span><span class="na">getString</span><span class="o">(</span><span class="s">"hello"</span><span class="o">);</span>
 </code></pre>
-<p>The class <em>com.epam.http.response.RestResponse</em> represents the Response data in JDI Dark.</p>
+<p>The class <strong>com.epam.http.response.RestResponse</strong> represents the Response data in JDI Dark.</p>
 
-<p>There are methods for checking status code of response. Methods <em>isOk()</em> and <em>hasErrors()</em> verify that status code is 2** or 4**, respectively.</p>
+<p>Below listed the methods that allows to work with response data:</p>
 
-<p>Response body can be verified using method <em>assertBody()</em>.</p>
+<p><strong>isOk()</strong> and <strong>hasErrors()</strong> -  verify that status code is 2** or 4**, respectively.</p>
 
-<p>Methods <em>cookie()</em> and <em>headers()</em> return response cookies and headers values.</p>
+<p><strong>isStatus(ResponseStatusType type)</strong> and <strong>assertStatus(ResponseStatus rs)</strong> - verity response status type and response 
+status respectively against expected result. </p>
 
-<p>Method <em>getFromHtml()</em> returns html content of the page by provided path.</p>
+<p><strong>assertBody(Object[][] params)</strong> and <strong>assertBody(MapArray<String, Matcher<?>&gt; params)</strong> - allow to verify response body</p>
 
-<p>Methods <em>raResponse</em> and <em>assertThat()</em> returns Rest Assured Response and ValidatableResponse, so it is possible to use Rest Assured methods for validating the response body.</p>
+<p><strong>cookies()</strong> and <strong>headers()</strong> - return response cookies and headers values.</p>
+
+<p><strong>cookie(String name)</strong> and <strong>header(String name)</strong> - return cookie and header values respectively corresponding to specified name.</p>
+
+<p><strong>getFromHtml()</strong> -  returns html content of the page by provided path.</p>
+
+<p><strong>getRaResponse()</strong> and <strong>assertThat()</strong> returns Rest Assured Response and ValidatableResponse, 
+so it is possible to use Rest Assured methods for validating the response body.</p>
+
+<p><strong>getBody()</strong>, <strong>getStatus()</strong>, <strong>getContentType()</strong> - allow get response body, status and content type. 
+Response body and status can be also retrieved using fields <em>body</em> and <em>status</em> of RestResponse class.</p>
+
+<p><strong>isEmpty()</strong> - verifies that response body is empty.</p>
 <h2 id='headers'>Headers</h2>
 <p>JDI Dark supports headers addition to Service endpoints using annotations.</p>
 <h3 id='single-header-can-be-added-with-usage-of-header-annotation'>Single header can be added with usage of @Header annotation:</h3><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/header"</span><span class="o">)</span>
