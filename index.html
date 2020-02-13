@@ -641,20 +641,24 @@ In this example basic-auth credentials will be passed to all endpoints.  </p>
 <p>Methods <em>raResponse</em> and <em>assertThat()</em> returns Rest Assured Response and ValidatableResponse, so it is possible to use Rest Assured methods for validating the response body.</p>
 <h2 id='headers'>Headers</h2>
 <p>JDI Dark supports addition of Headers to Service endpoints.</p>
-
-<p>Here&#39;s a simple example of adding a header to an endpoint:</p>
-<pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/header"</span><span class="o">)</span>
+<h3 id='here-39-s-a-simple-example-of-adding-a-header-to-an-endpoint'>Here&#39;s a simple example of adding a header to an endpoint:</h3><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/header"</span><span class="o">)</span>
 <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Header_name"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Header_value2"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getHeader</span><span class="o">;</span>
 </code></pre>
-<p>Multiple headers are also supported:</p>
-<pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/multiHeaderReflect"</span><span class="o">)</span>
+<p><br />
+<br />
+<br />
+<br /></p>
+<h3 id='multiple-headers-are-also-supported'>Multiple headers are also supported:</h3><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/multiHeaderReflect"</span><span class="o">)</span>
 <span class="nd">@Headers</span><span class="o">({</span><span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Header_name"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Header_value"</span><span class="o">),</span>
 <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Header_name2"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Header_value2"</span><span class="o">)})</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getMultiHeaderReflect</span><span class="o">;</span>
 </code></pre>
-<p>Headers with same name, with no value and with multiple values can be added as well.</p>
-<pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/header"</span><span class="o">)</span>
+<p><br />
+<br />
+<br />
+<br /></p>
+<h3 id='headers-with-same-name-with-no-value-and-with-multiple-values-can-be-added-as-well'>Headers with same name, with no value and with multiple values can be added as well.</h3><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/header"</span><span class="o">)</span>
 <span class="nd">@Headers</span><span class="o">({</span><span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Header_name"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Header_value"</span><span class="o">),</span>
 <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Header_name"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Header_value2"</span><span class="o">)})</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getHeader</span><span class="o">;</span>
@@ -668,9 +672,21 @@ In this example basic-auth credentials will be passed to all endpoints.  </p>
 <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"MultiValueHeader"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Header_value_1"</span><span class="o">,</span> <span class="n">additionalValues</span> <span class="o">=</span> <span class="s">"Header_value_2"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getMultiValueHeader</span><span class="o">;</span>
 </code></pre>
-<p>There are methods to add cookies to Request Data. 
-Cookies can be passed as strings, as header objects, as maps, as arrays of objects.
-Cookies without value and with multiple values can be added as well.</p>
+<p><br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></p>
+<h3 id='methods-to-add-headers-to-request-data'>Methods to add Headers to Request Data.</h3>
+<p>Headers can be passed as strings, as header objects, as maps, as arrays of objects.
+Headers without value and with multiple values can be added as well.</p>
 
 <table><thead>
 <tr>
