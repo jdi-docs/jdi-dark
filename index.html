@@ -687,7 +687,18 @@ In this example basic-auth credentials will be passed to all endpoints.  </p>
 <h3 id='methods-to-add-headers-to-request-data'>Methods to add Headers to Request Data.</h3>
 <p>Headers can be passed as strings, as header objects, as maps, as arrays of objects.
 Headers without value and with multiple values can be added as well.</p>
+<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeader</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">value</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">additionalValues</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeader</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Object</span> <span class="n">value</span><span class="o">,</span> <span class="n">Object</span><span class="o">...</span> <span class="n">cookieNameValuePairs</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Object</span><span class="o">[][]</span> <span class="n">objects</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">MapArray</span> <span class="n">mapArray</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Map</span> <span class="n">map</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Header</span><span class="o">&gt;</span> <span class="n">headers</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Header</span><span class="o">...</span> <span class="n">headers</span><span class="o">)</span>
 
+<span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">MyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
+                <span class="n">requestData</span> <span class="o">-&gt;</span> <span class="n">requestData</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"Header_example"</span><span class="o">,</span> <span class="s">"Test_value"</span><span class="o">)));</span>
+</code></pre>
 <table><thead>
 <tr>
 <th>Method</th>
@@ -736,18 +747,7 @@ Headers without value and with multiple values can be added as well.</p>
 <td>RequestData</td>
 </tr>
 </tbody></table>
-<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeader</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">value</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">additionalValues</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeader</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Object</span> <span class="n">value</span><span class="o">,</span> <span class="n">Object</span><span class="o">...</span> <span class="n">cookieNameValuePairs</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Object</span><span class="o">[][]</span> <span class="n">objects</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">MapArray</span> <span class="n">mapArray</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Map</span> <span class="n">map</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Header</span><span class="o">&gt;</span> <span class="n">headers</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Header</span><span class="o">...</span> <span class="n">headers</span><span class="o">)</span>
-
-<span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">MyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
-                <span class="n">requestData</span> <span class="o">-&gt;</span> <span class="n">requestData</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"Header_example"</span><span class="o">,</span> <span class="s">"Test_value"</span><span class="o">)));</span>
-</code></pre><h2 id='cookies'>Cookies</h2>
+<h2 id='cookies'>Cookies</h2>
 <p>JDI Dark supports addition of Cookies to Service endpoints.</p>
 
 <p>Cookies with no value and with multiple values can be added as well.</p>
