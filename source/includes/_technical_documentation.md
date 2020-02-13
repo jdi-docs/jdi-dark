@@ -338,6 +338,42 @@ public RequestData addCookies(Map map)
 RestResponse response = MyService.getHello.call(requestData(
                 requestData -> requestData.addCookie("key1", "value1")));
 ```
+## Delete
+
+For sending DELETE request you can use RestMethod class with @DELETE annotation.
+
+```java
+@DELETE("/body")
+public static RestMethod deleteBody;
+@DELETE("/cookie")
+public static RestMethod deleteCookie;
+
+@Test
+public void deleteSupportsStringBody() {
+    RestResponse response = deleteBody.call(requestBody(TEST_BODY_VALUE));
+    response.assertThat().body(is(TEST_BODY_VALUE));
+}
+
+@Test
+public void requestSpecificationAllowsSpecifyingCookie() {
+    RestResponse response = deleteCookie.call(requestData(requestData ->
+            requestData.addCookies(new MapArray<>(new Object[][]{
+                    {USERNAME, FIRST_NAME_VALUE},
+                    {TOKEN, TOKEN_VALUE}
+            }))));
+    assertEquals(response.body, "username, token");
+}
+
+
+```
+
+|Method | Description | Return Type
+--- | --- | ---
+**call(RequestData requestData)**| make request with parameters indicated by Request Data | RestResponse
+
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
+<br>
 
 ## Deserialization
 ```java
