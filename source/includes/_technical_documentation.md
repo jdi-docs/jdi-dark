@@ -230,15 +230,20 @@ Methods *raResponse* and *assertThat()* returns Rest Assured Response and Valida
 
 JDI Dark supports addition of Headers to Service endpoints.
 
-Here's a simple example of adding a header to an endpoint:
+### Here's a simple example of adding a header to an endpoint:
 
 ```java
 @GET("/header")
 @Header(name = "Header_name", value = "Header_value2")
 public static RestMethod getHeader;
 ```
+<br />
+<br />
+<br />
+<br />
 
-Multiple headers are also supported:
+
+### Multiple headers are also supported:
 
 ```java
 @GET("/multiHeaderReflect")
@@ -246,8 +251,12 @@ Multiple headers are also supported:
 @Header(name = "Header_name2", value = "Header_value2")})
 public static RestMethod getMultiHeaderReflect;
 ```
+<br />
+<br />
+<br />
+<br />
 
-Headers with same name, with no value and with multiple values can be added as well.
+### Headers with same name, with no value and with multiple values can be added as well.
 
 ```java
 @GET("/header")
@@ -264,10 +273,22 @@ public static RestMethod getHeaderWithNoValue;
 @Header(name = "MultiValueHeader", value = "Header_value_1", additionalValues = "Header_value_2")
 public static RestMethod getMultiValueHeader;
 ```
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
-There are methods to add cookies to Request Data. 
-Cookies can be passed as strings, as header objects, as maps, as arrays of objects.
-Cookies without value and with multiple values can be added as well.
+### Methods to add Headers to Request Data. 
+Headers can be passed as strings, as header objects, as maps, as arrays of objects.
+Headers without value and with multiple values can be added as well.
 
 |Method | Description | Return Type
 --- | --- | ---
