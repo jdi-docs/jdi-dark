@@ -474,6 +474,27 @@ Here is the example of Allure report with attached request body:
 ## Access RestAssured
 TBD
 
+### Accessing RestAssured.config
+Sometime for testing purposes some RestAssured configuration properties might be changed.
+You can access RestAssured form the test or define desired properties in @BeforeTest.
+
+In code snap we have an example of Test using default headers set in RestAssured config.
+
+```java
+    public void followsRedirectsWhileKeepingHeadersSpecifiedIfRestAssuredConfig() throws Exception {
+        final List<Header> httpClientHeaders = new ArrayList<Header>();
+        httpClientHeaders.add(new BasicHeader("header1", "value1"));
+        httpClientHeaders.add(new BasicHeader("header2", "value2"));
+        RestAssured.config = RestAssuredConfig.newConfig().httpClient(HttpClientConfig
+                .httpClientConfig().setParam(DEFAULT_HEADERS, httpClientHeaders));
+        RestResponse response = getRedirect.call(requestQueryParams("url", "multiHeaderReflect"));
+        response.isOk();
+        response.assertThat().header("header1", equalTo("value1"))
+                .header("header2", equalTo("value2"));
+        RestAssured.reset();
+    }
+```
+
 ## Review Guide
 
 ### Easy way to pass review
