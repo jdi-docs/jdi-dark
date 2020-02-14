@@ -919,7 +919,24 @@ Just simply install Allure as you would always do, those attachments will be aut
 <p><img src="images/allure_request.png" alt="Allure Request" /></p>
 <h2 id='access-restassured'>Access RestAssured</h2>
 <p>TBD</p>
-<h2 id='review-guide'>Review Guide</h2><h3 id='easy-way-to-pass-review'>Easy way to pass review</h3>
+<h3 id='accessing-restassured-config'>Accessing RestAssured.config</h3>
+<p>Sometime for testing purposes some RestAssured configuration properties might be changed.
+You can access RestAssured form the test or define desired properties in @BeforeTest.</p>
+
+<p>In code snap we have an example of Test using default headers set in RestAssured config.</p>
+<pre class="highlight java tab-java"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">followsRedirectsWhileKeepingHeadersSpecifiedIfRestAssuredConfig</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Header</span><span class="o">&gt;</span> <span class="n">httpClientHeaders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Header</span><span class="o">&gt;();</span>
+        <span class="n">httpClientHeaders</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">BasicHeader</span><span class="o">(</span><span class="s">"header1"</span><span class="o">,</span> <span class="s">"value1"</span><span class="o">));</span>
+        <span class="n">httpClientHeaders</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">BasicHeader</span><span class="o">(</span><span class="s">"header2"</span><span class="o">,</span> <span class="s">"value2"</span><span class="o">));</span>
+        <span class="n">RestAssured</span><span class="o">.</span><span class="na">config</span> <span class="o">=</span> <span class="n">RestAssuredConfig</span><span class="o">.</span><span class="na">newConfig</span><span class="o">().</span><span class="na">httpClient</span><span class="o">(</span><span class="n">HttpClientConfig</span>
+                <span class="o">.</span><span class="na">httpClientConfig</span><span class="o">().</span><span class="na">setParam</span><span class="o">(</span><span class="n">DEFAULT_HEADERS</span><span class="o">,</span> <span class="n">httpClientHeaders</span><span class="o">));</span>
+        <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getRedirect</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestQueryParams</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="s">"multiHeaderReflect"</span><span class="o">));</span>
+        <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">();</span>
+        <span class="n">response</span><span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">header</span><span class="o">(</span><span class="s">"header1"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"value1"</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="s">"header2"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"value2"</span><span class="o">));</span>
+        <span class="n">RestAssured</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre><h2 id='review-guide'>Review Guide</h2><h3 id='easy-way-to-pass-review'>Easy way to pass review</h3>
 <ul>
 <li>Good code style</li>
 <li>No Wildcards imports (with asterisk *). You can use settings from the picture below
