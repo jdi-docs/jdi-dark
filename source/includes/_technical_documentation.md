@@ -384,6 +384,7 @@ Sometime for testing purposes some RestAssured configuration properties might be
 You can access RestAssured form the test or define desired properties in @BeforeTest.
 
 In code snap we have an example of Test using default headers set in RestAssured config.
+In order to restore the initial RestAssured config after tests reset() method is called.
 
 ```java
     public void followsRedirectsWhileKeepingHeadersSpecifiedIfRestAssuredConfig() throws Exception {
