@@ -136,6 +136,26 @@ public class ServiceExample {
 ```
 
 It's possible to describe tested web service as Service Object class using annotations.
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### Create tests for service
 
 ```java
@@ -171,6 +191,35 @@ public class ServiceTest {
 
 This class can be initialized in tests.
 Fields of initialized object can be used to send requests from tests.
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### Use predefined RestSpecification
 
 ```java
@@ -191,6 +240,18 @@ public class ServiceTest {
 It's possible to setup used RestSpecification. 
 Predefined settings will be used in all endpoints of that service.
 In this example basic-auth credentials will be passed to all endpoints.  
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 ## Response data
 
