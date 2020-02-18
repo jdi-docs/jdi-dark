@@ -122,6 +122,25 @@ Methods for passing path params (with/without query params) in RestMethod:
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 ### Parameters
 
@@ -138,6 +157,18 @@ public void charsetIsReallyDefined() {
     }));
     resp.isOk().assertThat().body("greeting", equalTo("Greetings Some & firstname <lastname>"));
 }
+
+@GET("/greet")
+public static RestMethod getGreet;
+
+@Test
+public void whenLastParamInGetRequestEndsWithEqualItsTreatedAsANoValueParam() {
+    JettyService.getGreet.call(requestData(d -> {
+        d.queryParams.add(FIRST_NAME, FIRST_NAME_VALUE);
+        d.queryParams.add(LAST_NAME, "");
+    })).isOk().assertThat().body("greeting", equalTo("Greetings John "));
+}
+
 @POST("multipart/multiple")
 public static RestMethod postMultipartMultiple;
 
@@ -151,6 +182,17 @@ public void multiPartUploadingWorksForFormParamsAndByteArray() {
     })).assertThat()
             .statusCode(200)
             .body(containsString("formParam1 -> WrappedArray()"));
+}
+
+@DELETE("/greet")
+public static RestMethod deleteGreet;
+
+@Test
+public void bodyHamcrestMatcherWithOutKey() {
+    deleteGreet.call(requestQueryParams(
+            new Object[][]{{FIRST_NAME, FIRST_NAME_VALUE},
+                    {LAST_NAME, LAST_NAME_VALUE}
+            })).isOk().assertThat().body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
 }
 
 @GET("/noValueParam")
@@ -179,7 +221,22 @@ Method allows to send the request with invoked request data in RestMethod:
 --- | --- | ---
 **call(RequestData requestData)** | make request with parameters indicated by Request Data| RestResponse
 
-Method with specific query parameters in url in RestMethod:
+
+Methods allow to set multipart parameters to request data:
+
+|Method | Description | Return Type
+--- | --- | ---
+**setMultiPart(MultiPartSpecBuilder multiPartSpecBuilder)** | set multipart parameters | 
+**setMultiPart(File file)** | set File parameter | 
+
+Methods allow to send query params to RequestData:
+
+|Method | Description | Return Type
+--- | --- | ---
+**requestQueryParams(String paramName, String paramValue)** | pass one query parameter to a path | RequestData
+**requestQueryParams(Object[][] params)** | pass multiple query parameters to a path | RequestData
+
+Method allow to send specific query parameters in url in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
