@@ -111,6 +111,40 @@ Methods provided for passing path params in RestMethod
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
 
+## Param data
+
+JDI Dark supports query parameters addition in request url.
+
+Method with specific query parameters in RestMethod:
+
+|Method | Description | Return Type
+--- | --- | ---
+**call(String queryParams)** | pass query parameters in url | RestResponse
+
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ParamTest.java" target="_blank">Test examples in Java</a>
+<br>
+
+```java
+    @GET("/noValueParam")
+    public static RestMethod getNoValueParam;
+
+    @Test
+    public void singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
+        JettyService.getNoValueParam.call("some")
+                .isOk().assertThat().body(is("Params: some="));
+    }
+
+    @Test
+    public void mixingStartingNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
+        JettyService.getNoValueParam.call("some1&some2=one")
+                .isOk().assertThat().body(is("Params: some1=some2=one"));
+    }
+
+
+
+```
+
 ## Tests without Service Object
 
 ```java
