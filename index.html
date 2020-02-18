@@ -349,13 +349,13 @@
 <span class="o">}</span>
 </code></pre>
 <p>JDI Dark provides capability to describe your API as a simple Service Object.
-That gives you an ability to unify and combine your REST methods and endpoints in one class
+That allows you to unify and combine your REST methods and endpoints in one class
 (similar to UI Page Object pattern).</p>
 
-<p>Let&#39;s say we have a website for REST testing located by the following address: <a href="http://httpbin.org/">http://httpbin.org</a> and we need to test some of its endpoints.
-We can create the Java class and describe methods we want to test.</p>
+<p>Let&#39;s say we have a website for REST testing located at the following address: <a href="http://httpbin.org/">http://httpbin.org</a> and we need to test some of its endpoints.
+We can create a Java class and describe the methods we want to test.</p>
 
-<p><em>So simple, isn&#39;t that right?</em></p>
+<p><em>Isn&#39;t that simple?</em></p>
 <h2 id='2-create-simple-test-using-service-object'>2. Create simple test using Service Object</h2><pre class="highlight java tab-java"><code><span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">simpleRestTest</span><span class="o">()</span> <span class="o">{</span>
     <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">ServiceExample</span><span class="o">.</span><span class="na">getInfo</span><span class="o">.</span><span class="na">call</span><span class="o">();</span>
@@ -366,16 +366,16 @@ We can create the Java class and describe methods we want to test.</p>
     <span class="n">resp</span><span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">header</span><span class="o">(</span><span class="s">"Connection"</span><span class="o">,</span> <span class="s">"keep-alive"</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
-<p>Based on the Service Object class we created before, we can create a simple test to exercise HTTP GET method and validate the response body.</p>
+<p>Based on the Service Object class we created before, we can create a simple test to execute the HTTP GET method and validate the response body.</p>
 
 <ol>
-<li>Make a request call to HTTP method described in your Service Object class.</li>
+<li>Make a request call to the HTTP method described in your Service Object class.</li>
 <li>Validate the response body.</li>
 </ol>
 
-<p>The HTTP GET method described in service class is being called here. Next, the response is being validated.</p>
+<p>The HTTP GET method described in the service class is being called here. Next, the response is being validated.</p>
 
-<p>You can check other tests by the following link:</p>
+<p>You can check other tests by following the link:</p>
 
 <p><a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-httpTests">JDI Dark test examples</a></p>
 <h2 id='3-create-tests-without-using-service-object'>3. Create tests without using Service Object</h2><pre class="highlight java tab-java"><code><span class="nd">@Test</span>
@@ -390,9 +390,9 @@ We can create the Java class and describe methods we want to test.</p>
 <span class="o">}</span>
 </code></pre>
 <p>As it has been mentioned, you are still able to write tests without using Service Object model.
-It is possible to call HTTP methods directly from your tests. You just need to provide required information within the method arguments.</p>
+It is possible to call HTTP methods directly from your tests. You just need to provide required information within method arguments.</p>
 
-<p>In this test we make an HTTP GET request with invoked request data, which contains URL and headers.</p>
+<p>In this test we are making an HTTP GET request with invoked request data containing URL and headers.</p>
 <h2 id='4-query-parameters-headers-cookies-support'>4. Query Parameters, Headers, Cookies support</h2><pre class="highlight java tab-java"><code><span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">)</span>
 <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="nd">@QueryParameters</span><span class="o">({</span>
@@ -408,11 +408,11 @@ It is possible to call HTTP methods directly from your tests. You just need to p
 <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">getInfo</span><span class="o">;</span>
 </code></pre>
 <p>JDI Dark has support for query parameters, you can specify them in your service class.
-You just need to use <em>@QueryParameter</em> annotation in your method or service class description.</p>
+You just need to use the <em>@QueryParameter</em> annotation in your method or service class description.</p>
 
-<p>If you need to specify several query parameters, then use <em>@QueryParameters</em> annotation, where you can put all of your request parameters.</p>
+<p>If you need to specify several query parameters, do it with the <em>@QueryParameters</em> annotation.</p>
 
-<p>Just the same way you can specify headers and cookies. JDI Dark has special annotation for them as well.</p>
+<p>The same way you can specify headers and cookies. JDI Dark has a special annotation for them as well.</p>
 <h2 id='5-performance-testing-support'>5. Performance testing support</h2><pre class="highlight java tab-java"><code> <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">simplePerformanceTest</span><span class="o">()</span> <span class="o">{</span>
     <span class="n">PerformanceResult</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">loadService</span><span class="o">(</span><span class="mi">3600</span><span class="o">,</span> <span class="n">getInfo</span><span class="o">);</span>
@@ -421,11 +421,11 @@ You just need to use <em>@QueryParameter</em> annotation in your method or servi
     <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">pr</span><span class="o">.</span><span class="na">NoFails</span><span class="o">(),</span> <span class="s">"Number of fails: "</span> <span class="o">+</span> <span class="n">pr</span><span class="o">.</span><span class="na">NumberOfFails</span><span class="o">);</span> 
 <span class="o">}</span>
 </code></pre>
-<p>There is the support for measuring time your requests take.</p>
+<p>JDI Dark supports measuring request time.</p>
 
-<p>It is possible to call your service several times and get the descriptive results.</p>
+<p>You can call your service multiple times and get verbose results.</p>
 
-<p>You can load your service and analyse the response time.</p>
+<p>You can also load your service and analyse response time.</p>
 <h1 id='tutorial'>Tutorial</h1>
 <p>TBD</p>
 <h2 id='1-integration'>1. Integration</h2>
