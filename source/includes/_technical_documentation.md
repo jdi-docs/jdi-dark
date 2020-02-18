@@ -42,12 +42,15 @@ Request body can be set when making a request call. Just pass it as argument to 
 that contains the next fields:
 
  - String url
- - String body
- - ContentType contentType
- - MapArray<String, String> headers
- - MapArray<String, String> pathParams
- - MapArray<String, String> queryParams
- - MapArray<String, String> cookies
+ - String path
+ - Object body
+ - String contentType
+ - Headers headers
+ - MultiMap<String, String> pathParams
+ - MultiMap<String, String> queryParams
+ - MultiMap<String, String> formParams
+ - Cookies cookies
+ - ArrayList<MultiPartSpecification> multiPartSpecifications
 
 All of these fields can be set/updated from call() method as well.
 
@@ -87,6 +90,15 @@ public void urlEncodesPathParamsInMap(){
     response.isOk().body("fullName", equalTo("John: å Doe"));
 }
 
+@GET("/status/{status}?q={value}") RestMethod statusWithQuery;
+
+@Test
+public void statusTestWithQueryInPath() {
+    RestResponse resp = service.statusWithQuery.callWithNamedParams("503", "some");
+    assertEquals(resp.status.code, 503);
+    assertEquals(resp.status.type, SERVER_ERROR);
+    resp.isEmpty();
+}
 
 
 ```
@@ -101,7 +113,7 @@ There are methods provided for passing path params in RequestData:
 **requestPathParams(String paramName, String paramValue)** | pass one parameter to a path | RequestData
 **requestPathParams(Object[][] params)** | pass several parameters to a path | RequestData
 
-Methods provided for passing path params in RestMethod
+Methods provided for passing path params (with/without query params) in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
@@ -111,39 +123,71 @@ Methods provided for passing path params in RestMethod
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
 
-## Param data
+### Parameters
 
-JDI Dark supports query parameters addition in request url.
+```java
+@POST("/greet")
+public static RestMethod greetPost;
 
-Method with specific query parameters in RestMethod:
+@Test
+public void charsetIsReallyDefined() {
+    RestResponse resp = greetPost.call(requestData(rd -> {
+        rd.contentType = "application/x-www-form-urlencoded; charset=ISO-8859-1";
+        rd.formParams.add("firstName", "Some & firstname");
+        rd.formParams.add("lastName", "<lastname>");
+    }));
+    resp.isOk().assertThat().body("greeting", equalTo("Greetings Some & firstname <lastname>"));
+}
+@POST("multipart/multiple")
+public static RestMethod postMultipartMultiple;
+
+@Test
+public void multiPartUploadingWorksForFormParamsAndByteArray() {
+    JettyService.postMultipartMultiple.call(requestData(rd -> {
+        rd.formParams.add("formParam1", "");
+        rd.formParams.add("formParam2", "formParamValue");
+        rd.setMultiPart(new MultiPartSpecBuilder("juX").controlName("file"));
+        rd.setMultiPart(new MultiPartSpecBuilder("body").controlName("string"));
+    })).assertThat()
+            .statusCode(200)
+            .body(containsString("formParam1 -> WrappedArray()"));
+}
+
+@GET("/noValueParam")
+public static RestMethod getNoValueParam;
+
+@Test
+public void singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
+    JettyService.getNoValueParam.call("some")
+            .isOk().assertThat().body(is("Params: some="));
+}
+
+@Test
+public void mixingStartingNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
+    JettyService.getNoValueParam.call("some1&some2=one")
+            .isOk().assertThat().body(is("Params: some1=some2=one"));
+}
+
+
+```
+
+JDI Dark supports query, form, multipart parameters addition in the request.
+
+Method allows to send the request with invoked request data in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
-**call(String queryParams)** | pass query parameters in url | RestResponse
+**call(RequestData requestData)** | make request with parameters indicated by Request Data| RestResponse
+
+Method with specific query parameters in url in RestMethod:
+
+|Method | Description | Return Type
+--- | --- | ---
+**call(String queryParams)** | pass query parameters | RestResponse
 
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ParamTest.java" target="_blank">Test examples in Java</a>
 <br>
-
-```java
-    @GET("/noValueParam")
-    public static RestMethod getNoValueParam;
-
-    @Test
-    public void singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
-        JettyService.getNoValueParam.call("some")
-                .isOk().assertThat().body(is("Params: some="));
-    }
-
-    @Test
-    public void mixingStartingNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
-        JettyService.getNoValueParam.call("some1&some2=one")
-                .isOk().assertThat().body(is("Params: some1=some2=one"));
-    }
-
-
-
-```
 
 ## Tests without Service Object
 
