@@ -4,7 +4,7 @@ TBD
 ## 1. Integration
 TBD
 
-## 2. JDI Dark at glance
+## 2. JDI Dark at a glance
 TBD
 
 ## 3. JDI Dark Service Objects
@@ -16,7 +16,7 @@ TBD
 ## 5. JDI Dark and Cucumber
 TBD
 
-## JDI Dark settings at glance
+## JDI Dark settings at a glance
 TBD
 
 ## API Testing Framework structure
