@@ -61,36 +61,55 @@ There is also support to make a request call with Rest Assured request specifica
 ### Path parameters
 
 ```java
-@ContentType(JSON) @GET("/boards/{board_id}")
-static RestMethod getBoardById;
-
-@ContentType(JSON) @GET("/boards/{board_id}/cards/{short_card_id}/")
-static RestMethod getBoardCardById;
+@GET("/{firstName}/{lastName}")
+public static RestMethod getUser;
 
 @Test
-public void getBoardById() {
-    RestResponse response = getBoardById
-        .call(requestPathParams("board_id", BOARD_ID));
-    response.isOk().body("id", equalTo(BOARD_ID));
+public void supportsPassingPathParamsToRequestSpec(){
+    RestResponse response = getUser
+            .call(requestPathParams(new Object[][]{{"firstName", "John"}, {"lastName", "Doe"}}));
+    response.isOk().body("fullName", equalTo("John Doe"));
 }
 
 @Test
-public void getCardByShortId() {
-    getBoardCardById.call(requestPathParams(new Object[][] {{"board_id", BOARD_ID}, {"short_card_id", "1"}}))
-        .isOk().assertThat().body("name", equalTo("Lorem ipsum dolor sit amet"));
+public void canSpecifySpacePathParamsWithoutKey(){
+    RestResponse response = getUser.callWithNamedParams("John", " ");
+    response.isOk().body("firstName", equalTo("John")).body("lastName", equalTo(" "));
 }
+
+@Test
+public void urlEncodesPathParamsInMap(){
+    final Map<String, String> params = new HashMap<>();
+    params.put("firstName", "John: å");
+    params.put("lastName", "Doe");
+    RestResponse response = getUser
+            .call(requestData(d -> d.pathParams.addAll(params)));
+    response.isOk().body("fullName", equalTo("John: å Doe"));
+}
+
+
+
 ```
 
 A URL can have one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. You can use them in your Service Object methods and 
 replace it with values when making a request call.
 
-There are methods provided for such cases:
+There are methods provided for passing path params in RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
 **requestPathParams(String paramName, String paramValue)** | pass one parameter to a path | RequestData
 **requestPathParams(Object[][] params)** | pass several parameters to a path | RequestData
 
+Methods provided for passing path params in RestMethod
+
+|Method | Description | Return Type
+--- | --- | ---
+**callWithNamedParams(String... namedParams)** | pass parameters to a path without key| RestResponse
+
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/PathParamTests.java" target="_blank">Test examples in Java</a>
+<br>
 
 ## Tests without Service Object
 
@@ -458,6 +477,8 @@ public RequestData addCookies(Map map)
 RestResponse response = MyService.getHello.call(requestData(
                 requestData -> requestData.addCookie("key1", "value1")));
 ```
+
+
 ## Delete
 
 For sending DELETE request you can use RestMethod class with @DELETE annotation.
