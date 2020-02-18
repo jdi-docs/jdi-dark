@@ -5,9 +5,9 @@
 import static com.epam.http.requests.ServiceInit.init;
 ```
 
-For effective usage of JDI Dark framework it is recommended to statically import the init() method of ServiceInit class.
+In order to effectively use the JDI Dark framework, it is recommended to statically import the ```init()``` method of the *ServiceInit* class.
 
-This is an entry point for initialising your Service Object class.
+This is the entry point for initialising your Service Object class.
 ## HTTP methods
 JDI Dark supports the following HTTP methods:
 
@@ -19,16 +19,16 @@ JDI Dark supports the following HTTP methods:
  - OPTIONS
  - HEAD
 
-For all of these methods there are annotations named after methods in *com.epam.http.annotations.** package.
-All of these annotations take a value of URI to make request call to. Those annotations are supposed to be used in your Service Object class.
+For all of these methods there are annotations named after them in the *com.epam.http.annotations.** package.
+All of these annotations take the call request URI value. The annotations are supposed to be used in your Service Object class.
 
-To point the base URI of your service it's convenient to use *@ServiceDomain* annotation with provided URL as a value.
-Then values in your methods annotations might be just specific URL paths.
+To point to the base URI of your service, it's convenient to use the *@ServiceDomain* annotation with URL provided as argument.
+Then, values in your method annotations might be just specific URL paths.
 ## Request Data
-You might need to use specific request data in your requests. Cookies, headers, query parameters and Content-type are available in annotation form.
-So you can specify them in your Service Object class with provided name and value.
+You might need to use specific request data in your requests. *Cookies*, *headers*, *query parameters* and *Content-type* are available in annotated form.
+Therefore, you can specify them in your Service Object class providing name and value.
 
-There is a class *com.epam.http.requests.RequestData.** which represents the data being sent with request.
+There is a class called *com.epam.http.requests.RequestData.** which represents the data sent along with your request.
 
 It is also possible to specify request data when making a request call.
 ### Request body
@@ -38,8 +38,8 @@ public static RequestData requestBody(String body)
 public static RequestData requestData(JAction1<RequestData> valueFunc)
  ```
  
-Request body can be set when making a request call. Just pass it as argument to the *call()* method or within the RequestData object,
-that contains the next fields:
+Request body can be set when making a request call. Just pass it as argument to the *call()* method or within the RequestData object 
+with the following fields:
 
  - String url
  - String body
@@ -49,15 +49,15 @@ that contains the next fields:
  - MapArray<String, String> queryParams
  - MapArray<String, String> cookies
 
-All of these fields can be set/updated from call() method as well.
+All of these fields can be set/updated from the *call()* method as well.
 
-You may need to statically import *com.epam.http.requests.RequestData.** package.
+You may need to statically import the *com.epam.http.requests.RequestData.** package.
 
  ```java
 public RestResponse call(RequestSpecification requestSpecification) 
  ```
 
-There is also support to make a request call with Rest Assured request specification.
+JDI Dark also supports making request calls with Rest Assured request specification.
 ### Path parameters
 
 ```java
@@ -91,17 +91,17 @@ public void urlEncodesPathParamsInMap(){
 
 ```
 
-A URL can have one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. You can use them in your Service Object methods and 
-replace it with values when making a request call.
+A URL can have one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. 
+You can use them in your Service Object methods and replace placeholders with values when making request calls.
 
-There are methods provided for passing path params in RequestData:
+There are methods provided for passing path params to RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
 **requestPathParams(String paramName, String paramValue)** | pass one parameter to a path | RequestData
-**requestPathParams(Object[][] params)** | pass several parameters to a path | RequestData
+**requestPathParams(Object[][] params)** | pass multiple parameters to a path | RequestData
 
-Methods provided for passing path params in RestMethod
+Methods for passing path params to RestMethod
 
 |Method | Description | Return Type
 --- | --- | ---
@@ -119,8 +119,8 @@ public static RestResponse GET(String url)
 public static RestResponse GET(String url, RequestSpecification requestSpecification) 
 ```
 
-All the HTTP methods mentioned before are available not only in annotation form.
-There are the same methods accessible from *com.epam.http.requests.RestMethods.** with several signatures.
+All the HTTP methods mentioned before are also available in non-annotated form.
+They can be made accessible by importing *com.epam.http.requests.RestMethods.** with several signatures.
 
 You can call these methods with either of given arguments:
 
@@ -154,7 +154,7 @@ public class ServiceExample {
 } 
 ```
 
-It's possible to describe tested web service as Service Object class using annotations.
+It's possible to describe tested web service as a Service Object class using annotations.
 <br />
 <br />
 <br />
@@ -256,9 +256,9 @@ public class ServiceTest {
 }
 ```
 
-It's possible to setup used RestSpecification. 
-Predefined settings will be used in all endpoints of that service.
-In this example basic-auth credentials will be passed to all endpoints.  
+It's possible to setup already used RestSpecification. 
+Predefined settings will be used for all endpoints of that service.
+In this example basic auth credentials will be passed to all endpoints.  
 <br />
 <br />
 <br />
@@ -314,35 +314,35 @@ String body = response.getBody();
 String hello = JettyService.getHello.call().getRaResponse().jsonPath().getString("hello");
 ```
 
-The class **com.epam.http.response.RestResponse** represents the Response data in JDI Dark.
+The class **com.epam.http.response.RestResponse** represents Response data in JDI Dark.
 
-Below listed the methods that allows to work with response data:
+Below are methods that allow to work with response data:
 
 **isOk()** and **hasErrors()** -  verify that status code is 2** or 4**, respectively.
 
-**isStatus(ResponseStatusType type)** and **assertStatus(ResponseStatus rs)** - verity response status type and response 
+**isStatus(ResponseStatusType type)** and **assertStatus(ResponseStatus rs)** - verify response status type and response 
 status respectively against expected result. 
 
 **assertBody(Object[][] params)** and **assertBody(MapArray<String, Matcher<?>> params)** - allow to verify response body
 
-**cookies()** and **headers()** - return response cookies and headers values.
+**cookies()** and **headers()** - return response cookies and header values
 
-**cookie(String name)** and **header(String name)** - return cookie and header values respectively corresponding to specified name.
+**cookie(String name)** and **header(String name)** - return cookie and header values respectively corresponding to specified names
 
-**getFromHtml()** -  returns html content of the page by provided path.
+**getFromHtml()** -  returns html content of the page by provided path
 
 **getRaResponse()** and **assertThat()** returns Rest Assured Response and ValidatableResponse, 
-so it is possible to use Rest Assured methods for validating the response body.
+so it is possible to use Rest Assured methods for validating response body.
 
-**getBody()**, **getStatus()**, **getContentType()** - allow get response body, status and content type. 
-Response body and status can be also retrieved using fields *body* and *status* of RestResponse class.
+**getBody()**, **getStatus()**, **getContentType()** - allows to get response body, status and content type. 
+Response body and status can be also retrieved using *body* and *status* fields of the RestResponse class.
 
 **isEmpty()** - verifies that response body is empty.
 
 
 ## Headers
 
-JDI Dark supports headers addition to Service endpoints using annotations.
+JDI Dark supports header addition to Service endpoints using annotations.
 
 ### Single header can be added with usage of @Header annotation:
 
@@ -388,7 +388,7 @@ public static RestMethod getHeaderWithNoValue;
 @Header(name = "MultiValueHeader", value = "Header_value_1", additionalValues = "Header_value_2")
 public static RestMethod getMultiValueHeader;
 ```
-@Headers annotation is used to add 2 headers with the same name "Header_name"
+@Headers annotation is used to add 2 headers with the same name - "Header_name"
 <br />
 <br />
 <br />
@@ -399,12 +399,12 @@ public static RestMethod getMultiValueHeader;
 <br />
 <br />
 <br />
-@Header is used here to pass mutivalue header
+@Header is used here to pass a multiple-value header
 <br />
 <br />
 
 ### Methods to add Headers to Request Data. 
-Headers can be passed as strings, as header objects, as maps, as arrays of objects.
+Headers can be passed as strings, header objects, maps, and even arrays of objects.
 Headers without value and with multiple values can be added as well.
 
 ```java
@@ -423,8 +423,8 @@ RestResponse response = MyService.getHello.call(requestData(
 
 |Method | Description | Return Type
 --- | --- | ---
-**addHeader(String name, String value, String... additionalValues)** | pass name and value of the header. If additional values are specified than several cookies will be created with same name (multivalue header) | RequestData
-**addHeader(String name)** | pass name of a header without value | RequestData
+**addHeader(String name, String value, String... additionalValues)** | pass name and value of header. If additional values are specified, then several cookies will be created with the same name (multiple-value header) | RequestData
+**addHeader(String name)** | pass header name without value | RequestData
 **addHeaders(Object[][] objects)** | pass array with header names and values | RequestData
 **addHeaders(MapArray mapArray)** | pass MapArray with header names and values | RequestData
 **addHeaders(Map map)** | pass map with header names and values | RequestData
@@ -454,14 +454,14 @@ public static RestMethod getCookieWithNoValueWithCookies;
 public static RestMethod getMultiCookieWithCookies;
 ```
 
-There are methods to add cookies to Request Data. Cookies can be passed as name and value, as name and value pairs, as maps, as arrays of objects.
+There are methods to add cookies to Request Data. Cookies can be passed as name and value, name and value pairs, maps, and arrays of objects.
 Cookies without value and with multiple values can be added as well.
 
 |Method | Description | Return Type
 --- | --- | ---
-**addCookie(String name, String value, String... additionalValues)** | pass name and value of cookie. If additional values are specified than several cookies will be created with same name (multivalue cookie) | RequestData
-**addCookie(String name)** | pass name of cookie to cookie without value | RequestData
-**addCookies(String name, Object value, Object... cookieNameValuePairs)** | pass several pairs of cookie name and value | RequestData
+**addCookie(String name, String value, String... additionalValues)** | pass name and value of cookie. If additional values are specified, then several cookies will be created with the same name (multiple-value cookie) | RequestData
+**addCookie(String name)** | pass cookie name to cookie without value | RequestData
+**addCookies(String name, Object value, Object... cookieNameValuePairs)** | pass several pairs of cookie names and values | RequestData
 **addCookies(Object[][] objects)** | pass array with cookie names and values | RequestData
 **addCookies(MapArray mapArray)** | pass MapArray with cookie names and values | RequestData
 **addCookies(Map map)** | pass map with cookie names and values | RequestData
@@ -481,7 +481,7 @@ RestResponse response = MyService.getHello.call(requestData(
 
 ## Delete
 
-For sending DELETE request you can use RestMethod class with @DELETE annotation.
+For sending a DELETE request you can use the RestMethod class with a @DELETE annotation.
 
 ```java
 @DELETE("/body")
@@ -510,7 +510,7 @@ public void requestSpecificationAllowsSpecifyingCookie() {
 
 |Method | Description | Return Type
 --- | --- | ---
-**call(RequestData requestData)**| make request with parameters indicated by Request Data | RestResponse
+**call(RequestData requestData)**| make request with Request Data parameters | RestResponse
 
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
@@ -522,7 +522,7 @@ public T callAsData(Class<T> c)
 public T asData(Class<T> c)
 ```
 
-JDI Dark provides support for deserialization response into Java object. Just use method *callAsData()* instead of *call()* and provide the class as argument.
+JDI Dark provides support for response deserialization into Java object. Just use the *callAsData()* method instead of *call()* and provide class as argument.
 ## Performance testing
 ```java
 public static PerformanceResult loadService(long liveTimeSec, RestMethod... requests)
@@ -530,17 +530,17 @@ public static PerformanceResult loadService(RestMethod... requests)
 public static PerformanceResult loadService(long liveTimeMSec, Map<RestMethod, Integer> weightRequests)
 ```
 
-Simple performance testing is supported by JDI Dark. There is *com.epam.http.performance* package available that contains
-several classes and methods for collecting requests statistics.
+Simple performance testing is supported by JDI Dark. There is a *com.epam.http.performance* package available that contains
+several classes and methods for collecting request statistics.
 
-You can load your service and get average response time and number of fails comparing to amount of requests. Just use *loadService()* method with suitable signature. 
+You can load your service and get average response time and number of fails compared to amount of requests. Just use the *loadService()* method with suitable signatures.
 ## Reporting
 If you want to use Allure framework for reporting, JDI Dark has out-of-the-box support for generating attachments for Allure reports.
-Just simply install Allure as you would always do, those attachments will be automatically added to report.
+Simply install Allure as you would normally do, and those attachments will be automatically added to your reports.
 
-All test execution results are being saved to __base_directory/allure-results__ folder.
+All test execution results are saved to the __base_directory/allure-results__ folder.
 
-If you use maven, then you will need to configure Allure maven plugin to take results from appropriate folder.
+If you use ```maven```, then you will need to configure the ```Allure maven plugin``` to fetch results from a custom folder.
 
 ```dtd
 <configuration>
@@ -548,20 +548,20 @@ If you use maven, then you will need to configure Allure maven plugin to take re
 </configuration>
 ```
 
-After generating allure results, the full request and response information will be attached to every test that was executed.
+After generating allure results, the full request and response information will be attached to every test executed.
 
-Here is the example of Allure report with attached request body:
+Here is an example of an Allure report with request body attached:
 
 ![Allure Request](../images/allure_request.png)
 ## Access RestAssured
 TBD
 
 ### Accessing RestAssured.config
-Sometime for testing purposes some RestAssured configuration properties might be changed.
-You can access RestAssured form the test or define desired properties in @BeforeTest.
+Sometime, for testing purposes, some RestAssured configuration properties might be changed.
+You can access RestAssured from test or define desired properties in @BeforeTest.
 
-In code snap we have an example of Test using default headers set in RestAssured config.
-In order to restore the initial RestAssured config after tests reset() method is called.
+In the code snippet we have a test example using default headers set in RestAssured config.
+In order to restore the initial RestAssured config after test execution, the ```reset()``` method is called.
 
 ```java
     public void followsRedirectsWhileKeepingHeadersSpecifiedIfRestAssuredConfig() throws Exception {
