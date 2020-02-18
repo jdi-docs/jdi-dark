@@ -13,13 +13,13 @@ public class ServiceExample {
 ```
 
 JDI Dark provides capability to describe your API as a simple Service Object.
-That gives you an ability to unify and combine your REST methods and endpoints in one class
+That allows you to unify and combine your REST methods and endpoints in one class
 (similar to UI Page Object pattern).
 
-Let's say we have a website for REST testing located by the following address: [http://httpbin.org](http://httpbin.org/) and we need to test some of its endpoints.
-We can create the Java class and describe methods we want to test.
+Let's say we have a website for REST testing located at the following address: [http://httpbin.org](http://httpbin.org/) and we need to test some of its endpoints.
+We can create a Java class and describe the methods we want to test.
 
-*So simple, isn't that right?*
+*Isn't that simple?*
 
 ## 2. Create simple test using Service Object
 
@@ -35,14 +35,14 @@ public void simpleRestTest() {
 }
 ```
 
-Based on the Service Object class we created before, we can create a simple test to exercise HTTP GET method and validate the response body.
+Based on the Service Object class we created before, we can create a simple test to execute the HTTP GET method and validate the response body.
 
-1. Make a request call to HTTP method described in your Service Object class.
+1. Make a request call to the HTTP method described in your Service Object class.
 2. Validate the response body.
 
-The HTTP GET method described in service class is being called here. Next, the response is being validated.
+The HTTP GET method described in the service class is being called here. Next, the response is being validated.
 
-You can check other tests by the following link:
+You can check other tests by following the link:
  
  [JDI Dark test examples](https://github.com/jdi-testing/jdi-dark/tree/master/jdi-httpTests)
 
@@ -62,9 +62,9 @@ public void noServiceObjectTest(){
 ```
 
 As it has been mentioned, you are still able to write tests without using Service Object model.
-It is possible to call HTTP methods directly from your tests. You just need to provide required information within the method arguments.
+It is possible to call HTTP methods directly from your tests. You just need to provide required information within method arguments.
 
-In this test we make an HTTP GET request with invoked request data, which contains URL and headers.
+In this test we are making an HTTP GET request with invoked request data containing URL and headers.
 
 ## 4. Query Parameters, Headers, Cookies support
 
@@ -91,11 +91,11 @@ In this test we make an HTTP GET request with invoked request data, which contai
 ```
 
 JDI Dark has support for query parameters, you can specify them in your service class.
-You just need to use *@QueryParameter* annotation in your method or service class description.
+You just need to use the *@QueryParameter* annotation in your method or service class description.
 
-If you need to specify several query parameters, then use *@QueryParameters* annotation, where you can put all of your request parameters.
+If you need to specify several query parameters, do it with the *@QueryParameters* annotation.
 
-Just the same way you can specify headers and cookies. JDI Dark has special annotation for them as well.
+The same way you can specify headers and cookies. JDI Dark has a special annotation for them as well.
 
 ## 5. Performance testing support
 
@@ -109,8 +109,8 @@ public void simplePerformanceTest() {
 }
 ```
 
-There is the support for measuring time your requests take.
+JDI Dark supports measuring request time.
 
-It is possible to call your service several times and get the descriptive results.
+You can call your service multiple times and get verbose results.
 
-You can load your service and analyse the response time.
+You can also load your service and analyse response time.
