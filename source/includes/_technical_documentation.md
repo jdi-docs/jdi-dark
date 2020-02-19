@@ -407,6 +407,186 @@ In this example basic auth credentials will be passed to all endpoints.
 <br />
 <br />
 
+## Working with objects
+There are key ability for any Rest Client is working with objects:
+ - Send object as request body
+ - Get response body as object
+ 
+ ### Setup Object Mapper
+JDI allows user to setup Object Mapper for sending and getting objects to/from services.
+After Object Mapper is set it will be used in all requests implicitly.
+
+```java
+public class BaseTest {
+    
+    //Set global object mapper for whole project
+    @BeforeSuite
+    public void preconditions() {
+        RestAssured.config = RestAssuredConfig.config().objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
+                new Jackson2ObjectMapperFactory() {
+                    @Override
+                    public ObjectMapper create(Type type, String s) {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                        return objectMapper;
+                    }
+                }
+        ));
+    }
+
+    //Set object mapper for service. In this case global mapper will be overridden for SimpleService's endpoint
+    @BeforeClass
+    public void before() {
+        ObjectMapper objectMapper = new Jackson2Mapper(new Jackson2ObjectMapperFactory() {
+            @Override
+            public com.fasterxml.jackson.databind.ObjectMapper create(Type type, String s) {
+                com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                return objectMapper;
+            }
+        });
+        init(SimpleService.class, objectMapper);
+    }
+}
+```
+
+There are 2 ways to setup Object Mapper:
+ - For whole project
+ - For specific service
+
+If Object Mapper isn't set default RestAssured mapper will be used.
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+ ### Using objects in tests
+ 
+  ```java
+ public class FlowTests {
+    
+    @Test
+    public void assignBoardToOrganization() {
+
+        //Create organization
+        Organization organization = TrelloDataGenerator.generateOrganization();
+        //Send object to POST request and get response body as object
+        Organization createOrg = TrelloService.createOrganization(organization);
+
+        //Crate board
+        Board board = TrelloDataGenerator.generateBoard();
+        board.setIdOrganization(createOrg.getId());
+        //Send object to POST request
+        TrelloService.createBoard(board);
+
+        //Check that organization contains created board
+        //Send GET request and get as List of objects from response
+        List<Board> boards = TrelloService.getOrganizationBoards(createOrg);
+        Assert.assertTrue(boards.stream().map(Board::getName).collect(Collectors.toList()).contains(board.getName()), "Board wasn't added to organization");
+    }
+  }
+ ```
+
+JDI allows create tests on business language using Service classes and working with objects.
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+  ```java
+ public class ServiceExample {
+    
+    @ContentType(JSON)
+    @POST("/organizations")
+    public static RestMethod<Organization> createOrganization;
+    
+    //wrapper method for working with objects
+    //send Organization object as request body and return response as Organization object
+    public static Organization createOrganization(Organization organization) {
+        return createOrganization.post(organization, Organization.class);
+    }
+
+    @ContentType(JSON)
+    @GET("/organizations/{id}/boards")
+    public static RestMethod<Board[]> getOrganizationBoards;
+
+    //send GET request and return response as List of objects
+    public static List<Board> getOrganizationBoards(Organization organization) {
+        return Arrays.asList(getOrganizationBoards.call(requestPathParams("id", organization.getId())).getRaResponse().as(Board[].class));
+    }
+}
+ ```
+
+For convenient working with objects user can add additional wrapper methods to service classes.
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ## Response data
 
 ```java
@@ -651,13 +831,6 @@ public void requestSpecificationAllowsSpecifyingCookie() {
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
 <br>
 
-## Deserialization
-```java
-public T callAsData(Class<T> c)
-public T asData(Class<T> c)
-```
-
-JDI Dark provides support for response deserialization into Java object. Just use the *callAsData()* method instead of *call()* and provide class as argument.
 ## Performance testing
 ```java
 public static PerformanceResult loadService(long liveTimeSec, RestMethod... requests)
