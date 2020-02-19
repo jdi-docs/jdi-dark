@@ -984,7 +984,7 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
         <span class="n">TrelloService</span><span class="o">.</span><span class="na">createBoard</span><span class="o">(</span><span class="n">board</span><span class="o">);</span>
 
         <span class="c1">//Check that organization contains created board</span>
-        <span class="c1">//Send GET request and get as List of objects from response</span>
+        <span class="c1">//Send GET request and get List of objects from response</span>
         <span class="n">List</span><span class="o">&lt;</span><span class="n">Board</span><span class="o">&gt;</span> <span class="n">boards</span> <span class="o">=</span> <span class="n">TrelloService</span><span class="o">.</span><span class="na">getOrganizationBoards</span><span class="o">(</span><span class="n">createOrg</span><span class="o">);</span>
         <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">boards</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="nl">Board:</span><span class="o">:</span><span class="n">getName</span><span class="o">).</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">()).</span><span class="na">contains</span><span class="o">(</span><span class="n">board</span><span class="o">.</span><span class="na">getName</span><span class="o">()),</span> <span class="s">"Board wasn't added to organization"</span><span class="o">);</span>
     <span class="o">}</span>
