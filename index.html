@@ -301,6 +301,9 @@
                     <a href="#cookies" class="toc-h2 toc-link" data-title="Cookies">Cookies</a>
                   </li>
                   <li>
+                    <a href="#post" class="toc-h2 toc-link" data-title="Post">Post</a>
+                  </li>
+                  <li>
                     <a href="#delete" class="toc-h2 toc-link" data-title="Delete">Delete</a>
                   </li>
                   <li>
@@ -647,6 +650,16 @@ You can use them in your Service Object methods and replace placeholders with va
             <span class="o">})).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">equalTo</span><span class="o">(</span><span class="s">"{\"greeting\":\"Greetings John Doe\"}"</span><span class="o">));</span>
 <span class="o">}</span>
 
+<span class="nd">@POST</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">greetPost</span><span class="o">;</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
+            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestFormParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
+<span class="o">}</span>
+
 <span class="nd">@GET</span><span class="o">(</span><span class="s">"/noValueParam"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getNoValueParam</span><span class="o">;</span>
 
@@ -724,6 +737,27 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </tbody></table>
 
+<p>Methods allow to send form params to RequestData:</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>requestFormParams(String paramName, String paramValue)</strong></td>
+<td>pass one form parameter to a path</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>requestFormParams(Object[][] params)</strong></td>
+<td>pass multiple form parameters to a path</td>
+<td>RequestData</td>
+</tr>
+</tbody></table>
+
 <p>Method allow to send specific query parameters in url in RestMethod:</p>
 
 <table><thead>
@@ -743,8 +777,27 @@ You can use them in your Service Object methods and replace placeholders with va
 <p><br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ParamTest.java" target="_blank">Test examples in Java</a>
 <br><br>
-<br/><br/><br/><br/><br/><br>
-<br/><br/><br/><br/><br/><br/><br/></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></p>
 <h3 id='requestspecification-configuration'>RequestSpecification configuration</h3><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/jsonStore"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getJsonStore</span><span class="o">;</span>
 
@@ -1330,7 +1383,45 @@ Cookies without value and with multiple values can be added as well.</p>
 
 <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">MyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
                 <span class="n">requestData</span> <span class="o">-&gt;</span> <span class="n">requestData</span><span class="o">.</span><span class="na">addCookie</span><span class="o">(</span><span class="s">"key1"</span><span class="o">,</span> <span class="s">"value1"</span><span class="o">)));</span>
-</code></pre><h2 id='delete'>Delete</h2>
+</code></pre><h2 id='post'>Post</h2>
+<p>For sending a POST request you can use the RestMethod class with a @POST annotation.</p>
+<pre class="highlight java tab-java"><code>    <span class="nd">@POST</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">greetPost</span><span class="o">;</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
+                <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestFormParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
+        <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">bodyWithSingleHamcrestMatching</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
+                <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestQueryParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
+        <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">containsString</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">));</span>
+    <span class="o">}</span>
+
+
+</code></pre>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>call(RequestData requestData)</strong></td>
+<td>make request with Request Data parameters</td>
+<td>RestResponse</td>
+</tr>
+</tbody></table>
+
+<p><br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/JSONPostTests.java" target="_blank">Test examples in Java</a>
+<br></p>
+<h2 id='delete'>Delete</h2>
 <p>For sending a DELETE request you can use the RestMethod class with a @DELETE annotation.</p>
 <pre class="highlight java tab-java"><code><span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/body"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">deleteBody</span><span class="o">;</span>
