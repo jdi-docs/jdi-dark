@@ -414,6 +414,7 @@ There are key ability for any Rest Client is working with objects:
  - Get response body as object
 
 ### Setup Object Mapper
+
 JDI allows user to setup Object Mapper for sending and getting objects to/from services.
 After Object Mapper is set it will be used in all requests implicitly.
 
@@ -511,7 +512,7 @@ If Object Mapper isn't set default RestAssured mapper will be used.
         TrelloService.createBoard(board);
 
         //Check that organization contains created board
-        //Send GET request and get as List of objects from response
+        //Send GET request and get List of objects from response
         List<Board> boards = TrelloService.getOrganizationBoards(createOrg);
         Assert.assertTrue(boards.stream().map(Board::getName).collect(Collectors.toList()).contains(board.getName()), "Board wasn't added to organization");
     }
