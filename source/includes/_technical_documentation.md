@@ -409,10 +409,11 @@ In this example basic auth credentials will be passed to all endpoints.
 
 ## Working with objects
 There are key ability for any Rest Client is working with objects:
+
  - Send object as request body
  - Get response body as object
- 
- ### Setup Object Mapper
+
+### Setup Object Mapper
 JDI allows user to setup Object Mapper for sending and getting objects to/from services.
 After Object Mapper is set it will be used in all requests implicitly.
 
@@ -451,6 +452,7 @@ public class BaseTest {
 ```
 
 There are 2 ways to setup Object Mapper:
+
  - For whole project
  - For specific service
 
@@ -489,7 +491,7 @@ If Object Mapper isn't set default RestAssured mapper will be used.
 <br />
 <br />
 
- ### Using objects in tests
+### Using objects in tests
  
   ```java
  public class FlowTests {
@@ -502,7 +504,7 @@ If Object Mapper isn't set default RestAssured mapper will be used.
         //Send object to POST request and get response body as object
         Organization createOrg = TrelloService.createOrganization(organization);
 
-        //Crate board
+        //Create board
         Board board = TrelloDataGenerator.generateBoard();
         board.setIdOrganization(createOrg.getId());
         //Send object to POST request
