@@ -911,7 +911,7 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
         <span class="o">));</span>
     <span class="o">}</span>
 
-    <span class="c1">//Set object mapper for service. In this case global mapper will be overridden for SimpleService's endpoint</span>
+    <span class="c1">//Set object mapper for service. In this case global mapper will be overridden for SimpleService's endpoints</span>
     <span class="nd">@BeforeClass</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">ObjectMapper</span> <span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Jackson2Mapper</span><span class="o">(</span><span class="k">new</span> <span class="n">Jackson2ObjectMapperFactory</span><span class="o">()</span> <span class="o">{</span>
