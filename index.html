@@ -742,7 +742,51 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <p><br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ParamTest.java" target="_blank">Test examples in Java</a>
+<br><br>
+<br/><br/><br/><br/><br/><br>
+<br/><br/><br/><br/><br/><br/><br/></p>
+<h3 id='requestspecification-configuration'>RequestSpecification configuration</h3><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/jsonStore"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getJsonStore</span><span class="o">;</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">supportsConfiguringJsonConfigProperties</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RequestSpecification</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">getJsonStore</span><span class="o">.</span><span class="na">getInitSpec</span><span class="o">().</span>
+            <span class="n">config</span><span class="o">(</span><span class="n">RestAssuredConfig</span><span class="o">.</span><span class="na">newConfig</span><span class="o">().</span>
+                    <span class="n">jsonConfig</span><span class="o">(</span><span class="n">JsonConfig</span><span class="o">.</span><span class="na">jsonConfig</span><span class="o">().</span>
+                            <span class="n">numberReturnType</span><span class="o">(</span><span class="n">JsonPathConfig</span><span class="o">.</span><span class="na">NumberReturnType</span><span class="o">.</span><span class="na">BIG_DECIMAL</span><span class="o">)));</span>
+    <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">getJsonStore</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">rs</span><span class="o">);</span>
+    <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">rootPath</span><span class="o">(</span><span class="s">"store.book"</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"price.min()"</span><span class="o">,</span> <span class="n">is</span><span class="o">(</span><span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">"8.95"</span><span class="o">)))</span>
+            <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"price.max()"</span><span class="o">,</span> <span class="n">is</span><span class="o">(</span><span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">"22.99"</span><span class="o">)));</span>
+<span class="o">}</span>
+</code></pre>
+<p>You can set RequestSpecification for your request. Get RestAssured RequestSpecification from RestMethod object, set and use it.</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>getInitSpec()</strong></td>
+<td>get RestAssured RequestSpecification</td>
+<td>RequestSpecification</td>
+</tr>
+<tr>
+<td><strong>call(RequestSpecification spec)</strong></td>
+<td>make request with RequestSpecification</td>
+<td>RestResponse</td>
+</tr>
+</tbody></table>
+
+<p><br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ConfigITest.java" target="_blank">Test examples in Java</a>
 <br></p>
+
+<p><em>For general setting RestAssured config see <a href="https://jdi-docs.github.io/jdi-dark/#access-restassured">Accessing RestAssured</a></em></p>
 <h2 id='tests-without-service-object'>Tests without Service Object</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">RestResponse</span> <span class="nf">GET</span><span class="o">(</span><span class="n">RequestData</span> <span class="n">data</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestResponse</span> <span class="nf">GET</span><span class="o">(</span><span class="n">String</span> <span class="n">url</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestResponse</span> <span class="nf">GET</span><span class="o">(</span><span class="n">String</span> <span class="n">url</span><span class="o">,</span> <span class="n">RequestSpecification</span> <span class="n">requestSpecification</span><span class="o">)</span> 
@@ -1360,6 +1404,8 @@ You can access RestAssured from test or define desired properties in @BeforeTest
 
 <p>In the code snippet we have a test example using default headers set in RestAssured config.
 In order to restore the initial RestAssured config after test execution, the <code>reset()</code> method is called.</p>
+
+<p><em>For configuring one request settings see <a href="https://jdi-docs.github.io/jdi-dark/#request-data">Request data - RequestSpecification config</a></em></p>
 <pre class="highlight java tab-java"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">followsRedirectsWhileKeepingHeadersSpecifiedIfRestAssuredConfig</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
         <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Header</span><span class="o">&gt;</span> <span class="n">httpClientHeaders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Header</span><span class="o">&gt;();</span>
         <span class="n">httpClientHeaders</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">BasicHeader</span><span class="o">(</span><span class="s">"header1"</span><span class="o">,</span> <span class="s">"value1"</span><span class="o">));</span>
