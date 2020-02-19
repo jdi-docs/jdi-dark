@@ -452,6 +452,7 @@ public class BaseTest {
 ```
 
 There are 2 ways to setup Object Mapper:
+
  - For whole project
  - For specific service
 
