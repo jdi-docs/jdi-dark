@@ -415,7 +415,7 @@ There are key ability for any Rest Client is working with objects:
 
 ### Setup Object Mapper
 
-JDI allows user to setup Object Mapper for sending and getting objects to/from services.
+JDI allows user to setup Object Mapper for serialization/deserialization objects within endpoints.
 After Object Mapper is set it will be used in all requests implicitly.
 
 ```java
