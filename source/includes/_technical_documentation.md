@@ -436,7 +436,7 @@ public class BaseTest {
         ));
     }
 
-    //Set object mapper for service. In this case global mapper will be overridden for SimpleService's endpoint
+    //Set object mapper for service. In this case global mapper will be overridden for SimpleService's endpoints
     @BeforeClass
     public void before() {
         ObjectMapper objectMapper = new Jackson2Mapper(new Jackson2ObjectMapperFactory() {
