@@ -195,6 +195,16 @@ public void bodyHamcrestMatcherWithOutKey() {
             })).isOk().assertThat().body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
 }
 
+@POST("/greet")
+public static RestMethod greetPost;
+
+@Test
+public void formParamsAcceptsIntArgumentsJDI() {
+    RestResponse response = greetPost
+            .call(requestFormParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+    response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
+}
+
 @GET("/noValueParam")
 public static RestMethod getNoValueParam;
 
@@ -236,6 +246,13 @@ Methods allow to send query params to RequestData:
 **requestQueryParams(String paramName, String paramValue)** | pass one query parameter to a path | RequestData
 **requestQueryParams(Object[][] params)** | pass multiple query parameters to a path | RequestData
 
+Methods allow to send form params to RequestData:
+
+|Method | Description | Return Type
+--- | --- | ---
+**requestFormParams(String paramName, String paramValue)** | pass one form parameter to a path | RequestData
+**requestFormParams(Object[][] params)** | pass multiple form parameters to a path | RequestData
+
 Method allow to send specific query parameters in url in RestMethod:
 
 |Method | Description | Return Type
@@ -245,8 +262,27 @@ Method allow to send specific query parameters in url in RestMethod:
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ParamTest.java" target="_blank">Test examples in Java</a>
 <br>  
-<br/><br/><br/><br/><br/><br>
-<br/><br/><br/><br/><br/><br/><br/>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 ###RequestSpecification configuration
 
@@ -830,6 +866,38 @@ RestResponse response = MyService.getHello.call(requestData(
                 requestData -> requestData.addCookie("key1", "value1")));
 ```
 
+## Post
+
+For sending a POST request you can use the RestMethod class with a @POST annotation.
+
+```java
+    @POST("/greet")
+    public static RestMethod greetPost;
+
+    @Test
+    public void formParamsAcceptsIntArgumentsJDI() {
+        RestResponse response = greetPost
+                .call(requestFormParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+        response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
+    }
+
+    @Test
+    public void bodyWithSingleHamcrestMatching() {
+        RestResponse response = greetPost
+                .call(requestQueryParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+        response.isOk().body(containsString("greeting"));
+    }
+
+
+```
+
+|Method | Description | Return Type
+--- | --- | ---
+**call(RequestData requestData)**| make request with Request Data parameters | RestResponse
+
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/JSONPostTests.java" target="_blank">Test examples in Java</a>
+<br>
 
 ## Delete
 
