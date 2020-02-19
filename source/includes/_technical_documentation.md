@@ -244,8 +244,42 @@ Method allow to send specific query parameters in url in RestMethod:
 
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ParamTest.java" target="_blank">Test examples in Java</a>
-<br>
+<br>  
+<br/><br/><br/><br/><br/><br>
+<br/><br/><br/><br/><br/><br/><br/>
 
+###RequestSpecification configuration
+
+```java
+@GET("/jsonStore")
+public static RestMethod getJsonStore;
+
+@Test
+public void supportsConfiguringJsonConfigProperties() {
+    RequestSpecification rs = getJsonStore.getInitSpec().
+            config(RestAssuredConfig.newConfig().
+                    jsonConfig(JsonConfig.jsonConfig().
+                            numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL)));
+    RestResponse resp = getJsonStore.call(rs);
+    resp.isOk()
+            .rootPath("store.book")
+            .body("price.min()", is(new BigDecimal("8.95")))
+            .body("price.max()", is(new BigDecimal("22.99")));
+}
+```
+
+You can set RequestSpecification for your request. Get RestAssured RequestSpecification from RestMethod object, set and use it.
+
+|Method | Description | Return Type
+--- | --- | ---
+**getInitSpec()** | get RestAssured RequestSpecification | RequestSpecification 
+**call(RequestSpecification spec)** | make request with RequestSpecification | RestResponse 
+
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ConfigITest.java" target="_blank">Test examples in Java</a>
+<br>
+ 
+*For general setting RestAssured config see [Accessing RestAssured](https://jdi-docs.github.io/jdi-dark/#access-restassured)*
 ## Tests without Service Object
 
 ```java
@@ -870,6 +904,8 @@ You can access RestAssured from test or define desired properties in @BeforeTest
 
 In the code snippet we have a test example using default headers set in RestAssured config.
 In order to restore the initial RestAssured config after test execution, the ```reset()``` method is called.
+
+*For configuring one request settings see [Request data - RequestSpecification config](https://jdi-docs.github.io/jdi-dark/#request-data)*
 
 ```java
     public void followsRedirectsWhileKeepingHeadersSpecifiedIfRestAssuredConfig() throws Exception {
