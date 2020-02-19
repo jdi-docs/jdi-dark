@@ -289,6 +289,9 @@
                     <a href="#tests-with-service-object" class="toc-h2 toc-link" data-title="Tests with Service Object">Tests with Service Object</a>
                   </li>
                   <li>
+                    <a href="#working-with-objects" class="toc-h2 toc-link" data-title="Working with objects">Working with objects</a>
+                  </li>
+                  <li>
                     <a href="#response-data" class="toc-h2 toc-link" data-title="Response data">Response data</a>
                   </li>
                   <li>
@@ -299,9 +302,6 @@
                   </li>
                   <li>
                     <a href="#delete" class="toc-h2 toc-link" data-title="Delete">Delete</a>
-                  </li>
-                  <li>
-                    <a href="#deserialization" class="toc-h2 toc-link" data-title="Deserialization">Deserialization</a>
                   </li>
                   <li>
                     <a href="#performance-testing" class="toc-h2 toc-link" data-title="Performance testing">Performance testing</a>
@@ -884,6 +884,176 @@ In this example basic auth credentials will be passed to all endpoints.<br>
 <br />
 <br />
 <br /></p>
+<h2 id='working-with-objects'>Working with objects</h2>
+<p>There are key ability for any Rest Client is working with objects:
+ - Send object as request body
+ - Get response body as object</p>
+
+<p>### Setup Object Mapper
+JDI allows user to setup Object Mapper for sending and getting objects to/from services.
+After Object Mapper is set it will be used in all requests implicitly.</p>
+<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BaseTest</span> <span class="o">{</span>
+
+    <span class="c1">//Set global object mapper for whole project</span>
+    <span class="nd">@BeforeSuite</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">preconditions</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">RestAssured</span><span class="o">.</span><span class="na">config</span> <span class="o">=</span> <span class="n">RestAssuredConfig</span><span class="o">.</span><span class="na">config</span><span class="o">().</span><span class="na">objectMapperConfig</span><span class="o">(</span><span class="k">new</span> <span class="n">ObjectMapperConfig</span><span class="o">().</span><span class="na">jackson2ObjectMapperFactory</span><span class="o">(</span>
+                <span class="k">new</span> <span class="nf">Jackson2ObjectMapperFactory</span><span class="o">()</span> <span class="o">{</span>
+                    <span class="nd">@Override</span>
+                    <span class="kd">public</span> <span class="n">ObjectMapper</span> <span class="nf">create</span><span class="o">(</span><span class="n">Type</span> <span class="n">type</span><span class="o">,</span> <span class="n">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">ObjectMapper</span> <span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
+                        <span class="n">objectMapper</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">DeserializationFeature</span><span class="o">.</span><span class="na">FAIL_ON_UNKNOWN_PROPERTIES</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+                        <span class="k">return</span> <span class="n">objectMapper</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+        <span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="c1">//Set object mapper for service. In this case global mapper will be overridden for SimpleService's endpoint</span>
+    <span class="nd">@BeforeClass</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">ObjectMapper</span> <span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Jackson2Mapper</span><span class="o">(</span><span class="k">new</span> <span class="n">Jackson2ObjectMapperFactory</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">databind</span><span class="o">.</span><span class="na">ObjectMapper</span> <span class="nf">create</span><span class="o">(</span><span class="n">Type</span> <span class="n">type</span><span class="o">,</span> <span class="n">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">databind</span><span class="o">.</span><span class="na">ObjectMapper</span> <span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">databind</span><span class="o">.</span><span class="na">ObjectMapper</span><span class="o">();</span>
+                <span class="n">objectMapper</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">DeserializationFeature</span><span class="o">.</span><span class="na">FAIL_ON_UNKNOWN_PROPERTIES</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">objectMapper</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+        <span class="n">init</span><span class="o">(</span><span class="n">SimpleService</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">objectMapper</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+<p>There are 2 ways to setup Object Mapper:
+ - For whole project
+ - For specific service</p>
+
+<p>If Object Mapper isn&#39;t set default RestAssured mapper will be used.
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></p>
+
+<p>### Using objects in tests</p>
+<pre class="highlight java tab-java"><code> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">FlowTests</span> <span class="o">{</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">assignBoardToOrganization</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="c1">//Create organization</span>
+        <span class="n">Organization</span> <span class="n">organization</span> <span class="o">=</span> <span class="n">TrelloDataGenerator</span><span class="o">.</span><span class="na">generateOrganization</span><span class="o">();</span>
+        <span class="c1">//Send object to POST request and get response body as object</span>
+        <span class="n">Organization</span> <span class="n">createOrg</span> <span class="o">=</span> <span class="n">TrelloService</span><span class="o">.</span><span class="na">createOrganization</span><span class="o">(</span><span class="n">organization</span><span class="o">);</span>
+
+        <span class="c1">//Crate board</span>
+        <span class="n">Board</span> <span class="n">board</span> <span class="o">=</span> <span class="n">TrelloDataGenerator</span><span class="o">.</span><span class="na">generateBoard</span><span class="o">();</span>
+        <span class="n">board</span><span class="o">.</span><span class="na">setIdOrganization</span><span class="o">(</span><span class="n">createOrg</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+        <span class="c1">//Send object to POST request</span>
+        <span class="n">TrelloService</span><span class="o">.</span><span class="na">createBoard</span><span class="o">(</span><span class="n">board</span><span class="o">);</span>
+
+        <span class="c1">//Check that organization contains created board</span>
+        <span class="c1">//Send GET request and get as List of objects from response</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Board</span><span class="o">&gt;</span> <span class="n">boards</span> <span class="o">=</span> <span class="n">TrelloService</span><span class="o">.</span><span class="na">getOrganizationBoards</span><span class="o">(</span><span class="n">createOrg</span><span class="o">);</span>
+        <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">boards</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="nl">Board:</span><span class="o">:</span><span class="n">getName</span><span class="o">).</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">()).</span><span class="na">contains</span><span class="o">(</span><span class="n">board</span><span class="o">.</span><span class="na">getName</span><span class="o">()),</span> <span class="s">"Board wasn't added to organization"</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre>
+<p>JDI allows create tests on business language using Service classes and working with objects.
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></p>
+<pre class="highlight java tab-java"><code> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceExample</span> <span class="o">{</span>
+
+    <span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span>
+    <span class="nd">@POST</span><span class="o">(</span><span class="s">"/organizations"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span><span class="o">&lt;</span><span class="n">Organization</span><span class="o">&gt;</span> <span class="n">createOrganization</span><span class="o">;</span>
+
+    <span class="c1">//wrapper method for working with objects</span>
+    <span class="c1">//send Organization object as request body and return response as Organization object</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Organization</span> <span class="nf">createOrganization</span><span class="o">(</span><span class="n">Organization</span> <span class="n">organization</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">createOrganization</span><span class="o">.</span><span class="na">post</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">Organization</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/organizations/{id}/boards"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span><span class="o">&lt;</span><span class="n">Board</span><span class="o">[]&gt;</span> <span class="n">getOrganizationBoards</span><span class="o">;</span>
+
+    <span class="c1">//send GET request and return response as List of objects</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Board</span><span class="o">&gt;</span> <span class="nf">getOrganizationBoards</span><span class="o">(</span><span class="n">Organization</span> <span class="n">organization</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">getOrganizationBoards</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestPathParams</span><span class="o">(</span><span class="s">"id"</span><span class="o">,</span> <span class="n">organization</span><span class="o">.</span><span class="na">getId</span><span class="o">())).</span><span class="na">getRaResponse</span><span class="o">().</span><span class="na">as</span><span class="o">(</span><span class="n">Board</span><span class="o">[].</span><span class="na">class</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+<p>For convenient working with objects user can add additional wrapper methods to service classes.
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></p>
 <h2 id='response-data'>Response data</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isOk</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">hasErrors</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isStatus</span><span class="o">(</span><span class="n">ResponseStatusType</span> <span class="n">type</span><span class="o">)</span>
@@ -1155,10 +1325,6 @@ Cookies without value and with multiple values can be added as well.</p>
 <p><br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
 <br></p>
-<h2 id='deserialization'>Deserialization</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">T</span> <span class="nf">callAsData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">T</span> <span class="nf">asData</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span>
-</code></pre>
-<p>JDI Dark provides support for response deserialization into Java object. Just use the <em>callAsData()</em> method instead of <em>call()</em> and provide class as argument.</p>
 <h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeMSec</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">weightRequests</span><span class="o">)</span>
