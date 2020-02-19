@@ -885,12 +885,14 @@ In this example basic auth credentials will be passed to all endpoints.<br>
 <br />
 <br /></p>
 <h2 id='working-with-objects'>Working with objects</h2>
-<p>There are key ability for any Rest Client is working with objects:
- - Send object as request body
- - Get response body as object</p>
+<p>There are key ability for any Rest Client is working with objects:</p>
 
-<p>### Setup Object Mapper
-JDI allows user to setup Object Mapper for sending and getting objects to/from services.
+<ul>
+<li>Send object as request body</li>
+<li>Get response body as object</li>
+</ul>
+<h3 id='setup-object-mapper'>Setup Object Mapper</h3>
+<p>JDI allows user to setup Object Mapper for sending and getting objects to/from services.
 After Object Mapper is set it will be used in all requests implicitly.</p>
 <pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BaseTest</span> <span class="o">{</span>
 
@@ -924,9 +926,12 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
-<p>There are 2 ways to setup Object Mapper:
- - For whole project
- - For specific service</p>
+<p>There are 2 ways to setup Object Mapper:</p>
+
+<ul>
+<li>For whole project</li>
+<li>For specific service</li>
+</ul>
 
 <p>If Object Mapper isn&#39;t set default RestAssured mapper will be used.
 <br />
@@ -962,9 +967,7 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
 <br />
 <br />
 <br /></p>
-
-<p>### Using objects in tests</p>
-<pre class="highlight java tab-java"><code> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">FlowTests</span> <span class="o">{</span>
+<h3 id='using-objects-in-tests'>Using objects in tests</h3><pre class="highlight java tab-java"><code> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">FlowTests</span> <span class="o">{</span>
 
     <span class="nd">@Test</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">assignBoardToOrganization</span><span class="o">()</span> <span class="o">{</span>
@@ -974,7 +977,7 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
         <span class="c1">//Send object to POST request and get response body as object</span>
         <span class="n">Organization</span> <span class="n">createOrg</span> <span class="o">=</span> <span class="n">TrelloService</span><span class="o">.</span><span class="na">createOrganization</span><span class="o">(</span><span class="n">organization</span><span class="o">);</span>
 
-        <span class="c1">//Crate board</span>
+        <span class="c1">//Create board</span>
         <span class="n">Board</span> <span class="n">board</span> <span class="o">=</span> <span class="n">TrelloDataGenerator</span><span class="o">.</span><span class="na">generateBoard</span><span class="o">();</span>
         <span class="n">board</span><span class="o">.</span><span class="na">setIdOrganization</span><span class="o">(</span><span class="n">createOrg</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
         <span class="c1">//Send object to POST request</span>
