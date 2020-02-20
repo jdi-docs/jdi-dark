@@ -698,7 +698,9 @@ public class ErrorHandlerTests {
 ```
 
 JDI allows to setup custom behaviour for catching and processing any unexpected responses.
+
 For this need inject implementation of ErrorHandler interface into RestMethods through call Service Object init() method.
+
 By default JDI uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.
 
 ## Response data
