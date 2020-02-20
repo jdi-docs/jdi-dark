@@ -1190,9 +1190,11 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
-<p>JDI allows to setup custom behaviour for catching and processing any unexpected responses.
-For this need inject implementation of ErrorHandler interface into RestMethods through call Service Object init() method.
-By default JDI uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.</p>
+<p>JDI allows to setup custom behaviour for catching and processing any unexpected responses.</p>
+
+<p>For this need inject implementation of ErrorHandler interface into RestMethods through call Service Object init() method.</p>
+
+<p>By default JDI uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.</p>
 <h2 id='response-data'>Response data</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isOk</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">hasErrors</span><span class="o">()</span>
 <span class="kd">public</span> <span class="n">ValidatableResponse</span> <span class="nf">isStatus</span><span class="o">(</span><span class="n">ResponseStatusType</span> <span class="n">type</span><span class="o">)</span>
