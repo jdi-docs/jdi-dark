@@ -660,6 +660,47 @@ For convenient working with objects user can add additional wrapper methods to s
 <br />
 <br />
 
+## Error handling
+
+```java
+public interface ErrorHandler {
+    boolean hasError(RestResponse restResponse) throws IOException;
+    void handleError(RestResponse restResponse) throws IOException;
+}
+
+//example of implementation and using ErrorHandler
+public class ErrorHandlerTests {
+
+    private ServiceSettings serviceSettings;
+
+    @BeforeClass
+    public void initServiceSettings() {
+        ErrorHandler errorHandler = new ErrorHandler() {
+            @Override
+            public boolean hasError(RestResponse restResponse) throws IOException {
+                //only Client errors will be caught
+                return ResponseStatusType.getStatusTypeFromCode(restResponse.getStatus().code) == ERROR;
+            }
+            
+            @Override
+            public void handleError(RestResponse restResponse) throws IOException {
+                Assert.fail("Exception is caught: " + restResponse.toString());
+            }
+        };
+        serviceSettings = ServiceSettings.builder().errorHandler(errorHandler).build();
+    }
+
+    @BeforeClass(dependsOnMethods = {"initServiceSettings"})
+    public void initService() {
+        init(TrelloService.class, serviceSettings);
+    }
+}
+```
+
+JDI allows to setup custom behaviour for catching and processing any unexpected responses.
+For this need inject implementation of ErrorHandler interface into RestMethods through call Service Object init() method.
+By default JDI uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.
+
 ## Response data
 
 ```java
