@@ -248,7 +248,7 @@
             <a href="#tutorial" class="toc-h1 toc-link" data-title="Tutorial">Tutorial</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#1-integration" class="toc-h2 toc-link" data-title="1. Integration">1. Integration</a>
+                    <a href="#1-quick-start" class="toc-h2 toc-link" data-title="1. Quick Start">1. Quick Start</a>
                   </li>
                   <li>
                     <a href="#2-jdi-dark-at-a-glance" class="toc-h2 toc-link" data-title="2. JDI Dark at a glance">2. JDI Dark at a glance</a>
@@ -257,10 +257,10 @@
                     <a href="#3-jdi-dark-service-objects" class="toc-h2 toc-link" data-title="3. JDI Dark Service Objects">3. JDI Dark Service Objects</a>
                   </li>
                   <li>
-                    <a href="#4-jdi-dark-performance" class="toc-h2 toc-link" data-title="4. JDI Dark Performance">4. JDI Dark Performance</a>
+                    <a href="#4-jdi-dark-and-cucumber" class="toc-h2 toc-link" data-title="4. JDI Dark and Cucumber">4. JDI Dark and Cucumber</a>
                   </li>
                   <li>
-                    <a href="#5-jdi-dark-and-cucumber" class="toc-h2 toc-link" data-title="5. JDI Dark and Cucumber">5. JDI Dark and Cucumber</a>
+                    <a href="#5-jdi-dark-performance" class="toc-h2 toc-link" data-title="5. JDI Dark Performance">5. JDI Dark Performance</a>
                   </li>
                   <li>
                     <a href="#jdi-dark-settings-at-a-glance" class="toc-h2 toc-link" data-title="JDI Dark settings at a glance">JDI Dark settings at a glance</a>
@@ -433,16 +433,146 @@ You just need to use the <em>@QueryParameter</em> annotation in your method or s
 
 <p>You can also load your service and analyse response time.</p>
 <h1 id='tutorial'>Tutorial</h1>
-<p>TBD</p>
-<h2 id='1-integration'>1. Integration</h2>
-<p>TBD</p>
-<h2 id='2-jdi-dark-at-a-glance'>2. JDI Dark at a glance</h2>
-<p>TBD</p>
+<p>In this tutorial we’ll take a glance at JDI Dark, a library that simplifies test automation, makes test run results stable, predictable and easy to maintain.</p>
+
+<ol>
+<li><strong>Quick Start</strong> - a short instruction on how to add JDI Dark to your project and perform its basic configuration.</li>
+<li><strong>JDI Light at a glance</strong> -  a simple example for creating test case with JDI DARK. </li>
+</ol>
+<h2 id='1-quick-start'>1. Quick Start</h2><h3 id='maven-dependencies'>Maven Dependencies</h3><pre class="highlight java tab-java"><code><span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="na">epam</span><span class="o">.</span><span class="na">jdi</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">jdi</span><span class="o">-</span><span class="n">light</span><span class="o">-</span><span class="n">dark</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;{</span><span class="n">RELEASE</span><span class="o">}&lt;/</span><span class="n">version</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+</code></pre>
+<p>First, we need to add JDI Dark to the dependency section of our pom.xml file.
+The latest version can be found in <a href="https://search.maven.org/classic/#search%7Cga%7C1%7Cjdi-dark" target="_blank">the Maven Central Repository</a>.</p>
+<h3 id='configuration'>Configuration</h3>
+<p>For configuration project create <strong>test.properties file</strong> on path <strong>src/test/resources</strong>.</p>
+
+<p>Let’s look at them:</p>
+<pre class="highlight java tab-java"><code><span class="n">domain</span><span class="o">=</span><span class="n">local</span><span class="o">=</span><span class="nl">http:</span><span class="c1">//localhost:8080, trello=https://api.trello.com/1</span>
+<span class="n">log</span><span class="o">.</span><span class="na">level</span><span class="o">=</span><span class="n">WARNING</span>
+</code></pre>
+<ul>
+<li><strong>domain</strong> - there is several options how specify domain:</li>
+</ul>
+
+<p><strong>-</strong> Specify one domain - <em>domain=URI</em>. Than you can use this setting in service domain annotation in this way:  <em>@ServiceDomain(&quot;${domain}&quot;)</em>, <em>@ServiceDomain(&quot;${nameDomain2}&quot;)</em></p>
+
+<p><strong>-</strong> Specify list of domains - <em>domain=nameDomain=URI, nameDomain2=URI</em>. Than you can use this variables in service domain annotation in this way:  <em>@ServiceDomain(&quot;${nameDomain}&quot;)</em>, <em>@ServiceDomain(&quot;${nameDomain2}&quot;)</em>     </p>
+
+<p><strong>-</strong> If you don&#39;t specify domain here, you must directly specify your base URI in this way <em>@ServiceDomain(&quot;https://api.trello.com/1&quot;)</em>  </p>
+
+<ul>
+<li><strong>log.level</strong> - you can set one of options - INFO, WARNING, OFF, FATAL, ERROR, STEP, DEBUG, TRACE, ALL</li>
+</ul>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/test.properties" target="_blank">See example on GitHub</a>.</p>
+<h2 id='2-jdi-dark-at-a-glance'>2. JDI Dark at a glance</h2><pre class="highlight java tab-java"><code><span class="c1">//STEP 1 Creating class describing Board object with needed fields   </span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Board</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span><span class="k">return</span> <span class="n">id</span><span class="o">;}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="n">String</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span><span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span><span class="k">return</span> <span class="n">name</span><span class="o">;}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span><span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;}</span>
+<span class="o">}</span>
+
+
+<span class="c1">//STEP 2 Creating class Service Object Model</span>
+<span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"${trello}"</span><span class="o">)</span>
+<span class="nd">@QueryParameters</span><span class="o">({</span>
+        <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"key"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"3445103a21ddca2619eaceb0e833d0db"</span><span class="o">),</span>
+        <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"token"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0"</span><span class="o">)</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloService</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">BOARDS</span> <span class="o">=</span> <span class="s">"/boards"</span><span class="o">;</span>
+
+    <span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span>
+    <span class="nd">@POST</span><span class="o">(</span><span class="n">BOARDS</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span><span class="o">&lt;</span><span class="n">Board</span><span class="o">&gt;</span> <span class="n">boardsPost</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Board</span> <span class="nf">createBoard</span><span class="o">(</span><span class="n">Board</span> <span class="n">board</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">boardsPost</span><span class="o">.</span><span class="na">post</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">Board</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">//STEP 3 Creating class for generating needed data</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloDataGenerator</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Board</span> <span class="nf">generateBoard</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Board</span> <span class="n">board</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Board</span><span class="o">();</span>
+        <span class="n">board</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"JDI Test Board number "</span> <span class="o">+</span> <span class="k">new</span> <span class="n">Random</span><span class="o">().</span><span class="na">nextInt</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">));</span>
+        <span class="k">return</span> <span class="n">board</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="c1">//STEP 4 Creating  test class</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloTests</span> <span class="o">{</span>
+
+    <span class="nd">@BeforeClass</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initService</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">init</span><span class="o">(</span><span class="n">TrelloService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createCardInBoard</span><span class="o">()</span> <span class="o">{</span>    
+        <span class="n">Board</span> <span class="n">board</span> <span class="o">=</span> <span class="n">TrelloDataGenerator</span><span class="o">.</span><span class="na">generateBoard</span><span class="o">();</span>
+        <span class="n">Board</span> <span class="n">createdBoard</span> <span class="o">=</span> <span class="n">TrelloService</span><span class="o">.</span><span class="na">createBoard</span><span class="o">(</span><span class="n">board</span><span class="o">);</span>
+        <span class="n">Board</span> <span class="n">gotBoard</span> <span class="o">=</span> <span class="n">TrelloService</span><span class="o">.</span><span class="na">getBoard</span><span class="o">(</span><span class="n">createdBoard</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+        <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="n">gotBoard</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">createdBoard</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="s">"Name of created board is incorrect"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre><h3 id='first-test-creating'>First test creating</h3>
+<p>In this example we create test for Trello <em>/boards/</em> endpoint. You can familiarize with  Trello API  <a href="https://developers.trello.com/reference/#boardsid" target="_blank">here</a>.</p>
+
+<p><br/>
+<strong>1. Create class describing REST object</strong> </p>
+
+<p>Create class for <a href="https://developers.trello.com/reference/#board-object" target="_blank">board object</a> with needed fields. Create get and set methods for this fields.  </p>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/dto/Board.java" target="_blank">See example class for Card Object</a>.</p>
+
+<p><br/>
+<strong>2. Create  service class with Rest methods</strong> </p>
+
+<p>-Specify BaseURI service by using @ServiceDomain(&quot;${trello}&quot;) annotation before class </p>
+
+<p>-Specify credentials via @QueryParameters - set  @QueryParameter key and token</p>
+
+<p>-Describe <a href="https://developers.trello.com/reference/#boardsid" target="_blank">trello endpoint for creating board</a>:</p>
+
+<ul>
+<li><p>Add RestMethod<Board> boardsPos method</p></li>
+<li><p>Create method createBoard for transfer and getting Board object in RestMethod  </p></li>
+<li><p>Set annotation @POST(BOARDS) with specifying endpoint</p></li>
+<li><p>Set annotation @ContentType(JSON) for specifying sending content-type</p></li>
+</ul>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/TrelloService.java" target="_blank">See example class for TrelloService </a>.<br>
+<br/><br>
+<strong>3.If you need - create class helper for generating data</strong> </p>
+
+<p>In our example we created TrelloDataGenerator class which contains  method for generating Trello board</p>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/utils/TrelloDataGenerator.java" target="_blank">See example class for generating Trello data</a>.</p>
+
+<p><br/>
+<strong>4. Create test class</strong><br>
+1.Initialize you service class in @BeforeClass</p>
+
+<p>2.Add test methods</p>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/TrelloTests.java" target="_blank">See test case example</a>.</p>
 <h2 id='3-jdi-dark-service-objects'>3. JDI Dark Service Objects</h2>
 <p>TBD</p>
-<h2 id='4-jdi-dark-performance'>4. JDI Dark Performance</h2>
+<h2 id='4-jdi-dark-and-cucumber'>4. JDI Dark and Cucumber</h2>
 <p>TBD</p>
-<h2 id='5-jdi-dark-and-cucumber'>5. JDI Dark and Cucumber</h2>
+<h2 id='5-jdi-dark-performance'>5. JDI Dark Performance</h2>
 <p>TBD</p>
 <h2 id='jdi-dark-settings-at-a-glance'>JDI Dark settings at a glance</h2>
 <p>TBD</p>
