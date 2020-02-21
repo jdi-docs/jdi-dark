@@ -109,7 +109,7 @@ In this example we create test for Trello */boards/* endpoint. You can familiari
 <br/>
 **1. Create class describing REST object** 
 
-Create class for <a href="https://developers.trello.com/reference/#board-object" target="_blank">board object</a> with needed fields. Create get and set methods for this fields.  
+Create class for <a href="https://developers.trello.com/reference/#board-object" target="_blank">board object</a> with needed fields. Create get and set methods for these fields.  
  
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/dto/Board.java" target="_blank">See example class for Card Object</a>.
 
@@ -140,7 +140,7 @@ In our example we created TrelloDataGenerator class which contains  method for g
 
 <br/>
 **4. Create test class**  
-1.Initialize you service class in @BeforeClass
+1.Initialize your service class in @BeforeClass
 
 2.Add test methods
     
