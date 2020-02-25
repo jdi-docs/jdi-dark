@@ -254,6 +254,9 @@
                     <a href="#2-jdi-dark-at-a-glance" class="toc-h2 toc-link" data-title="2. JDI Dark at a glance">2. JDI Dark at a glance</a>
                   </li>
                   <li>
+                    <a href="#running-test-examples-2" class="toc-h2 toc-link" data-title="Running test examples">Running test examples</a>
+                  </li>
+                  <li>
                     <a href="#3-jdi-dark-service-objects" class="toc-h2 toc-link" data-title="3. JDI Dark Service Objects">3. JDI Dark Service Objects</a>
                   </li>
                   <li>
@@ -577,6 +580,10 @@ Before first run test cases, execute maven commands:</p>
 
 <p><strong>clean</strong><br/>
 <strong>compile</strong></p>
+<h2 id='running-test-examples-2'>Running test examples</h2>
+<p>Before first running test examples execute next maven commands:<br>
+<strong>clean</strong><br>
+<strong>compile</strong></p>
 <h2 id='3-jdi-dark-service-objects'>3. JDI Dark Service Objects</h2>
 <p>TBD</p>
 <h2 id='4-jdi-dark-and-cucumber'>4. JDI Dark and Cucumber</h2>
@@ -586,7 +593,15 @@ Before first run test cases, execute maven commands:</p>
 <h2 id='jdi-dark-settings-at-a-glance'>JDI Dark settings at a glance</h2>
 <p>TBD</p>
 <h2 id='api-testing-framework-structure'>API Testing Framework structure</h2>
-<p>TBD</p>
+<p>JDI dark consist of next packages:</p>
+
+<ul>
+<li>annotations </li>
+<li>logger</li>
+<li>requests </li>
+<li>response</li>
+<li>performance</li>
+</ul>
 <h1 id='documentation'>Documentation</h1><h2 id='framework-usage'>Framework usage</h2><pre class="highlight plaintext"><code>import static com.epam.http.requests.ServiceInit.init;
 </code></pre>
 <p>In order to effectively use the JDI Dark framework, it is recommended to statically import the <code>init()</code> method of the <em>ServiceInit</em> class.</p>
