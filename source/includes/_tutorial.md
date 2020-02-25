@@ -155,13 +155,10 @@ Before first run test cases, execute maven commands:
 **clean**<br/>
 **compile**
 
-
-
-
-
-
- 
-
+## Running test examples
+Before first running test examples execute next maven commands:  
+**clean**       
+**compile**
 ## 3. JDI Dark Service Objects
 TBD
 
@@ -172,4 +169,14 @@ TBD
 ## JDI Dark settings at a glance
 TBD
 ## API Testing Framework structure
-TBD
+
+JDI dark consist of next packages:
+
+ - annotations 
+ - logger
+ - requests 
+ - response
+ - performance
+
+ 
+
