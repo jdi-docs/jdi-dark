@@ -51,6 +51,7 @@ with the following fields:
  - MultiMap<String, String> formParams
  - Cookies cookies
  - ArrayList<MultiPartSpecification> multiPartSpecifications
+ - ProxySpecification proxySpecification
 
 All of these fields can be set/updated from the *call()* method as well.
 
@@ -907,6 +908,67 @@ public RequestData addCookies(Map map)
 
 RestResponse response = MyService.getHello.call(requestData(
                 requestData -> requestData.addCookie("key1", "value1")));
+```
+
+## Proxy
+
+```java
+@GET("/greetJSON")
+@Proxy(host = "127.0.0.1", port = 8888, scheme = "http")
+public static RestMethod getGreenJSONWithProxyParams;
+
+@Test
+public void usingProxyAnnotationOnServiceLayer() {
+    final Map<String, String> params = new HashMap<>();
+    params.put("firstName", "John");
+    params.put("lastName", "Doe");
+    JettyService.getGreenJSONWithProxyParams.call(RequestData.requestData(rd -> {
+        rd.queryParams.addAll(params);
+    })).isOk().assertThat().
+            body("greeting.firstName", equalTo("John")).
+            body("greeting.lastName", equalTo("Doe"));
+}
+```
+
+JDI Dark supports addition of Proxy parameters (host, port and scheme) to Service endpoints.
+
+You can use the RestMethod class with a @Proxy annotation
+
+There is method to add proxy parameters to Request Data. JDI Dark also supports making request calls with Rest Assured ProxySpecification.
+
+|Method | Description | Return Type
+--- | --- | ---
+**setProxySpecification(String scheme, String host, int port)** | set proxy parameters to request data | 
+
+```java
+@GET("/greetJSON")
+public static RestMethod getGreenJSON;
+
+@Test
+public void usingProxyWithSetProxySpecification() {
+    final Map<String, String> params = new HashMap<>();
+    params.put("firstName", "John");
+    params.put("lastName", "Doe");
+    JettyService.getGreenJSON.call(RequestData.requestData(rd -> {
+        rd.setProxySpecification("http", "localhost", 8888);
+        rd.queryParams.addAll(params);
+    })).isOk().assertThat().
+            body("greeting.firstName", equalTo("John")).
+            body("greeting.lastName", equalTo("Doe"));
+}
+
+@Test
+public void usingProxySpecification() {
+    final Map<String, String> params = new HashMap<>();
+    params.put("firstName", "John");
+    params.put("lastName", "Doe");
+    JettyService.getGreenJSON.call(RequestData.requestData(rd -> {
+        rd.queryParams.addAll(params);
+        rd.proxySpecification = ProxySpecification.host("localhost");
+    })).isOk().assertThat().
+            body("greeting.firstName", equalTo("John")).
+            body("greeting.lastName", equalTo("Doe"));
+}
 ```
 
 ## Post
