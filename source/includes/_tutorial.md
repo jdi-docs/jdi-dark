@@ -147,7 +147,20 @@ In our example we created TrelloDataGenerator class which contains  method for g
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/TrelloTests.java" target="_blank">See test case example</a>.
 
 
+###Running test examples 
 
+You can see and run various examples test cases in <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests" target="_blank">JDI DARK project </a>.
+Before first run test cases, execute maven commands:
+
+**clean**<br/>
+**compile**
+
+
+
+
+
+
+ 
 
 ## 3. JDI Dark Service Objects
 TBD
