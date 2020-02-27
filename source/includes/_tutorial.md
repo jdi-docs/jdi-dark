@@ -155,10 +155,7 @@ Before first run test cases, execute maven commands:
 **mvn clean**<br/>
 **mvn compile**
 
-## Running test examples
-Before first running test examples execute next maven commands:  
-**mvn clean**       
-**mvn compile**
+
 ## 3. JDI Dark Service Objects
 TBD
 
@@ -170,13 +167,13 @@ TBD
 TBD
 ## API Testing Framework structure
 
-JDI dark consist of next packages:
+JDI dark consists of next packages:
 
- - annotations - contains annotations that can be used in project    
- - logger - contains classes which implements JDI DARK logging
- - requests - contains classes which implements JDI sending requests, error handling and initialization of service
- - response - contains classes which used for perfomance testing
- - performance - contains of classes which implements JDI DARK logging
+ - annotations - contain annotations that can be used in project    
+ - logger - contain classes which implement JDI DARK logging
+ - requests - contain classes which implement JDI sending requests, error handling and initialization of service
+ - response - contain classes which used for working with Rest response
+ - performance - contain classes which used for perfomance testing
 
  
 
