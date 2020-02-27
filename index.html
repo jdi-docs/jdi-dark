@@ -578,12 +578,12 @@ The latest version can be found in <a href="https://search.maven.org/classic/#se
 <p>You can see and run various examples test cases in <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests" target="_blank">JDI DARK project </a>.
 Before first run test cases, execute maven commands:</p>
 
-<p><strong>clean</strong><br/>
-<strong>compile</strong></p>
+<p><strong>mvn clean</strong><br/>
+<strong>mvn compile</strong></p>
 <h2 id='running-test-examples-2'>Running test examples</h2>
 <p>Before first running test examples execute next maven commands:<br>
-<strong>clean</strong><br>
-<strong>compile</strong></p>
+<strong>mvn clean</strong><br>
+<strong>mvn compile</strong></p>
 <h2 id='3-jdi-dark-service-objects'>3. JDI Dark Service Objects</h2>
 <p>TBD</p>
 <h2 id='4-jdi-dark-and-cucumber'>4. JDI Dark and Cucumber</h2>
@@ -596,11 +596,11 @@ Before first run test cases, execute maven commands:</p>
 <p>JDI dark consist of next packages:</p>
 
 <ul>
-<li>annotations </li>
-<li>logger</li>
-<li>requests </li>
-<li>response</li>
-<li>performance</li>
+<li>annotations - contains annotations that can be used in project<br></li>
+<li>logger - contains classes which implements JDI DARK logging</li>
+<li>requests - contains classes which implements JDI sending requests, error handling and initialization of service</li>
+<li>response - contains classes which used for perfomance testing</li>
+<li>performance - contains of classes which implements JDI DARK logging</li>
 </ul>
 <h1 id='documentation'>Documentation</h1><h2 id='framework-usage'>Framework usage</h2><pre class="highlight plaintext"><code>import static com.epam.http.requests.ServiceInit.init;
 </code></pre>
