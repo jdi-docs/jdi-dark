@@ -152,13 +152,13 @@ In our example we created TrelloDataGenerator class which contains  method for g
 You can see and run various examples test cases in <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests" target="_blank">JDI DARK project </a>.
 Before first run test cases, execute maven commands:
 
-**clean**<br/>
-**compile**
+**mvn clean**<br/>
+**mvn compile**
 
 ## Running test examples
 Before first running test examples execute next maven commands:  
-**clean**       
-**compile**
+**mvn clean**       
+**mvn compile**
 ## 3. JDI Dark Service Objects
 TBD
 
@@ -172,11 +172,11 @@ TBD
 
 JDI dark consist of next packages:
 
- - annotations 
- - logger
- - requests 
- - response
- - performance
+ - annotations - contains annotations that can be used in project    
+ - logger - contains classes which implements JDI DARK logging
+ - requests - contains classes which implements JDI sending requests, error handling and initialization of service
+ - response - contains classes which used for perfomance testing
+ - performance - contains of classes which implements JDI DARK logging
 
  
 
