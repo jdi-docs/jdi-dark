@@ -254,9 +254,6 @@
                     <a href="#2-jdi-dark-at-a-glance" class="toc-h2 toc-link" data-title="2. JDI Dark at a glance">2. JDI Dark at a glance</a>
                   </li>
                   <li>
-                    <a href="#running-test-examples-2" class="toc-h2 toc-link" data-title="Running test examples">Running test examples</a>
-                  </li>
-                  <li>
                     <a href="#3-jdi-dark-service-objects" class="toc-h2 toc-link" data-title="3. JDI Dark Service Objects">3. JDI Dark Service Objects</a>
                   </li>
                   <li>
@@ -580,10 +577,6 @@ Before first run test cases, execute maven commands:</p>
 
 <p><strong>mvn clean</strong><br/>
 <strong>mvn compile</strong></p>
-<h2 id='running-test-examples-2'>Running test examples</h2>
-<p>Before first running test examples execute next maven commands:<br>
-<strong>mvn clean</strong><br>
-<strong>mvn compile</strong></p>
 <h2 id='3-jdi-dark-service-objects'>3. JDI Dark Service Objects</h2>
 <p>TBD</p>
 <h2 id='4-jdi-dark-and-cucumber'>4. JDI Dark and Cucumber</h2>
@@ -593,14 +586,14 @@ Before first run test cases, execute maven commands:</p>
 <h2 id='jdi-dark-settings-at-a-glance'>JDI Dark settings at a glance</h2>
 <p>TBD</p>
 <h2 id='api-testing-framework-structure'>API Testing Framework structure</h2>
-<p>JDI dark consist of next packages:</p>
+<p>JDI dark consists of next packages:</p>
 
 <ul>
-<li>annotations - contains annotations that can be used in project<br></li>
-<li>logger - contains classes which implements JDI DARK logging</li>
-<li>requests - contains classes which implements JDI sending requests, error handling and initialization of service</li>
-<li>response - contains classes which used for perfomance testing</li>
-<li>performance - contains of classes which implements JDI DARK logging</li>
+<li>annotations - contain annotations that can be used in project<br></li>
+<li>logger - contain classes which implement JDI DARK logging</li>
+<li>requests - contain classes which implement JDI sending requests, error handling and initialization of service</li>
+<li>response - contain classes which used for working with Rest response</li>
+<li>performance - contain classes which used for perfomance testing</li>
 </ul>
 <h1 id='documentation'>Documentation</h1><h2 id='framework-usage'>Framework usage</h2><pre class="highlight plaintext"><code>import static com.epam.http.requests.ServiceInit.init;
 </code></pre>
