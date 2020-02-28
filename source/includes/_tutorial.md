@@ -157,7 +157,11 @@ Before first run test cases, execute maven commands:
 
 
 ## 3. JDI Dark Service Objects
-TBD
+  JDI Dark provides describing web service as a Service Object class, what allows to make well-structure clear code.
+  So it is easy to create maintained and well-readable tests. See <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">an example here</a>.
+  
+
+  
 
 ## 4. JDI Dark and Cucumber
 TBD
