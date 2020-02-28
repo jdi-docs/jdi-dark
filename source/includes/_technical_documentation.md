@@ -1041,6 +1041,88 @@ public void requestSpecificationAllowsSpecifyingCookie() {
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
 <br>
 
+## Authentication
+
+```java
+public void basicAuthTest() {
+        BasicAuthScheme basicAuth = new BasicAuthScheme();
+        basicAuth.setUserName("postman");
+        basicAuth.setPassword("password");
+        RestResponse resp = postmanAuthBasic.call(requestData(requestData -> requestData.setAuth(basicAuth)));
+        assertEquals(resp.status.code, HttpStatus.SC_OK);
+    }
+```
+
+Authentication is performed using AuthenticationScheme interface. Many authentication methods are supported in 
+RestAssured, so the following methods are already implemented: Basic, Digest, NTLM, OAuth1, OAuth2, Form, Certificate
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+```java
+public class customAuthScheme implements AuthenticationScheme {
+
+    private String customAuthKey;
+
+    public void setCustomAuthKey(String customAuthKey) {
+        this.customAuthKey = customAuthKey;
+    }
+
+    @Override
+    public void authenticate(HTTPBuilder httpBuilder) {
+        httpBuilder.getClient().addRequestInterceptor(
+                (request, context) ->
+                        request.addHeader("Authorization", this.customAuthKey));
+    }
+}
+```
+In order to create a custom authentication scheme one have to implement AuthenticationScheme interface, realising authenticate() method.
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+```java
+@BeforeClass
+public void before() {
+    BasicAuthScheme authScheme = new BasicAuthScheme();
+    authScheme.setUserName("postman");
+    authScheme.setPassword("password");
+    init(AuthorizationPostman.class, ServiceSettings.builder().authenticationScheme(authScheme).build());
+    }
+```
+Authentication can be instantiated on service level. To do so authentication scheme should be passed to service settings at service init.
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+If new authentication is also passed on test level, service level authentication will be overrode.
+
+
+ 
+
+
+
 ## Performance testing
 ```java
 public static PerformanceResult loadService(long liveTimeSec, RestMethod... requests)
