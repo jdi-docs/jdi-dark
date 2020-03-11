@@ -1184,8 +1184,6 @@ In order to restore the initial RestAssured config after test execution, the ```
 
 ### Easy way to pass review
 + Good code style
-+ No Wildcard imports (with asterisk *). You can use settings from the picture below
-![Wildcard Imports](../images/review-wildcard-imports.png)
 + `Ctrl+Alt+O` & `Ctrl+Alt+L` (replace ```Ctrl``` with ```Cmd``` on MAC) in IDEA IDE before any commit
 + Right branch and label in PR
 
