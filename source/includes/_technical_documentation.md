@@ -748,18 +748,23 @@ public void clearLogger() {
 
 By default JDI logging is defined in the next variables:
  
-**LOG_REQUEST = RestMethod::logRequest** located in package com.epam.http.requests, where logRequest method uses     
-- ILogger object method info(String msg, Object... args) - for console logging  
-- AllureLogger.startStep(String message, String requestData)  - for allure logging   
-**LOG_RESPONSE = RestResponse::logResponse** located in package com.epam.http.response, where logResponse method uses  
-- ILogger object method info(String msg, Object... args) - for console logging  
-- AllureLogger.passStep(String responseData, String uuid) - for allure logging   
+**LOG_REQUEST = RestMethod::logRequest** located in package *com.epam.http.requests*, where logRequest method uses
+    
++ ILogger object method info(String msg, Object... args) - for console logging  
++ AllureLogger.startStep(String message, String requestData)  - for allure logging
 
-For customizing logging you should redefine these static variables : 
+**LOG_RESPONSE = RestResponse::logResponse** located in package *com.epam.http.response*, where logResponse method uses
+ 
++ ILogger object method info(String msg, Object... args) - for console logging  
++ AllureLogger.passStep(String responseData, String uuid) - for allure logging   
 
-1. For customizing logger just for one or several tests -it's necessary to return logging variable in original state.   
-2. If it is used allure logging - don't forget to include allure logging in the redefining variable.  
-2. For customizing allure logging -it's necessary to redefine it in both variables: LOG_REQUEST and LOG_RESPONSE    
+**Customizing logging** 
+
+For customizing logging you should redefine these static variables
+
++ For customizing logger just for one or several tests -it's necessary to return logging variable in original state.   
++ If it is used allure logging - don't forget to include allure logging in the redefining variable.  
++ For customizing allure logging -it's necessary to redefine it in both variables: LOG_REQUEST and LOG_RESPONSE    
 
 See full example with redefining variables for console logging and allure for one test case.
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/LoggingCustomizeTests.java" target="_blank">Test example in Java</a>
