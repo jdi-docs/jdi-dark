@@ -704,6 +704,67 @@ For this need inject implementation of ErrorHandler interface into RestMethods t
 
 By default JDI uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.
 
+## Logging
+
+```java
+private static JFunc2<RestMethod, List<RequestData>, String> LOG_REQUEST_TEMP;
+private static JAction2<RestResponse, String> LOG_RESPONSE_TEMP;
+
+@BeforeClass
+public void initService() {
+    init(JettyService.class);
+    LOG_REQUEST_TEMP = LOG_REQUEST;
+    LOG_RESPONSE_TEMP = LOG_RESPONSE;
+    LOG_REQUEST = this::logRequest;
+    LOG_RESPONSE = this::logResponse;
+}
+
+private String logRequest(RestMethod restMethod, List<RequestData> requestData) {
+    MultiMap<String, String> queryparams = new MultiMap<>();
+    for (RequestData rd : requestData) {
+        queryparams.addAll(rd.queryParams);
+    }
+    String message = String.format("Do %s %s", restMethod.getType(), restMethod.getUrl());
+    logger.info(message);
+    //Change request logging for allure
+    startStep(message,
+            String.format("%s %s %s", restMethod.getType(), restMethod.getUrl(), queryparams));
+    return message;
+}
+
+private void logResponse(RestResponse response, String uuid) {
+    String message = String.format("Received response with %s and body: %s", response.getStatus(), response.getBody());
+    logger.info(message);
+    //Change response logging for allure
+    AllureLogger.passStep(message, uuid);
+}
+@AfterClass
+public void clearLogger() {
+    LOG_REQUEST = LOG_REQUEST_TEMP;
+    LOG_RESPONSE = LOG_RESPONSE_TEMP;
+}
+
+```
+
+By default JDI logging is defined in the next variables:
+ 
+**LOG_REQUEST = RestMethod::logRequest** located in package com.epam.http.requests, where logRequest method uses     
+- ILogger object method info(String msg, Object... args) - for console logging  
+- AllureLogger.startStep(String message, String requestData)  - for allure logging   
+**LOG_RESPONSE = RestResponse::logResponse** located in package com.epam.http.response, where logResponse method uses  
+- ILogger object method info(String msg, Object... args) - for console logging  
+- AllureLogger.passStep(String responseData, String uuid) - for allure logging   
+
+For customizing logging you should redefine these static variables : 
+
+1. For customizing logger just for one or several tests -it's necessary to return logging variable in original state.   
+2. If it is used allure logging - don't forget to include allure logging in the redefining variable.  
+2. For customizing allure logging -it's necessary to redefine it in both variables: LOG_REQUEST and LOG_RESPONSE    
+
+See full example with redefining variables for console logging and allure for one test case.
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/LoggingCustomizeTests.java" target="_blank">Test example in Java</a>
+
+
 ## Response data
 
 ```java
