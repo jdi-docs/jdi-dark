@@ -328,6 +328,9 @@
                     <a href="#reporting" class="toc-h2 toc-link" data-title="Reporting">Reporting</a>
                   </li>
                   <li>
+                    <a href="#retry-request-option" class="toc-h2 toc-link" data-title="Retry Request Option">Retry Request Option</a>
+                  </li>
+                  <li>
                     <a href="#access-restassured" class="toc-h2 toc-link" data-title="Access RestAssured">Access RestAssured</a>
                   </li>
                   <li>
@@ -1889,6 +1892,51 @@ Simply install Allure as you would normally do, and those attachments will be au
 <p>Here is an example of an Allure report with request body attached:</p>
 
 <p><img src="images/allure_request.png" alt="Allure Request" /></p>
+<h2 id='retry-request-option'>Retry Request Option</h2><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"503"</span><span class="o">)</span>
+<span class="nd">@RetryOnFailure</span><span class="o">(</span><span class="n">numberOfRetryAttempts</span> <span class="o">=</span> <span class="mi">2</span><span class="o">,</span> <span class="n">delay</span> <span class="o">=</span> <span class="mi">1</span><span class="o">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">get503</span><span class="o">;</span>
+</code></pre>
+<p>Annotation @RetryOnFailure created for resending request when the service responds with one of the statuses you define.
+<br><br>
+For example, if status codes 502 - more likely it&#39;s temporary server-side issue and retrying request will give successful result.
+<br></p>
+<pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"451"</span><span class="o">)</span>
+<span class="nd">@RetryOnFailure</span><span class="o">(</span><span class="n">numberOfRetryAttempts</span> <span class="o">=</span> <span class="mi">6</span><span class="o">,</span> <span class="n">errorCodes</span> <span class="o">=</span> <span class="mi">451</span><span class="o">,</span><span class="n">delay</span> <span class="o">=</span> <span class="mi">15</span><span class="o">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">NANOSECONDS</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">get451</span><span class="o">;</span>
+</code></pre><h3 id='annotation-has-parameters-to-specify'>Annotation has parameters to specify:<br></h3>
+<ol>
+<li>numberOfRetryAttempts - how many times retry request after failing one.<br></li>
+<li>errorCodes - on which status codes retry request.<br></li>
+<li>delay - after what time to repeat the request.<br></li>
+<li>unit - time unit of delay time<br></li>
+</ol>
+<pre class="highlight java tab-java"><code><span class="nd">@RetryOnFailure</span>
+<span class="nd">@ServiceDomain</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"http://localhost:8080/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RetryingService</span> <span class="o">{</span>
+
+    <span class="nd">@GET</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">get502</span><span class="o">;</span>
+
+    <span class="nd">@GET</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"501"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">get501</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre><h3 id='retryonfailure-can-be-applied-to-class-and-to-field'>@RetryOnFailure can be applied to class and to field:</h3>
+<p>JDI Dark will merge annotations data if it&#39;s 
+were placed in both places - so you need to specify annotation data only if you want to change some parameters to specific 
+endpoint.<br></p>
+<h3 id='default-annotation-param-values-are'>Default annotation param values are:<br></h3>
+<ol>
+<li>numberOfRetryAttempts - 3<br></li>
+<li>errorCodes - {502,503}<br></li>
+<li>delay - 10<br></li>
+<li>unit - TimeUnit.MICROSECONDS
+<br></li>
+</ol>
+<pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"502"</span><span class="o">)</span>
+<span class="nd">@IgnoreRetry</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">ignoreRetrying</span><span class="o">;</span>
+</code></pre><h3 id='retryonfailure-placed-on-class-can-be-ignored-by-adding-ignoreretry-to-field'>@RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:</h3>
+<p>In that case even if status code will be in specified list of errorCodes no retry requests will be send.</p>
 <h2 id='access-restassured'>Access RestAssured</h2>
 <p>TBD</p>
 <h3 id='accessing-restassured-config'>Accessing RestAssured.config</h3>
