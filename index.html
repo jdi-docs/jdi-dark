@@ -319,6 +319,9 @@
                     <a href="#authentication" class="toc-h2 toc-link" data-title="Authentication">Authentication</a>
                   </li>
                   <li>
+                    <a href="#parallel-tests-run" class="toc-h2 toc-link" data-title="Parallel tests run">Parallel tests run</a>
+                  </li>
+                  <li>
                     <a href="#performance-testing" class="toc-h2 toc-link" data-title="Performance testing">Performance testing</a>
                   </li>
                   <li>
@@ -1856,6 +1859,12 @@ RestAssured, so the following methods are already implemented: Basic, Digest, NT
 </br></p>
 
 <p>If new authentication is also passed on test level, service level authentication will be overrode.</p>
+<h2 id='parallel-tests-run'>Parallel tests run</h2>
+<p>For running tests in parallel use standard TestNG possibility.
+ See  <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG documentation</a></p>
+
+<p><a href="#" target="_blank">Parallel suite by classes example</a><br>
+ <a href="#" target="_blank">Parallel suite by methods example</a></p>
 <h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeMSec</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">weightRequests</span><span class="o">)</span>
