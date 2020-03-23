@@ -1185,7 +1185,13 @@ Authentication can be instantiated on service level. To do so authentication sch
 If new authentication is also passed on test level, service level authentication will be overrode.
 
 
- 
+## Parallel tests run
+ For running tests in parallel use standard TestNG possibility.
+ See  <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG documentation</a>
+
+ <a href="#" target="_blank">Parallel suite by classes example</a>  
+ <a href="#" target="_blank">Parallel suite by methods example</a>
+
 
 
 
