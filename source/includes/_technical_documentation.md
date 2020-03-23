@@ -1225,6 +1225,53 @@ After generating allure results, the full request and response information will 
 Here is an example of an Allure report with request body attached:
 
 ![Allure Request](../images/allure_request.png)
+## Retry Request Option
+```java
+@GET(value = "503")
+@RetryOnFailure(numberOfRetryAttempts = 2, delay = 1, unit = TimeUnit.SECONDS)
+public static RestMethod get503;
+```
+Annotation @RetryOnFailure created for resending request when the service responds with one of the statuses you define.
+<br><br>
+For example, if status codes 502 - more likely it's temporary server-side issue and retrying request will give successful result.
+<br>
+
+```java
+@GET(value = "451")
+@RetryOnFailure(numberOfRetryAttempts = 6, errorCodes = 451,delay = 15, unit = TimeUnit.NANOSECONDS)
+public static RestMethod get451;
+```
+
+### Annotation has parameters to specify:<br>
+1. numberOfRetryAttempts - how many times retry request after failing one.<br>
+2. errorCodes - on which status codes retry request.<br>
+3. delay - after what time to repeat the request.<br>
+4. unit - time unit of delay time<br>
+
+```java
+@RetryOnFailure
+@ServiceDomain(value = "http://localhost:8080/")
+public class RetryingService {
+
+    @GET
+    public static RestMethod get502;
+
+    @GET(value = "501")
+    public static RestMethod get501;
+}
+```
+
+### @RetryOnFailure can be applied to class and to field.
+<br> JDI Dark will merge annotations data if it's 
+were placed in both places - so you need to specify annotation data only if you want to change some parameters to specific 
+endpoint.<br>
+
+### Default annotation param values are:<br>
+1. numberOfRetryAttempts - 3<br>
+2. errorCodes - {502,503}<br>
+3. delay - 10<br>
+4. unit - TimeUnit.MICROSECONDS
+
 ## Access RestAssured
 TBD
 
