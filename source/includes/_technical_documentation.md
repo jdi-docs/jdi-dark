@@ -1261,8 +1261,8 @@ public class RetryingService {
 }
 ```
 
-### @RetryOnFailure can be applied to class and to field.
-<br> JDI Dark will merge annotations data if it's 
+### @RetryOnFailure can be applied to class and to field:
+JDI Dark will merge annotations data if it's 
 were placed in both places - so you need to specify annotation data only if you want to change some parameters to specific 
 endpoint.<br>
 
@@ -1271,6 +1271,16 @@ endpoint.<br>
 2. errorCodes - {502,503}<br>
 3. delay - 10<br>
 4. unit - TimeUnit.MICROSECONDS
+<br>
+
+```java
+@GET(value = "502")
+@IgnoreRetry
+public static RestMethod ignoreRetrying;
+```
+
+### @RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:
+In that case even if status code will be in specified list of errorCodes no retry requests will be send.
 
 ## Access RestAssured
 TBD
