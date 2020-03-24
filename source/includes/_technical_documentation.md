@@ -24,6 +24,84 @@ All of these annotations take the call request URI value. The annotations are su
 
 To point to the base URI of your service, it's convenient to use the *@ServiceDomain* annotation with URL provided as argument.
 Then, values in your method annotations might be just specific URL paths.
+
+### Specifying HTTP method
+
+```java
+@POST("/greet")
+public static RestMethod greetPost;
+
+@DELETE("/body")
+public static RestMethod deleteBody;
+
+@GET("/hello")
+public static RestMethod getHello;
+
+@PUT("/cookie")
+public static RestMethod putCookie;
+
+
+@Test
+public void formParamsAcceptsIntArgumentsJDI() {
+    RestResponse response = greetPost
+            .call(requestFormParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+    response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
+}
+
+@Test
+public void deleteSupportsStringBody() {
+    RestResponse response = deleteBody.call(requestBody(TEST_BODY_VALUE));
+    response.assertThat().body(is(TEST_BODY_VALUE));
+}
+
+@Test
+public void getCanReturnResponseDataAsString() {
+    RestResponse response = JettyService.getHello.call();
+    final String responseInfo = response.toString();
+    assertThat(responseInfo, containsString("Response status: 200 OK (OK)"));
+    assertThat(responseInfo, containsString("Response body: {\"hello\":\"Hello Scalatra\"}"));
+}
+
+@Test
+public void putCanReturnBodyAsString() {
+    Map<String, Object> cookies = new HashMap<>();
+    cookies.put("username", "John");
+    cookies.put("token", "1234");
+    final String body = JettyService.putCookie.call(cookies().addAll(cookies)).getBody();
+    assertEquals("username, token", body);
+}
+
+```
+
+For describing HTTP method use RestMethod class with appropriate annotation in Service object class.  
+**@POST("endpoint")** - for POST method  
+**@GET("endpoint")** - for GET method  
+**@DELETE("endpoint")** - for DELETE method  
+**@PUT("endpoint")** - for PUT method  
+
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">Test example in Java</a>
+
+
+Available methods for sending HTTP request in JDI dark: 
+
+|Method | Description | Return Type
+--- | --- | ---
+**call(RequestData requestData)**| send request with Request Data parameters | RestResponse
+**call(JAction1<RequestData> action)**| send request with Request Data parameters | RestResponse
+**call()**| send request | RestResponse
+**call(RequestSpecification requestSpecification)**| send request with RequestSpecification | RestResponse
+**call(RestAssuredConfig restAssuredConfig)**| send request with RestAssuredConfig  | RestResponse
+**call(String queryParams)**| send request with query parameters | RestResponse
+**callWithNamedParams(String... namedParams)**| send request with named query parameters | RestResponse
+**callAsData(Class<T> c)**| send request and map response to Java object | java object
+**post(Object body)**| send post/put request with body| RestResponse
+**post(Object body, Class<T> c)**| send post/put request with body and parse result to object | java object
+
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples" target="_blank">Test examples in Java</a>
+<br>
+
+
 ## Request Data
 You might need to use specific request data in your requests. *Cookies*, *headers*, *query parameters* and *Content-type* are available in annotated form.
 Therefore, you can specify them in your Service Object class providing name and value.
@@ -1036,76 +1114,6 @@ public void usingProxySpecification() {
             body("greeting.lastName", equalTo("Doe"));
 }
 ```
-
-## Post
-
-For sending a POST request you can use the RestMethod class with a @POST annotation.
-
-```java
-    @POST("/greet")
-    public static RestMethod greetPost;
-
-    @Test
-    public void formParamsAcceptsIntArgumentsJDI() {
-        RestResponse response = greetPost
-                .call(requestFormParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
-        response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
-    }
-
-    @Test
-    public void bodyWithSingleHamcrestMatching() {
-        RestResponse response = greetPost
-                .call(requestQueryParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
-        response.isOk().body(containsString("greeting"));
-    }
-
-
-```
-
-|Method | Description | Return Type
---- | --- | ---
-**call(RequestData requestData)**| make request with Request Data parameters | RestResponse
-
-<br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/custom/JSONPostTests.java" target="_blank">Test examples in Java</a>
-<br>
-
-## Delete
-
-For sending a DELETE request you can use the RestMethod class with a @DELETE annotation.
-
-```java
-@DELETE("/body")
-public static RestMethod deleteBody;
-@DELETE("/cookie")
-public static RestMethod deleteCookie;
-
-@Test
-public void deleteSupportsStringBody() {
-    RestResponse response = deleteBody.call(requestBody(TEST_BODY_VALUE));
-    response.assertThat().body(is(TEST_BODY_VALUE));
-}
-
-@Test
-public void requestSpecificationAllowsSpecifyingCookie() {
-    RestResponse response = deleteCookie.call(requestData(requestData ->
-            requestData.addCookies(new MapArray<>(new Object[][]{
-                    {USERNAME, FIRST_NAME_VALUE},
-                    {TOKEN, TOKEN_VALUE}
-            }))));
-    assertEquals(response.body, "username, token");
-}
-
-
-```
-
-|Method | Description | Return Type
---- | --- | ---
-**call(RequestData requestData)**| make request with Request Data parameters | RestResponse
-
-<br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/DeleteTest.java" target="_blank">Test examples in Java</a>
-<br>
 
 ## Authentication
 
