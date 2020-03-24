@@ -1186,14 +1186,61 @@ If new authentication is also passed on test level, service level authentication
 
 
 ## Parallel tests run
- For running tests in parallel use standard TestNG possibility.
- See  <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG documentation</a>
+ For running tests in parallel are used standard TestNG possibility.
 
- <a href="#" target="_blank">Parallel suite by classes example</a>  
- <a href="#" target="_blank">Parallel suite by methods example</a>
+ ```java
+ <?xml version="1.0" encoding="WINDOWS-1251"?>
+ <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+ <suite name="Http tests" data-provider-thread-count="3">
+     <test name="parallel classes running" parallel="classes" thread-count="4">
+         <classes>
+             <class name="com.epam.jdi.httptests.examples.custom.ResponseTests"/>
+             <class name="com.epam.jdi.httptests.examples.custom.AdvancedValidationTests"/>
+         </classes>
+     </test>
+     <test name="parallel methods running" parallel="methods" thread-count="4">
+         <classes>
+             <class name="com.epam.jdi.httptests.examples.custom.JSONPostTests"/>
+         </classes>
+     </test>
+ </suite>
+ ``` 
+ ```java
+@DataProvider(name = "createNewBoards", parallel = true)
+public static Object[][] createNewBoards() {
+    return new Object[][] {
+            {generateBoard()},
+            {generateBoard()},
+            {generateBoard()}
+    };
+}
 
+@Test(dataProvider = "createNewBoards", threadPoolSize = 3)
+public void createCardInBoard(Board board) {
+    //Crеate board
+    Board createdBoard = service.createBoard(board);
+    Board gotBoard = service.getBoard(createdBoard.id);
+    assertEquals(gotBoard.name, createdBoard.name, "Name of created board is incorrect");   
+}
+ ``` 
+  
+**Setting TestNG xml suite file for  parallel running tests**  
 
+  1. For running test methods in separate threads - add attribute *parallel="methods"* in the tag *suite* or *test*  
+  2. For running test classes in a separate thread - add attribute *parallel="classes"* in the tag *suite* or *test*  
+  3. Specify the attribute *thread-count* how many threads should be allocated for this execution.  
+  4. For parallel running Data Providers specify count of threads in the *data-provider-thread-count* attribute of the tag *suite*
+ 
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> 
+  
+**Setting Data Provider for parallel running directly in the test**  
 
+ 1. Add the attribute parallel = true to @DataProvider annotation.(By default a size of thread = 10)  
+ 2. Specify special count of threads in the attribute *threadPoolSize* in @DataProvider annotation 
+
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/PreconditionParallelTests" target="_blank">Parallel Data Provider test</a>
+
+Read more about <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG parallel running</a> 
 
 ## Performance testing
 ```java
