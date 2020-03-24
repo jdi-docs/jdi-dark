@@ -3,7 +3,9 @@
 In this tutorial we’ll take a glance at JDI Dark, a library that simplifies test automation, makes test run results stable, predictable and easy to maintain.
 
 1. **Quick Start** - a short instruction on how to add JDI Dark to your project and perform its basic configuration.
-2. **JDI Light at a glance** -  a simple example for creating test case with JDI DARK. 
+2. **JDI Dark at a glance** -  a simple example for creating test case with JDI Dark. 
+3. **JDI Dark Service Objects** - a Service Object class description
+4. **JDI Dark and Cucumber** -  a short instruction on how to create cucumber feature files with JDI Dark.
 
 ## 1. Quick Start
 ###Maven Dependencies
@@ -158,12 +160,68 @@ Before first run test cases, execute maven commands:
 
 ## 3. JDI Dark Service Objects
   JDI Dark provides describing web service as a Service Object class, what allows to make well-structure clear code.
-  So it is easy to create maintained and well-readable tests. See <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">an example here</a>.
+  So it is easy to create maintained and well-readable tests. See Tests with Service Object documentation <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">here</a>.
   
 
   
 
 ## 4. JDI Dark and Cucumber
+
+```java
+//STEP 1 Service Object Model class creation
+@ServiceDomain("http://httpbin.org/")
+public class ServiceExample {
+    @ContentType(JSON)
+    @GET("/get")
+    @Headers({
+            @Header(name = "Name", value = "Roman"),
+            @Header(name = "Id", value = "Test")
+    })
+    RestMethod getMethod;
+
+    @ContentType(JSON)
+    @GET("/get")
+    RestMethod get;
+
+    @Header(name = "Type", value = "Test")
+    @POST("/post")
+    RestMethod postMethod;
+
+    @PUT("/put")
+    RestMethod putMethod;
+    @PATCH("/patch")
+    RestMethod patch;
+    @DELETE("/delete")
+    RestMethod delete;
+    @GET("/status/{status}")
+    RestMethod status;
+}
+
+
+
+//STEP 2, 4 Feature file creation (pre-created steps from JDI Dark BDD are used here)
+Feature: Json response check
+
+  Scenario: Check json response
+    Given I init service
+    And I set JSON request content type
+    When I do getMethod request
+    Then Response status type is OK
+    And Response body has values
+      | url          | http://httpbin.org/get |
+      | headers.Host | httpbin.org            |
+    And Response header "Connection" is "keep-alive"
+
+
+
+//STEP 3 TestRunner creation (TestNG example)
+@CucumberOptions(features = "src/test/resources/features/",
+        glue = {"com/epam/jdi/httptests/steps", "com/epam/jdi/http/stepdefs/en"},
+        tags = {"@smoke"})
+public class HttpTestsRunner extends AbstractTestNGCucumberTests {
+}
+
+```
 
 In this example we create tests for simple HTTP Request & Response Service. You can familiarize with API <a href="http://httpbin.org/" target="_blank">here</a>.
 
