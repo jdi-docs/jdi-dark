@@ -319,7 +319,7 @@
                     <a href="#authentication" class="toc-h2 toc-link" data-title="Authentication">Authentication</a>
                   </li>
                   <li>
-                    <a href="#parallel-tests-run" class="toc-h2 toc-link" data-title="Parallel tests run">Parallel tests run</a>
+                    <a href="#parallel-running" class="toc-h2 toc-link" data-title="Parallel running">Parallel running</a>
                   </li>
                   <li>
                     <a href="#performance-testing" class="toc-h2 toc-link" data-title="Performance testing">Performance testing</a>
@@ -1862,12 +1862,61 @@ RestAssured, so the following methods are already implemented: Basic, Digest, NT
 </br></p>
 
 <p>If new authentication is also passed on test level, service level authentication will be overrode.</p>
-<h2 id='parallel-tests-run'>Parallel tests run</h2>
-<p>For running tests in parallel use standard TestNG possibility.
- See  <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG documentation</a></p>
+<h2 id='parallel-running'>Parallel running</h2>
+<p>For running tests in parallel are used standard TestNG possibility.</p>
+<pre class="highlight java tab-java"><code> <span class="o">&lt;?</span><span class="n">xml</span> <span class="n">version</span><span class="o">=</span><span class="s">"1.0"</span> <span class="n">encoding</span><span class="o">=</span><span class="s">"WINDOWS-1251"</span><span class="o">?&gt;</span>
+ <span class="o">&lt;!</span><span class="n">DOCTYPE</span> <span class="n">suite</span> <span class="n">SYSTEM</span> <span class="s">"http://testng.org/testng-1.0.dtd"</span><span class="o">&gt;</span>
+ <span class="o">&lt;</span><span class="n">suite</span> <span class="n">name</span><span class="o">=</span><span class="s">"Http tests"</span> <span class="n">data</span><span class="o">-</span><span class="n">provider</span><span class="o">-</span><span class="n">thread</span><span class="o">-</span><span class="n">count</span><span class="o">=</span><span class="s">"3"</span><span class="o">&gt;</span>
+     <span class="o">&lt;</span><span class="n">test</span> <span class="n">name</span><span class="o">=</span><span class="s">"parallel classes running"</span> <span class="n">parallel</span><span class="o">=</span><span class="s">"classes"</span> <span class="n">thread</span><span class="o">-</span><span class="n">count</span><span class="o">=</span><span class="s">"4"</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">classes</span><span class="o">&gt;</span>
+             <span class="o">&lt;</span><span class="kd">class</span> <span class="nc">name</span><span class="o">=</span><span class="s">"com.epam.jdi.httptests.examples.custom.ResponseTests"</span><span class="o">/&gt;</span>
+             <span class="o">&lt;</span><span class="kd">class</span> <span class="nc">name</span><span class="o">=</span><span class="s">"com.epam.jdi.httptests.examples.custom.AdvancedValidationTests"</span><span class="o">/&gt;</span>
+         <span class="o">&lt;/</span><span class="n">classes</span><span class="o">&gt;</span>
+     <span class="o">&lt;/</span><span class="n">test</span><span class="o">&gt;</span>
+     <span class="o">&lt;</span><span class="n">test</span> <span class="n">name</span><span class="o">=</span><span class="s">"parallel methods running"</span> <span class="n">parallel</span><span class="o">=</span><span class="s">"methods"</span> <span class="n">thread</span><span class="o">-</span><span class="n">count</span><span class="o">=</span><span class="s">"4"</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">classes</span><span class="o">&gt;</span>
+             <span class="o">&lt;</span><span class="kd">class</span> <span class="nc">name</span><span class="o">=</span><span class="s">"com.epam.jdi.httptests.examples.custom.JSONPostTests"</span><span class="o">/&gt;</span>
+         <span class="o">&lt;/</span><span class="n">classes</span><span class="o">&gt;</span>
+     <span class="o">&lt;/</span><span class="n">test</span><span class="o">&gt;</span>
+ <span class="o">&lt;/</span><span class="n">suite</span><span class="o">&gt;</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="nd">@DataProvider</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"createNewBoards"</span><span class="o">,</span> <span class="n">parallel</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">Object</span><span class="o">[][]</span> <span class="nf">createNewBoards</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[][]</span> <span class="o">{</span>
+            <span class="o">{</span><span class="n">generateBoard</span><span class="o">()},</span>
+            <span class="o">{</span><span class="n">generateBoard</span><span class="o">()},</span>
+            <span class="o">{</span><span class="n">generateBoard</span><span class="o">()}</span>
+    <span class="o">};</span>
+<span class="o">}</span>
 
-<p><a href="#" target="_blank">Parallel suite by classes example</a><br>
- <a href="#" target="_blank">Parallel suite by methods example</a></p>
+<span class="nd">@Test</span><span class="o">(</span><span class="n">dataProvider</span> <span class="o">=</span> <span class="s">"createNewBoards"</span><span class="o">,</span> <span class="n">threadPoolSize</span> <span class="o">=</span> <span class="mi">3</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">createCardInBoard</span><span class="o">(</span><span class="n">Board</span> <span class="n">board</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//Crеate board</span>
+    <span class="n">Board</span> <span class="n">createdBoard</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">createBoard</span><span class="o">(</span><span class="n">board</span><span class="o">);</span>
+    <span class="n">Board</span> <span class="n">gotBoard</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">getBoard</span><span class="o">(</span><span class="n">createdBoard</span><span class="o">.</span><span class="na">id</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="n">gotBoard</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">createdBoard</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="s">"Name of created board is incorrect"</span><span class="o">);</span>   
+<span class="o">}</span>
+</code></pre>
+<p><strong>Setting TestNG xml suite file for  parallel running tests</strong>  </p>
+
+<ol>
+<li>For running test methods in separate threads - add attribute <em>parallel=&quot;methods&quot;</em> in the tag <em>suite</em> or <em>test</em><br></li>
+<li>For running test classes in a separate thread - add attribute <em>parallel=&quot;classes&quot;</em> in the tag <em>suite</em> or <em>test</em><br></li>
+<li>Specify the attribute <em>thread-count</em> how many threads should be allocated for this execution.<br></li>
+<li>For parallel running Data Providers specify count of threads in the <em>data-provider-thread-count</em> attribute of the tag <em>suite</em></li>
+</ol>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> </p>
+
+<p><strong>Setting Data Provider for parallel running directly in the test</strong>  </p>
+
+<ol>
+<li>Add the attribute parallel = true to @DataProvider annotation.(By default a size of thread = 10)<br></li>
+<li>Specify special count of threads in the attribute <em>threadPoolSize</em> in @DataProvider annotation </li>
+</ol>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/PreconditionParallelTests" target="_blank">Parallel Data Provider test</a></p>
+
+<p>Read more about <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG parallel running</a> </p>
 <h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeMSec</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">weightRequests</span><span class="o">)</span>
