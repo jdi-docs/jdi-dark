@@ -446,11 +446,13 @@ You just need to use the <em>@QueryParameter</em> annotation in your method or s
 
 <ol>
 <li><strong>Quick Start</strong> - a short instruction on how to add JDI Dark to your project and perform its basic configuration.</li>
-<li><strong>JDI Light at a glance</strong> -  a simple example for creating test case with JDI DARK. </li>
+<li><strong>JDI Dark at a glance</strong> -  a simple example for creating test case with JDI Dark. </li>
+<li><strong>JDI Dark Service Objects</strong> - a Service Object class description</li>
+<li><strong>JDI Dark and Cucumber</strong> -  a short instruction on how to create cucumber feature files with JDI Dark.</li>
 </ol>
 <h2 id='1-quick-start'>1. Quick Start</h2><h3 id='maven-dependencies'>Maven Dependencies</h3><pre class="highlight java tab-java"><code><span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="na">epam</span><span class="o">.</span><span class="na">jdi</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">jdi</span><span class="o">-</span><span class="n">light</span><span class="o">-</span><span class="n">dark</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">jdi</span><span class="o">-</span><span class="n">dark</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;{</span><span class="n">RELEASE</span><span class="o">}&lt;/</span><span class="n">version</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
 </code></pre>
@@ -536,7 +538,7 @@ The latest version can be found in <a href="https://search.maven.org/classic/#se
         <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="n">gotBoard</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">createdBoard</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="s">"Name of created board is incorrect"</span><span class="o">);</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre><h3 id='first-test-creating'>First test creating</h3>
+</code></pre><h3 id='first-test-creation'>First test creation</h3>
 <p>In this example we create test for Trello <em>/boards/</em> endpoint. You can familiarize with  Trello API  <a href="https://developers.trello.com/reference/#boardsid" target="_blank">here</a>.</p>
 
 <p><br/>
@@ -558,8 +560,8 @@ The latest version can be found in <a href="https://search.maven.org/classic/#se
 <ul>
 <li><p>Add RestMethod<Board> boardsPos method</p></li>
 <li><p>Create method createBoard for transfer and getting Board object in RestMethod  </p></li>
-<li><p>Set annotation @POST(BOARDS) with specifying endpoint</p></li>
-<li><p>Set annotation @ContentType(JSON) for specifying sending content-type</p></li>
+<li><p>User annotation @POST(BOARDS) for specific post endpoint</p></li>
+<li><p>Use annotation @ContentType(JSON) for specific sending content-type</p></li>
 </ul>
 
 <p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/TrelloService.java" target="_blank">See example class for TrelloService </a>.<br>
@@ -585,9 +587,130 @@ Before first run test cases, execute maven commands:</p>
 <strong>mvn compile</strong></p>
 <h2 id='3-jdi-dark-service-objects'>3. JDI Dark Service Objects</h2>
 <p>JDI Dark provides describing web service as a Service Object class, what allows to make well-structure clear code.
-  So it is easy to create maintained and well-readable tests. See <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">an example here</a>.</p>
-<h2 id='4-jdi-dark-and-cucumber'>4. JDI Dark and Cucumber</h2>
-<p>TBD</p>
+  So it is easy to create maintained and well-readable tests. See Tests with Service Object documentation <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">here</a>.</p>
+<h2 id='4-jdi-dark-and-cucumber'>4. JDI Dark and Cucumber</h2><pre class="highlight java tab-java"><code><span class="c1">//STEP 1 Service Object Model class creation</span>
+<span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"http://httpbin.org/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceExample</span> <span class="o">{</span>
+    <span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span>
+    <span class="nd">@Headers</span><span class="o">({</span>
+            <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Name"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Roman"</span><span class="o">),</span>
+            <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Id"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Test"</span><span class="o">)</span>
+    <span class="o">})</span>
+    <span class="n">RestMethod</span> <span class="n">getMethod</span><span class="o">;</span>
+
+    <span class="nd">@ContentType</span><span class="o">(</span><span class="n">JSON</span><span class="o">)</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/get"</span><span class="o">)</span>
+    <span class="n">RestMethod</span> <span class="n">get</span><span class="o">;</span>
+
+    <span class="nd">@Header</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Type"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Test"</span><span class="o">)</span>
+    <span class="nd">@POST</span><span class="o">(</span><span class="s">"/post"</span><span class="o">)</span>
+    <span class="n">RestMethod</span> <span class="n">postMethod</span><span class="o">;</span>
+
+    <span class="nd">@PUT</span><span class="o">(</span><span class="s">"/put"</span><span class="o">)</span>
+    <span class="n">RestMethod</span> <span class="n">putMethod</span><span class="o">;</span>
+    <span class="nd">@PATCH</span><span class="o">(</span><span class="s">"/patch"</span><span class="o">)</span>
+    <span class="n">RestMethod</span> <span class="n">patch</span><span class="o">;</span>
+    <span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/delete"</span><span class="o">)</span>
+    <span class="n">RestMethod</span> <span class="n">delete</span><span class="o">;</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/status/{status}"</span><span class="o">)</span>
+    <span class="n">RestMethod</span> <span class="n">status</span><span class="o">;</span>
+<span class="o">}</span>
+
+
+
+<span class="c1">//STEP 2, 4 Feature file creation (pre-created steps from JDI Dark BDD are used here)</span>
+<span class="nl">Feature:</span> <span class="n">Json</span> <span class="n">response</span> <span class="n">check</span>
+
+  <span class="nl">Scenario:</span> <span class="n">Check</span> <span class="n">json</span> <span class="n">response</span>
+    <span class="n">Given</span> <span class="n">I</span> <span class="n">init</span> <span class="n">service</span>
+    <span class="n">And</span> <span class="n">I</span> <span class="n">set</span> <span class="n">JSON</span> <span class="n">request</span> <span class="n">content</span> <span class="n">type</span>
+    <span class="n">When</span> <span class="n">I</span> <span class="k">do</span> <span class="n">getMethod</span> <span class="n">request</span>
+    <span class="n">Then</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">type</span> <span class="n">is</span> <span class="n">OK</span>
+    <span class="n">And</span> <span class="n">Response</span> <span class="n">body</span> <span class="n">has</span> <span class="n">values</span>
+      <span class="o">|</span> <span class="n">url</span>          <span class="o">|</span> <span class="nl">http:</span><span class="c1">//httpbin.org/get |</span>
+      <span class="o">|</span> <span class="n">headers</span><span class="o">.</span><span class="na">Host</span> <span class="o">|</span> <span class="n">httpbin</span><span class="o">.</span><span class="na">org</span>            <span class="o">|</span>
+    <span class="n">And</span> <span class="n">Response</span> <span class="n">header</span> <span class="s">"Connection"</span> <span class="n">is</span> <span class="s">"keep-alive"</span>
+
+
+
+<span class="c1">//STEP 3 TestRunner creation (TestNG example)</span>
+<span class="nd">@CucumberOptions</span><span class="o">(</span><span class="n">features</span> <span class="o">=</span> <span class="s">"src/test/resources/features/"</span><span class="o">,</span>
+        <span class="n">glue</span> <span class="o">=</span> <span class="o">{</span><span class="s">"com/epam/jdi/httptests/steps"</span><span class="o">,</span> <span class="s">"com/epam/jdi/http/stepdefs/en"</span><span class="o">},</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="o">{</span><span class="s">"@smoke"</span><span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpTestsRunner</span> <span class="kd">extends</span> <span class="n">AbstractTestNGCucumberTests</span> <span class="o">{</span>
+<span class="o">}</span>
+
+</code></pre>
+<p>In this example we create tests for simple HTTP Request &amp; Response Service. You can familiarize with API <a href="http://httpbin.org/" target="_blank">here</a>.</p>
+
+<p><br/>
+<strong>1. Create  service class with Rest methods</strong> </p>
+
+<p>-Specify BaseURI service by using @ServiceDomain(&quot;http://httpbin.org/&quot;) annotation before class </p>
+
+<p>-Describe endpoints using annotations:</p>
+
+<ul>
+<li><p>Add necessary RestMethod methods (@POST, @GET, @PUT, @PATCH and @DELETE)</p></li>
+<li><p>Use annotation @Headers, @Header for specific headers</p></li>
+<li><p>Use annotation @ContentType for specific content-type</p></li>
+<li><p>Use other necessary annotation as described <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object" target="_blank">here</a>.</p></li>
+</ul>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/main/java/com/epam/jdi/httptests/ServiceExample.java" target="_blank">See example for Service Object class</a>.<br>
+<br/></p>
+
+<p><strong>2. Create feature files</strong></p>
+
+<ul>
+<li>Create folder to have all *.feature files in place. Recommended to store in src/test/resources. But can be changed via @CucumberOptions -&gt; ‘feature’ attribute</li>
+</ul>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">See examples for feature files</a>.<br>
+<br/></p>
+
+<p><strong>3. Create TestRunner class (JDI Dark support both TestNG and Junit)</strong></p>
+
+<p>Specify additional options/custom properties via @CucumberOptions (‘strict’, tags’, ‘plugin’, ‘features’, ‘glue’, ‘format’ are mostly used).
+For more details on @CucumberOptions and configs check cucumber documentation <a href="https://cucumber.io/docs/cucumber/api/" target="_blank">here</a>.<br>
+<br/>
+Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/CucumberTestRunner.java" target="_blank">here</a>.
+<br/></p>
+
+<p>TestNG TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/HttpTestsRunner.java" target="_blank">here</a>.<br>
+<br/></p>
+
+<p><strong>4. Create step definitions in java</strong></p>
+
+<ul>
+<li>Use pre-created steps from JDI Dark BDD. </li>
+</ul>
+
+<p>Check all pre-created JDI Dark BDD steps <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd/src/main/java/com/epam/jdi/http/stepdefs/en" target="_blank">here</a>.</p>
+
+<ul>
+<li>Also, you can add your own steps. Create a package for step definitions in java.</li>
+</ul>
+
+<p>Check the example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/steps/InitService.java" target="_blank">here</a>.</p>
+
+<p><strong>5. Install plugin for relevant IDEA</strong></p>
+
+<p>Go File-&gt;Settings--&gt;Plugins and double check the plugin installation. Then you can manage cucumber plugin as shown below This should redirect you to step definition when you click your test.</p>
+
+<p><strong>6. Create scenario description in Gherkin in feature file.</strong></p>
+
+<p>You can see the various examples of feature files <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.</p>
+
+<p><strong>7. Run the tests via any available option</strong></p>
+
+<ul>
+<li><p>CLI</p></li>
+<li><p>maven plugin</p></li>
+<li><p>jUnit or TestNG runner</p></li>
+<li><p>IDE plugin for Cucumber</p></li>
+</ul>
 <h2 id='5-jdi-dark-performance'>5. JDI Dark Performance</h2>
 <p>TBD</p>
 <h2 id='jdi-dark-settings-at-a-glance'>JDI Dark settings at a glance</h2>
