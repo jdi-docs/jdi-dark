@@ -10,7 +10,7 @@ In this tutorial we’ll take a glance at JDI Dark, a library that simplifies te
  ```java
 <dependency>
     <groupId>com.epam.jdi</groupId>
-    <artifactId>jdi-light-dark</artifactId>
+    <artifactId>jdi-dark</artifactId>
     <version>{RELEASE}</version>
 </dependency>
  ```
@@ -102,7 +102,7 @@ public class TrelloTests {
 }
 ```
 
-###First test creating
+###First test creation
 
 In this example we create test for Trello */boards/* endpoint. You can familiarize with  Trello API  <a href="https://developers.trello.com/reference/#boardsid" target="_blank">here</a>.
 
@@ -126,9 +126,9 @@ Create class for <a href="https://developers.trello.com/reference/#board-object"
   
   - Create method createBoard for transfer and getting Board object in RestMethod  
 
-  - Set annotation @POST(BOARDS) with specifying endpoint
+  - User annotation @POST(BOARDS) for specific post endpoint
 
-  - Set annotation @ContentType(JSON) for specifying sending content-type
+  - Use annotation @ContentType(JSON) for specific sending content-type
 
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/TrelloService.java" target="_blank">See example class for TrelloService </a>.   
 <br/>  
@@ -164,7 +164,73 @@ Before first run test cases, execute maven commands:
   
 
 ## 4. JDI Dark and Cucumber
-TBD
+
+In this example we create tests for simple HTTP Request & Response Service. You can familiarize with API <a href="http://httpbin.org/" target="_blank">here</a>.
+
+<br/>
+**1. Create  service class with Rest methods** 
+
+-Specify BaseURI service by using @ServiceDomain("http://httpbin.org/") annotation before class 
+
+-Describe endpoints using annotations:
+
+  - Add necessary RestMethod methods (@POST, @GET, @PUT, @PATCH and @DELETE)
+
+  - Use annotation @Headers, @Header for specific headers
+
+  - Use annotation @ContentType for specific content-type
+  
+  - Use other necessary annotation as described <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object" target="_blank">here</a>.
+
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/main/java/com/epam/jdi/httptests/ServiceExample.java" target="_blank">See example for Service Object class</a>.   
+<br/>
+
+**2. Create feature files**
+
+- Create folder to have all *.feature files in place. Recommended to store in src/test/resources. But can be changed via @CucumberOptions -> ‘feature’ attribute
+
+<a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">See examples for feature files</a>.   
+<br/>
+
+**3. Create TestRunner class (JDI Dark support both TestNG and Junit)**
+
+Specify additional options/custom properties via @CucumberOptions (‘strict’, tags’, ‘plugin’, ‘features’, ‘glue’, ‘format’ are mostly used).
+For more details on @CucumberOptions and configs check cucumber documentation <a href="https://cucumber.io/docs/cucumber/api/" target="_blank">here</a>.   
+<br/>
+Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/CucumberTestRunner.java" target="_blank">here</a>.
+<br/>
+
+TestNG TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/HttpTestsRunner.java" target="_blank">here</a>.  
+<br/>
+
+**4. Create step definitions in java**
+
+- Use pre-created steps from JDI Dark BDD. 
+
+Check all pre-created JDI Dark BDD steps <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd/src/main/java/com/epam/jdi/http/stepdefs/en" target="_blank">here</a>.
+
+- Also, you can add your own steps. Create a package for step definitions in java.
+
+Check the example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/steps/InitService.java" target="_blank">here</a>.
+
+**5. Install plugin for relevant IDEA**
+
+Go File->Settings-->Plugins and double check the plugin installation. Then you can manage cucumber plugin as shown below This should redirect you to step definition when you click your test.
+
+**6. Create scenario description in Gherkin in feature file.**
+
+You can see the various examples of feature files <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.
+
+**7. Run the tests via any available option**
+
+- CLI
+
+- maven plugin
+
+- jUnit or TestNG runner
+
+- IDE plugin for Cucumber
+
 ## 5. JDI Dark Performance
 TBD
 ## JDI Dark settings at a glance
