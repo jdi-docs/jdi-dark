@@ -310,12 +310,6 @@
                     <a href="#proxy" class="toc-h2 toc-link" data-title="Proxy">Proxy</a>
                   </li>
                   <li>
-                    <a href="#post" class="toc-h2 toc-link" data-title="Post">Post</a>
-                  </li>
-                  <li>
-                    <a href="#delete" class="toc-h2 toc-link" data-title="Delete">Delete</a>
-                  </li>
-                  <li>
                     <a href="#authentication" class="toc-h2 toc-link" data-title="Authentication">Authentication</a>
                   </li>
                   <li>
@@ -631,6 +625,122 @@ All of these annotations take the call request URI value. The annotations are su
 
 <p>To point to the base URI of your service, it&#39;s convenient to use the <em>@ServiceDomain</em> annotation with URL provided as argument.
 Then, values in your method annotations might be just specific URL paths.</p>
+<h3 id='specifying-http-method'>Specifying HTTP method</h3><pre class="highlight java tab-java"><code><span class="nd">@POST</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">greetPost</span><span class="o">;</span>
+
+<span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/body"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">deleteBody</span><span class="o">;</span>
+
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/hello"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getHello</span><span class="o">;</span>
+
+<span class="nd">@PUT</span><span class="o">(</span><span class="s">"/cookie"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">putCookie</span><span class="o">;</span>
+
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
+            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestFormParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteSupportsStringBody</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">deleteBody</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestBody</span><span class="o">(</span><span class="n">TEST_BODY_VALUE</span><span class="o">));</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="n">TEST_BODY_VALUE</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">getCanReturnResponseDataAsString</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">JettyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">();</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">responseInfo</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">responseInfo</span><span class="o">,</span> <span class="n">containsString</span><span class="o">(</span><span class="s">"Response status: 200 OK (OK)"</span><span class="o">));</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">responseInfo</span><span class="o">,</span> <span class="n">containsString</span><span class="o">(</span><span class="s">"Response body: {\"hello\":\"Hello Scalatra\"}"</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">putCanReturnBodyAsString</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">cookies</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">cookies</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"username"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">);</span>
+    <span class="n">cookies</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"token"</span><span class="o">,</span> <span class="s">"1234"</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">body</span> <span class="o">=</span> <span class="n">JettyService</span><span class="o">.</span><span class="na">putCookie</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">cookies</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">cookies</span><span class="o">)).</span><span class="na">getBody</span><span class="o">();</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">"username, token"</span><span class="o">,</span> <span class="n">body</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre>
+<p>For describing HTTP method use RestMethod class with appropriate annotation in Service object class.<br>
+<strong>@POST(&quot;endpoint&quot;)</strong> - for POST method<br>
+<strong>@GET(&quot;endpoint&quot;)</strong> - for GET method<br>
+<strong>@DELETE(&quot;endpoint&quot;)</strong> - for DELETE method<br>
+<strong>@PUT(&quot;endpoint&quot;)</strong> - for PUT method  </p>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">Test example in Java</a></p>
+
+<p>Available methods for sending HTTP request in JDI dark: </p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>call(RequestData requestData)</strong></td>
+<td>send request with Request Data parameters</td>
+<td>RestResponse</td>
+</tr>
+<tr>
+<td><strong>call(JAction1<RequestData> action)</strong></td>
+<td>send request with Request Data parameters</td>
+<td>RestResponse</td>
+</tr>
+<tr>
+<td><strong>call()</strong></td>
+<td>send request</td>
+<td>RestResponse</td>
+</tr>
+<tr>
+<td><strong>call(RequestSpecification requestSpecification)</strong></td>
+<td>send request with RequestSpecification</td>
+<td>RestResponse</td>
+</tr>
+<tr>
+<td><strong>call(RestAssuredConfig restAssuredConfig)</strong></td>
+<td>send request with RestAssuredConfig</td>
+<td>RestResponse</td>
+</tr>
+<tr>
+<td><strong>call(String queryParams)</strong></td>
+<td>send request with query parameters</td>
+<td>RestResponse</td>
+</tr>
+<tr>
+<td><strong>callWithNamedParams(String... namedParams)</strong></td>
+<td>send request with named query parameters</td>
+<td>RestResponse</td>
+</tr>
+<tr>
+<td><strong>callAsData(Class<T> c)</strong></td>
+<td>send request and map response to Java object</td>
+<td>java object</td>
+</tr>
+<tr>
+<td><strong>post(Object body)</strong></td>
+<td>send post/put request with body</td>
+<td>RestResponse</td>
+</tr>
+<tr>
+<td><strong>post(Object body, Class<T> c)</strong></td>
+<td>send post/put request with body and parse result to object</td>
+<td>java object</td>
+</tr>
+</tbody></table>
+
+<p><br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples" target="_blank">Test examples in Java</a>
+<br></p>
 <h2 id='request-data'>Request Data</h2>
 <p>You might need to use specific request data in your requests. <em>Cookies</em>, <em>headers</em>, <em>query parameters</em> and <em>Content-type</em> are available in annotated form.
 Therefore, you can specify them in your Service Object class providing name and value.</p>
@@ -1714,87 +1824,7 @@ Cookies without value and with multiple values can be added as well.</p>
             <span class="n">body</span><span class="o">(</span><span class="s">"greeting.firstName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John"</span><span class="o">)).</span>
             <span class="n">body</span><span class="o">(</span><span class="s">"greeting.lastName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Doe"</span><span class="o">));</span>
 <span class="o">}</span>
-</code></pre><h2 id='post'>Post</h2>
-<p>For sending a POST request you can use the RestMethod class with a @POST annotation.</p>
-<pre class="highlight java tab-java"><code>    <span class="nd">@POST</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">greetPost</span><span class="o">;</span>
-
-    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
-                <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestFormParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
-        <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">bodyWithSingleHamcrestMatching</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
-                <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestQueryParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
-        <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">containsString</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">));</span>
-    <span class="o">}</span>
-
-
-</code></pre>
-<table><thead>
-<tr>
-<th>Method</th>
-<th>Description</th>
-<th>Return Type</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>call(RequestData requestData)</strong></td>
-<td>make request with Request Data parameters</td>
-<td>RestResponse</td>
-</tr>
-</tbody></table>
-
-<p><br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/custom/JSONPostTests.java" target="_blank">Test examples in Java</a>
-<br></p>
-<h2 id='delete'>Delete</h2>
-<p>For sending a DELETE request you can use the RestMethod class with a @DELETE annotation.</p>
-<pre class="highlight java tab-java"><code><span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/body"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">deleteBody</span><span class="o">;</span>
-<span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/cookie"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">deleteCookie</span><span class="o">;</span>
-
-<span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteSupportsStringBody</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">deleteBody</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestBody</span><span class="o">(</span><span class="n">TEST_BODY_VALUE</span><span class="o">));</span>
-    <span class="n">response</span><span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="n">TEST_BODY_VALUE</span><span class="o">));</span>
-<span class="o">}</span>
-
-<span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">requestSpecificationAllowsSpecifyingCookie</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">deleteCookie</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span><span class="n">requestData</span> <span class="o">-&gt;</span>
-            <span class="n">requestData</span><span class="o">.</span><span class="na">addCookies</span><span class="o">(</span><span class="k">new</span> <span class="n">MapArray</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{</span>
-                    <span class="o">{</span><span class="n">USERNAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">},</span>
-                    <span class="o">{</span><span class="n">TOKEN</span><span class="o">,</span> <span class="n">TOKEN_VALUE</span><span class="o">}</span>
-            <span class="o">}))));</span>
-    <span class="n">assertEquals</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">body</span><span class="o">,</span> <span class="s">"username, token"</span><span class="o">);</span>
-<span class="o">}</span>
-
-
-</code></pre>
-<table><thead>
-<tr>
-<th>Method</th>
-<th>Description</th>
-<th>Return Type</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>call(RequestData requestData)</strong></td>
-<td>make request with Request Data parameters</td>
-<td>RestResponse</td>
-</tr>
-</tbody></table>
-
-<p><br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/DeleteTest.java" target="_blank">Test examples in Java</a>
-<br></p>
-<h2 id='authentication'>Authentication</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">basicAuthTest</span><span class="o">()</span> <span class="o">{</span>
+</code></pre><h2 id='authentication'>Authentication</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">basicAuthTest</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">BasicAuthScheme</span> <span class="n">basicAuth</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BasicAuthScheme</span><span class="o">();</span>
         <span class="n">basicAuth</span><span class="o">.</span><span class="na">setUserName</span><span class="o">(</span><span class="s">"postman"</span><span class="o">);</span>
         <span class="n">basicAuth</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">"password"</span><span class="o">);</span>
