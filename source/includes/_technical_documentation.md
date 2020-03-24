@@ -121,7 +121,7 @@ Methods for passing path params (with/without query params) in RestMethod:
 **callWithNamedParams(String... namedParams)** | pass parameters to a path without key| RestResponse
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/PathParamTests.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
 <br />
 <br />
@@ -261,7 +261,7 @@ Method allow to send specific query parameters in url in RestMethod:
 **call(String queryParams)** | pass query parameters | RestResponse
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ParamTest.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTest.java" target="_blank">Test examples in Java</a>
 <br>  
 <br />
 <br />
@@ -313,7 +313,7 @@ You can set RequestSpecification for your request. Get RestAssured RequestSpecif
 **call(RequestSpecification spec)** | make request with RequestSpecification | RestResponse 
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ConfigITest.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/ConfigITest.java" target="_blank">Test examples in Java</a>
 <br>
  
 *For general setting RestAssured config see [Accessing RestAssured](https://jdi-docs.github.io/jdi-dark/#access-restassured)*
@@ -767,7 +767,7 @@ For customizing logging you should redefine these static variables
 + For customizing allure logging -it's necessary to redefine it in both variables: LOG_REQUEST and LOG_RESPONSE    
 
 See full example with redefining variables for console logging and allure.
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/LoggingCustomizeTests.java" target="_blank">Test example in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/LoggingCustomizeTests.java" target="_blank">Test example in Java</a>
 
 
 ## Response data
@@ -1067,7 +1067,7 @@ For sending a POST request you can use the RestMethod class with a @POST annotat
 **call(RequestData requestData)**| make request with Request Data parameters | RestResponse
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/JSONPostTests.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/custom/JSONPostTests.java" target="_blank">Test examples in Java</a>
 <br>
 
 ## Delete
@@ -1104,7 +1104,7 @@ public void requestSpecificationAllowsSpecifyingCookie() {
 **call(RequestData requestData)**| make request with Request Data parameters | RestResponse
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/DeleteTest.java" target="_blank">Test examples in Java</a>
 <br>
 
 ## Authentication
