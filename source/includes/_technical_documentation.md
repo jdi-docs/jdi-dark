@@ -335,7 +335,7 @@ Method allow to send specific query parameters in url in RestMethod:
 **call(String queryParams)** | pass query parameters | RestResponse
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTest.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
 <br>  
 <br />
 <br />
