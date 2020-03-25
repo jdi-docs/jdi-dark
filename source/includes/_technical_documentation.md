@@ -916,7 +916,7 @@ Response body and status can be also retrieved using *body* and *status* fields 
 
 JDI Dark supports header addition to Service endpoints using annotations.
 
-### Single header can be added with usage of @Header annotation:
+**Single header can be added with usage of @Header annotation:**  
 
 ```java
 @GET("/header")
@@ -927,9 +927,9 @@ Here's a simple example of adding a header to an endpoint
 <br />
 <br />
 <br />
+<br />
+<br />
 
-
-### Multiple headers are also supported through @Headers annotation:
 
 ```java
 @GET("/multiHeaderReflect")
@@ -937,12 +937,12 @@ Here's a simple example of adding a header to an endpoint
 @Header(name = "Header_name2", value = "Header_value2")})
 public static RestMethod getMultiHeaderReflect;
 ```
+**Multiple headers are also supported through @Headers annotation:**  
 <br />
 <br />
 <br />
 <br />
-
-### Headers with same name, with no value and with multiple values can be added as well.
+<br />
 
 ```java
 @GET("/header")
@@ -960,8 +960,10 @@ public static RestMethod getHeaderWithNoValue;
 @Header(name = "MultiValueHeader", value = "Header_value_1", additionalValues = "Header_value_2")
 public static RestMethod getMultiValueHeader;
 ```
+
+**Headers with same name, with no value and with multiple values can be added as well.**  
+
 @Headers annotation is used to add 2 headers with the same name - "Header_name"
-<br />
 <br />
 <br />
 <br />
@@ -974,8 +976,10 @@ public static RestMethod getMultiValueHeader;
 @Header is used here to pass a multiple-value header
 <br />
 <br />
-
-### Methods to add Headers to Request Data. 
+<br />
+<br />
+**Methods to add Headers to Request Data.**  
+ 
 Headers can be passed as strings, header objects, maps, and even arrays of objects.
 Headers without value and with multiple values can be added as well.
 
@@ -1293,7 +1297,8 @@ For example, if status codes 502 - more likely it's temporary server-side issue 
 public static RestMethod get451;
 ```
 
-### Annotation has parameters to specify:<br>
+**Annotation has parameters to specify:** 
+ 
 1. numberOfRetryAttempts - how many times retry request after failing one.<br>
 2. errorCodes - on which status codes retry request.<br>
 3. delay - after what time to repeat the request.<br>
@@ -1312,12 +1317,14 @@ public class RetryingService {
 }
 ```
 
-### @RetryOnFailure can be applied to class and to field:
+**@RetryOnFailure can be applied to class and to field:**  
+
 JDI Dark will merge annotations data if it's 
 were placed in both places - so you need to specify annotation data only if you want to change some parameters to specific 
 endpoint.<br>
 
-### Default annotation param values are:<br>
+**Default annotation param values are:**  
+ 
 1. numberOfRetryAttempts - 3<br>
 2. errorCodes - {502,503}<br>
 3. delay - 10<br>
@@ -1330,7 +1337,8 @@ endpoint.<br>
 public static RestMethod ignoreRetrying;
 ```
 
-### @RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:
+**@RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:**  
+
 In that case even if status code will be in specified list of errorCodes no retry requests will be send.
 
 ## Access RestAssured
