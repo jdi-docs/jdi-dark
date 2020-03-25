@@ -1,13 +1,9 @@
 # Documentation
 ## Framework usage
 
-```
-import static com.epam.http.requests.ServiceInit.init;
-```
+JDI Dark Framework provides great opportunities for web services testing.  
+Below you will find the description of their features and the ways of using with code examples.
 
-In order to effectively use the JDI Dark framework, it is recommended to statically import the ```init()``` method of the *ServiceInit* class.
-
-This is the entry point for initialising your Service Object class.
 ## HTTP methods
 JDI Dark supports the following HTTP methods:
 
