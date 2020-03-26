@@ -381,6 +381,20 @@
                           </ul>
                     </li>
                     <li>
+                      <a href="#jdi-dark-bdd-steps" class="toc-h2 toc-link" data-title="JDI Dark BDD Steps">JDI Dark BDD Steps</a>
+                          <ul class="toc-list-h2">
+                              <li>
+                                <a href="#request-steps" class="toc-h2 h3 toc-link" data-title="Request Steps">Request Steps</a>
+                              </li>
+                              <li>
+                                <a href="#response-steps" class="toc-h2 h3 toc-link" data-title="Response Steps">Response Steps</a>
+                              </li>
+                              <li>
+                                <a href="#service-steps" class="toc-h2 h3 toc-link" data-title="Service Steps">Service Steps</a>
+                              </li>
+                          </ul>
+                    </li>
+                    <li>
                       <a href="#review-guide" class="toc-h2 toc-link" data-title="Review Guide">Review Guide</a>
                           <ul class="toc-list-h2">
                               <li>
@@ -763,7 +777,7 @@ Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/m
 <p><strong>4. Create step definitions in java</strong></p>
 
 <ul>
-<li>Use pre-created steps from JDI Dark BDD. </li>
+<li>Use pre-created <a href="https://jdi-docs.github.io/jdi-dark/#jdi-dark-bdd-steps" target="_blank">JDI Dark BDD Steps</a>.</li>
 </ul>
 
 <p>Check all pre-created JDI Dark BDD steps <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd/src/main/java/com/epam/jdi/http/stepdefs/en" target="_blank">here</a>.</p>
@@ -1340,30 +1354,115 @@ They can be made accessible by importing <em>com.epam.http.requests.RestMethods.
     <span class="nd">@PUT</span><span class="o">(</span><span class="s">"/put"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">putMethod</span><span class="o">;</span>
     <span class="nd">@PATCH</span><span class="o">(</span><span class="s">"/patch"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">patch</span><span class="o">;</span>
     <span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/delete"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">delete</span><span class="o">;</span>
-    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/status/%s"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">status</span><span class="o">;</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/status/{status}"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">status</span><span class="o">;</span>
 
 <span class="o">}</span> 
 </code></pre>
-<p>It&#39;s possible to describe tested web service as a Service Object class using annotations.
+<p>It&#39;s possible to describe tested web service as a Service Object class using annotations:</p>
+
+<ul>
+<li>@ContentType - represents a Content-Type. There can be used any values in <a href="https://static.javadoc.io/io.rest-assured/rest-assured/3.1.0/io/restassured/http/ContentType.html">Rest Assured enumeration</a>
+<br /></li>
+<li>@Header - represents an HTTP Header as:
+
+<ul>
+<li>name</li>
+<li>value
+<br /></li>
+</ul></li>
+<li>@Headers - represents the collection of HTTP headers
+<br /></li>
+<li>@Cookie - represents a Cookie as:
+
+<ul>
+<li>name</li>
+<li>value, default = &quot;[unassigned]&quot;</li>
+<li>additionalValues, default = &quot;[unassigned]&quot;
+<br /></li>
+</ul></li>
+<li>@Cookies - represents the collection of Cookies
+<br /></li>
+<li>@FormParameter - represents form parameter as:
+
+<ul>
+<li>name</li>
+<li>value
+<br /></li>
+</ul></li>
+<li>@FormParameters - represents the collection of form parameters
+<br /></li>
+<li>@QueryParameter - represents query parameter as:
+
+<ul>
+<li>name</li>
+<li>value
+<br /></li>
+</ul></li>
+<li>@QueryParameters - represents the collection of query parameters
+<br /></li>
+<li>@MultiPart - represents MultiPart parameters:
+
+<ul>
+<li>fileName</li>
+<li>controlName
+<br /></li>
+</ul></li>
+<li>@HEAD - represents HTTP head method
+<br /></li>
+<li>@GET - represents HTTP get method
+<br /></li>
+<li>@DELETE - represents HTTP delete method
+<br /></li>
+<li>@PATCH - represents HTTP patch method
+<br /></li>
+<li>@POST - represents HTTP post method
+<br /></li>
+<li>@PUT - represents HTTP put method
+<br /></li>
+<li>@OPTIONS - represents HTTP options method
+<br /></li>
+<li>@IgnoreRetry - represents ignore settings for failed tests
 <br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
+<br /></li>
+<li>@Method - represents any HTTP method
+<br /></li>
+<li>@Proxy - represents Proxy parameters:
+
+<ul>
+<li>host</li>
+<li>port</li>
+<li>scheme
+<br /></li>
+</ul></li>
+<li>@RetryOnFailure - represents retry settings for failed tests:
+
+<ul>
+<li>numberOfRetryAttempts, default = 3</li>
+<li>errorCodes, default = 502, 503</li>
+<li>delay</li>
+<li>unit
 <br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
+<br /></li>
+</ul></li>
+<li>@ServiceDomain - represents the domain name
+<br /></li>
+<li>@TrustStore - represents a TrustStore located on the file-system:
+
+<ul>
+<li>pathToJks</li>
+<li>password
 <br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyServiceHttps.java" target="_blank">here</a>.
+<br /></li>
+</ul></li>
+<li>@URL - represents HTTP get method, where value is uri</li>
+</ul>
+
+<p>See annotations <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark/src/main/java/com/epam/http/annotations" target="_blank">here</a>.
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br /></p>
+See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">here</a>.</p>
 <h3 id='create-tests-for-service'>Create tests for service</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="n">ServiceExample</span> <span class="n">service</span><span class="o">;</span>
@@ -2230,9 +2329,7 @@ endpoint.<br></p>
 <p><strong>@RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:</strong>  </p>
 
 <p>In that case even if status code will be in specified list of errorCodes no retry requests will be send.</p>
-<h2 id='access-restassured'>Access RestAssured</h2>
-<p>TBD</p>
-<h3 id='accessing-restassured-config'>Accessing RestAssured.config</h3>
+<h2 id='access-restassured'>Access RestAssured</h2><h3 id='accessing-restassured-config'>Accessing RestAssured.config</h3>
 <p>Sometime, for testing purposes, some RestAssured configuration properties might be changed.
 You can access RestAssured from test or define desired properties in @BeforeTest.</p>
 
@@ -2252,7 +2349,104 @@ In order to restore the initial RestAssured config after test execution, the <co
                 <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="s">"header2"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"value2"</span><span class="o">));</span>
         <span class="n">RestAssured</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
     <span class="o">}</span>
-</code></pre><h2 id='review-guide'>Review Guide</h2><h3 id='easy-way-to-pass-review'>Easy way to pass review</h3>
+</code></pre><h2 id='jdi-dark-bdd-steps'>JDI Dark BDD Steps</h2><h3 id='request-steps'>Request Steps</h3><pre class="highlight java tab-java"><code><span class="nl">Feature:</span> <span class="n">Json</span> <span class="n">response</span> <span class="n">check</span>
+
+  <span class="nl">Scenario:</span> <span class="n">Check</span> <span class="n">json</span> <span class="n">response</span>
+    <span class="n">Given</span> <span class="n">I</span> <span class="n">init</span> <span class="n">service</span>
+    <span class="n">And</span> <span class="n">I</span> <span class="n">set</span> <span class="n">JSON</span> <span class="n">request</span> <span class="n">content</span> <span class="n">type</span>
+    <span class="n">When</span> <span class="n">I</span> <span class="k">do</span> <span class="n">getMethod</span> <span class="n">request</span>
+    <span class="n">Then</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">type</span> <span class="n">is</span> <span class="n">OK</span>
+    <span class="n">And</span> <span class="n">Response</span> <span class="n">body</span> <span class="n">has</span> <span class="n">values</span>
+      <span class="o">|</span> <span class="n">url</span>          <span class="o">|</span> <span class="nl">http:</span><span class="c1">//httpbin.org/get |</span>
+      <span class="o">|</span> <span class="n">headers</span><span class="o">.</span><span class="na">Host</span> <span class="o">|</span> <span class="n">httpbin</span><span class="o">.</span><span class="na">org</span>            <span class="o">|</span>
+    <span class="n">And</span> <span class="n">Response</span> <span class="n">header</span> <span class="s">"Connection"</span> <span class="n">is</span> <span class="s">"keep-alive"</span>
+
+</code></pre>
+<p>Actions:
+<br>
+When I do &quot;&lt; method &gt;&quot; request
+<br>
+When I verify that &quot;&lt; method &gt;&quot; method is alive
+<br>
+When I have the following headers:
+<br>
+      | key_1 | key_2 |
+<br>
+      | value | value |
+<br>
+When I set &quot;&lt; type &gt;&quot; request content type
+<br></p>
+
+<p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/JsonResponse.feature" target="_blank">here</a>.
+<br></p>
+<h3 id='response-steps'>Response Steps</h3><pre class="highlight java tab-java"><code><span class="nl">Feature:</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">check</span>
+
+  <span class="nl">Scenario:</span> <span class="n">Server</span> <span class="n">error</span> <span class="n">status</span> <span class="n">request</span>
+    <span class="n">Given</span> <span class="n">I</span> <span class="n">init</span> <span class="n">service</span>
+    <span class="n">When</span> <span class="n">I</span> <span class="k">do</span> <span class="n">status</span> <span class="n">request</span> <span class="n">with</span> <span class="mi">503</span> <span class="n">code</span>
+    <span class="n">Then</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">code</span> <span class="n">equals</span> <span class="mi">503</span>
+    <span class="n">And</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">type</span> <span class="n">is</span> <span class="n">SERVER_ERROR</span>
+    <span class="n">And</span> <span class="n">Response</span> <span class="n">body</span> <span class="n">is</span> <span class="n">empty</span>
+
+</code></pre>
+<p>Validations:
+<br>
+Then Performance results don&#39;t have any fails
+<br>
+Then I check number of requests
+<br>
+Then Response status code equals &quot;&lt; status &gt;&quot;
+<br>
+Then Response body is empty
+<br>
+Then Response status type is &quot;&lt; responseStatus &gt;&quot;
+<br>
+Then Response &quot;&lt; parameter &gt;&quot; is &quot;&lt; value &gt;&quot;
+<br>
+Then Response &quot;&lt; parameter &gt;&quot; contains &quot;&lt; value &gt;&quot;
+<br>
+Then Response body has values
+<br>
+      | key_1 | key_2 |
+<br>
+      | value | value |
+<br>
+Then I check if performance results contain any fails
+<br>
+Then Response header &quot;&lt; parameter &gt;&quot; is &quot;&lt; value &gt;&quot;
+<br>
+Then Average response time is lesser than &quot;&lt; seconds &gt;&quot; sec
+<br>
+Then I print response</p>
+
+<p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/ResponseStatus.feature" target="_blank">here</a>.
+<br></p>
+<h3 id='service-steps'>Service Steps</h3><pre class="highlight java tab-java"><code><span class="nl">Feature:</span> <span class="n">Performance</span> <span class="n">after</span> <span class="n">load</span> <span class="n">check</span>
+
+  <span class="nl">Scenario:</span> <span class="n">Load</span> <span class="n">service</span>
+    <span class="n">Given</span> <span class="n">I</span> <span class="n">init</span> <span class="n">service</span>
+    <span class="n">When</span> <span class="n">I</span> <span class="n">load</span> <span class="n">service</span> <span class="k">for</span> <span class="mi">20</span> <span class="n">sec</span> <span class="n">with</span> <span class="n">getMethod</span> <span class="n">requests</span>
+    <span class="n">Then</span> <span class="n">I</span> <span class="n">check</span> <span class="n">number</span> <span class="n">of</span> <span class="n">requests</span>
+    <span class="n">And</span> <span class="n">I</span> <span class="n">check</span> <span class="k">if</span> <span class="n">performance</span> <span class="n">results</span> <span class="n">contain</span> <span class="n">any</span> <span class="n">fails</span>
+    <span class="n">And</span> <span class="n">Average</span> <span class="n">response</span> <span class="n">time</span> <span class="n">is</span> <span class="n">lesser</span> <span class="n">than</span> <span class="mi">2</span> <span class="n">sec</span>
+
+</code></pre>
+<p>Actions:
+<br>
+When I load service for <seconds> sec with &quot;&lt; methodName &gt;&quot; requests
+<br>
+When I do status request with &quot;&lt; status &gt;&quot; code
+<br></p>
+
+<p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/LoadService.feature" target="_blank">here</a>.
+<br></p>
+<h2 id='review-guide'>Review Guide</h2><h3 id='easy-way-to-pass-review'>Easy way to pass review</h3>
 <ul>
 <li>Good code style</li>
 <li><code>Ctrl+Alt+O</code> &amp; <code>Ctrl+Alt+L</code> (replace <code>Ctrl</code> with <code>Cmd</code> on MAC) in IDEA IDE before any commit</li>
