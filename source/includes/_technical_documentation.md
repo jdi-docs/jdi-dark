@@ -429,32 +429,43 @@ public class ServiceExample {
     @PUT("/put") RestMethod putMethod;
     @PATCH("/patch") RestMethod patch;
     @DELETE("/delete") RestMethod delete;
-    @GET("/status/%s") RestMethod status;
+    @GET("/status/{status}") RestMethod status;
 
 } 
 ```
 
 It's possible to describe tested web service as a Service Object class using annotations:
 
-- @ContentType - represents a Content-Type. There can be used any values in Rest Assured enumeration
+- @ContentType - represents a Content-Type. There can be used any values in <a href="https://static.javadoc.io/io.rest-assured/rest-assured/3.1.0/io/restassured/http/ContentType.html">Rest Assured enumeration</a>
 <br />
-- @Header - represents an HTTP Header
+- @Header - represents an HTTP Header as:
+    - name
+    - value
 <br />
 - @Headers - represents the collection of HTTP headers
 <br />
-- @Cookie - represents a Cookie
+- @Cookie - represents a Cookie as:
+    - name
+    - value, default = "[unassigned]"
+    - additionalValues, default = "[unassigned]"
 <br />
 - @Cookies - represents the collection of Cookies
 <br />
-- @FormParameter - represents form parameter
+- @FormParameter - represents form parameter as:
+    - name
+    - value
 <br />
 - @FormParameters - represents the collection of form parameters
 <br />
-- @QueryParameter - represents query parameter
+- @QueryParameter - represents query parameter as:
+    - name
+    - value
 <br />
 - @QueryParameters - represents the collection of query parameters
 <br />
-- @MultiPart - represents MultiPart parameters
+- @MultiPart - represents MultiPart parameters:
+    - fileName
+    - controlName
 <br />
 - @HEAD - represents HTTP head method
 <br />
@@ -472,17 +483,36 @@ It's possible to describe tested web service as a Service Object class using ann
 <br />
 - @IgnoreRetry - represents ignore settings for failed tests
 <br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
+<br />
 - @Method - represents any HTTP method
 <br />
-- @Proxy - represents Proxy parameters (host, port and scheme)
+- @Proxy - represents Proxy parameters:
+    - host
+    - port
+    - scheme
 <br />
-- @RetryOnFailure - represents retry settings for failed tests
+- @RetryOnFailure - represents retry settings for failed tests:
+    - numberOfRetryAttempts, default = 3
+    - errorCodes, default = 502, 503
+    - delay
+    - unit
+<br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
 <br />
 - @ServiceDomain - represents the domain name
 <br />
-- @TrustStore - represents a TrustStore located on the file-system
+- @TrustStore - represents a TrustStore located on the file-system:
+    - pathToJks
+    - password
+<br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyServiceHttps.java" target="_blank">here</a>.
 <br />
 - @URL - represents HTTP get method, where value is uri
+
+See annotations <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark/src/main/java/com/epam/http/annotations" target="_blank">here</a>.
+<br />
+See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">here</a>.
 
 ### Create tests for service
 
