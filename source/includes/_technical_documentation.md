@@ -1330,7 +1330,6 @@ public static RestMethod ignoreRetrying;
 In that case even if status code will be in specified list of errorCodes no retry requests will be send.
 
 ## Access RestAssured
-TBD
 
 ### Accessing RestAssured.config
 Sometime, for testing purposes, some RestAssured configuration properties might be changed.
@@ -1355,6 +1354,8 @@ In order to restore the initial RestAssured config after test execution, the ```
         RestAssured.reset();
     }
 ```
+
+## BDD
 
 ## Review Guide
 
