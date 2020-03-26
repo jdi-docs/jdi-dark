@@ -1399,12 +1399,26 @@ In order to restore the initial RestAssured config after test execution, the ```
 ## JDI Dark BDD Steps
 
 ### Request Steps
+```java
+Feature: Json response check
+
+  Scenario: Check json response
+    Given I init service
+    And I set JSON request content type
+    When I do getMethod request
+    Then Response status type is OK
+    And Response body has values
+      | url          | http://httpbin.org/get |
+      | headers.Host | httpbin.org            |
+    And Response header "Connection" is "keep-alive"
+
+```
 
 Actions:
 <br>
-When I do <method> request
+When I do "< method >" request
 <br>
-When I verify that <method> method is alive
+When I verify that "< method >" method is alive
 <br>
 When I have the following headers:
 <br>
@@ -1412,25 +1426,43 @@ When I have the following headers:
 <br>
       | value | value |
 <br>
-When I set JSON request content type
+When I set "< type >" request content type
+<br>
+
+See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/JsonResponse.feature" target="_blank">here</a>.
 <br>
 
 ### Response Steps
 
+```java  
+Feature: Response status check
+
+  Scenario: Server error status request
+    Given I init service
+    When I do status request with 503 code
+    Then Response status code equals 503
+    And Response status type is SERVER_ERROR
+    And Response body is empty
+
+```
+
 Validations:
+<br>
 Then Performance results don't have any fails
 <br>
 Then I check number of requests
 <br>
-Then Response status code equals <status>
+Then Response status code equals "< status >"
 <br>
 Then Response body is empty
 <br>
-Then Response status type is <responseStatus>
+Then Response status type is "< responseStatus >"
 <br>
-Then Response <parameter> is <value>
+Then Response "< parameter >" is "< value >"
 <br>
-Then Response <parameter> contains <value>
+Then Response "< parameter >" contains "< value >"
 <br>
 Then Response body has values
 <br>
@@ -1440,19 +1472,41 @@ Then Response body has values
 <br>
 Then I check if performance results contain any fails
 <br>
-Then Response header <parameter> is <value>
+Then Response header "< parameter >" is "< value >"
 <br>
-Then Average response time is lesser than <seconds> sec
+Then Average response time is lesser than "< seconds >" sec
 <br>
 Then I print response
 
+See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/ResponseStatus.feature" target="_blank">here</a>.
+<br>
+
 ### Service Steps
+
+```java  
+Feature: Performance after load check
+
+  Scenario: Load service
+    Given I init service
+    When I load service for 20 sec with getMethod requests
+    Then I check number of requests
+    And I check if performance results contain any fails
+    And Average response time is lesser than 2 sec
+
+```
 
 Actions:
 <br>
-When I load service for <seconds> sec with <methodName> requests
+When I load service for <seconds> sec with "< methodName >" requests
 <br>
-When I do status request with <status> code
+When I do status request with "< status >" code
+<br>
+
+See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/LoadService.feature" target="_blank">here</a>.
 <br>
 
 ## Review Guide
