@@ -263,7 +263,7 @@ TestNG TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/
 
 **4. Create step definitions in java**
 
-- Use pre-created steps from JDI Dark BDD. 
+- Use pre-created <a href="https://jdi-docs.github.io/jdi-dark/#jdi-dark-bdd-steps" target="_blank">JDI Dark BDD Steps</a>.
 
 Check all pre-created JDI Dark BDD steps <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd/src/main/java/com/epam/jdi/http/stepdefs/en" target="_blank">here</a>.
 

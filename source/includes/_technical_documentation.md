@@ -429,31 +429,90 @@ public class ServiceExample {
     @PUT("/put") RestMethod putMethod;
     @PATCH("/patch") RestMethod patch;
     @DELETE("/delete") RestMethod delete;
-    @GET("/status/%s") RestMethod status;
+    @GET("/status/{status}") RestMethod status;
 
 } 
 ```
 
-It's possible to describe tested web service as a Service Object class using annotations.
+It's possible to describe tested web service as a Service Object class using annotations:
+
+- @ContentType - represents a Content-Type. There can be used any values in <a href="https://static.javadoc.io/io.rest-assured/rest-assured/3.1.0/io/restassured/http/ContentType.html">Rest Assured enumeration</a>
 <br />
+- @Header - represents an HTTP Header as:
+    - name
+    - value
 <br />
+- @Headers - represents the collection of HTTP headers
 <br />
+- @Cookie - represents a Cookie as:
+    - name
+    - value, default = "[unassigned]"
+    - additionalValues, default = "[unassigned]"
 <br />
+- @Cookies - represents the collection of Cookies
 <br />
+- @FormParameter - represents form parameter as:
+    - name
+    - value
 <br />
+- @FormParameters - represents the collection of form parameters
 <br />
+- @QueryParameter - represents query parameter as:
+    - name
+    - value
 <br />
+- @QueryParameters - represents the collection of query parameters
 <br />
+- @MultiPart - represents MultiPart parameters:
+    - fileName
+    - controlName
 <br />
+- @HEAD - represents HTTP head method
 <br />
+- @GET - represents HTTP get method
 <br />
+- @DELETE - represents HTTP delete method
 <br />
+- @PATCH - represents HTTP patch method
 <br />
+- @POST - represents HTTP post method
 <br />
+- @PUT - represents HTTP put method
 <br />
+- @OPTIONS - represents HTTP options method
 <br />
+- @IgnoreRetry - represents ignore settings for failed tests
 <br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
 <br />
+- @Method - represents any HTTP method
+<br />
+- @Proxy - represents Proxy parameters:
+    - host
+    - port
+    - scheme
+<br />
+- @RetryOnFailure - represents retry settings for failed tests:
+    - numberOfRetryAttempts, default = 3
+    - errorCodes, default = 502, 503
+    - delay
+    - unit
+<br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
+<br />
+- @ServiceDomain - represents the domain name
+<br />
+- @TrustStore - represents a TrustStore located on the file-system:
+    - pathToJks
+    - password
+<br />
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyServiceHttps.java" target="_blank">here</a>.
+<br />
+- @URL - represents HTTP get method, where value is uri
+
+See annotations <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark/src/main/java/com/epam/http/annotations" target="_blank">here</a>.
+<br />
+See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">here</a>.
 
 ### Create tests for service
 
@@ -1342,7 +1401,6 @@ public static RestMethod ignoreRetrying;
 In that case even if status code will be in specified list of errorCodes no retry requests will be send.
 
 ## Access RestAssured
-TBD
 
 ### Accessing RestAssured.config
 Sometime, for testing purposes, some RestAssured configuration properties might be changed.
@@ -1367,6 +1425,119 @@ In order to restore the initial RestAssured config after test execution, the ```
         RestAssured.reset();
     }
 ```
+
+## JDI Dark BDD Steps
+
+### Request Steps
+```java
+Feature: Json response check
+
+  Scenario: Check json response
+    Given I init service
+    And I set JSON request content type
+    When I do getMethod request
+    Then Response status type is OK
+    And Response body has values
+      | url          | http://httpbin.org/get |
+      | headers.Host | httpbin.org            |
+    And Response header "Connection" is "keep-alive"
+
+```
+
+Actions:
+<br>
+When I do "< method >" request
+<br>
+When I verify that "< method >" method is alive
+<br>
+When I have the following headers:
+<br>
+      | key_1 | key_2 |
+<br>
+      | value | value |
+<br>
+When I set "< type >" request content type
+<br>
+
+See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/JsonResponse.feature" target="_blank">here</a>.
+<br>
+
+### Response Steps
+
+```java  
+Feature: Response status check
+
+  Scenario: Server error status request
+    Given I init service
+    When I do status request with 503 code
+    Then Response status code equals 503
+    And Response status type is SERVER_ERROR
+    And Response body is empty
+
+```
+
+Validations:
+<br>
+Then Performance results don't have any fails
+<br>
+Then I check number of requests
+<br>
+Then Response status code equals "< status >"
+<br>
+Then Response body is empty
+<br>
+Then Response status type is "< responseStatus >"
+<br>
+Then Response "< parameter >" is "< value >"
+<br>
+Then Response "< parameter >" contains "< value >"
+<br>
+Then Response body has values
+<br>
+      | key_1 | key_2 |
+<br>
+      | value | value |
+<br>
+Then I check if performance results contain any fails
+<br>
+Then Response header "< parameter >" is "< value >"
+<br>
+Then Average response time is lesser than "< seconds >" sec
+<br>
+Then I print response
+
+See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/ResponseStatus.feature" target="_blank">here</a>.
+<br>
+
+### Service Steps
+
+```java  
+Feature: Performance after load check
+
+  Scenario: Load service
+    Given I init service
+    When I load service for 20 sec with getMethod requests
+    Then I check number of requests
+    And I check if performance results contain any fails
+    And Average response time is lesser than 2 sec
+
+```
+
+Actions:
+<br>
+When I load service for <seconds> sec with "< methodName >" requests
+<br>
+When I do status request with "< status >" code
+<br>
+
+See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
+<br>
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/LoadService.feature" target="_blank">here</a>.
+<br>
 
 ## Review Guide
 
