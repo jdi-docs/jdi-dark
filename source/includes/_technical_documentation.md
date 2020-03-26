@@ -436,53 +436,53 @@ public class ServiceExample {
 
 It's possible to describe tested web service as a Service Object class using annotations:
 
-- @ContentType
+- @ContentType - represents a Content-Type. There can be used any values in Rest Assured enumeration
 <br />
-- @Header
+- @Header - represents an HTTP Header
 <br />
-- @Headers
+- @Headers - represents the collection of HTTP headers
 <br />
-- @Cookie
+- @Cookie - represents a Cookie
 <br />
-- @Cookies
+- @Cookies - represents the collection of Cookies
 <br />
-- @FormParameter
+- @FormParameter - represents form parameter
 <br />
-- @FormParameters
+- @FormParameters - represents the collection of form parameters
 <br />
-- @QueryParameter
+- @QueryParameter - represents query parameter
 <br />
-- @QueryParameters
+- @QueryParameters - represents the collection of query parameters
 <br />
-- @MultiPart
+- @MultiPart - represents MultiPart parameters
 <br />
-- @HEAD
+- @HEAD - represents HTTP head method
 <br />
-- @GET
+- @GET - represents HTTP get method
 <br />
-- @DELETE
+- @DELETE - represents HTTP delete method
 <br />
-- @PATCH
+- @PATCH - represents HTTP patch method
 <br />
-- @POST
+- @POST - represents HTTP post method
 <br />
-- @PUT
+- @PUT - represents HTTP put method
 <br />
-- @OPTIONS
+- @OPTIONS - represents HTTP options method
 <br />
-- @IgnoreRetry
+- @IgnoreRetry - represents ignore settings for failed tests
 <br />
-- @Method
+- @Method - represents any HTTP method
 <br />
-- @Proxy
+- @Proxy - represents Proxy parameters (host, port and scheme)
 <br />
-- @RetryOnFailure
+- @RetryOnFailure - represents retry settings for failed tests
 <br />
-- @ServiceDomain
+- @ServiceDomain - represents the domain name
 <br />
-- @TrustStore
+- @TrustStore - represents a TrustStore located on the file-system
 <br />
-- @URL
+- @URL - represents HTTP get method, where value is uri
 
 ### Create tests for service
 
