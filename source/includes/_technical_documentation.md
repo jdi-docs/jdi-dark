@@ -1,13 +1,9 @@
 # Documentation
 ## Framework usage
 
-```
-import static com.epam.http.requests.ServiceInit.init;
-```
+JDI Dark Framework provides great opportunities for web services testing.  
+Below you will find the description of their features and the ways of using with code examples.
 
-In order to effectively use the JDI Dark framework, it is recommended to statically import the ```init()``` method of the *ServiceInit* class.
-
-This is the entry point for initialising your Service Object class.
 ## HTTP methods
 JDI Dark supports the following HTTP methods:
 
@@ -24,6 +20,84 @@ All of these annotations take the call request URI value. The annotations are su
 
 To point to the base URI of your service, it's convenient to use the *@ServiceDomain* annotation with URL provided as argument.
 Then, values in your method annotations might be just specific URL paths.
+
+### Specifying HTTP method
+
+```java
+@POST("/greet")
+public static RestMethod greetPost;
+
+@DELETE("/body")
+public static RestMethod deleteBody;
+
+@GET("/hello")
+public static RestMethod getHello;
+
+@PUT("/cookie")
+public static RestMethod putCookie;
+
+
+@Test
+public void formParamsAcceptsIntArgumentsJDI() {
+    RestResponse response = greetPost
+            .call(requestFormParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+    response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
+}
+
+@Test
+public void deleteSupportsStringBody() {
+    RestResponse response = deleteBody.call(requestBody(TEST_BODY_VALUE));
+    response.assertThat().body(is(TEST_BODY_VALUE));
+}
+
+@Test
+public void getCanReturnResponseDataAsString() {
+    RestResponse response = JettyService.getHello.call();
+    final String responseInfo = response.toString();
+    assertThat(responseInfo, containsString("Response status: 200 OK (OK)"));
+    assertThat(responseInfo, containsString("Response body: {\"hello\":\"Hello Scalatra\"}"));
+}
+
+@Test
+public void putCanReturnBodyAsString() {
+    Map<String, Object> cookies = new HashMap<>();
+    cookies.put("username", "John");
+    cookies.put("token", "1234");
+    final String body = JettyService.putCookie.call(cookies().addAll(cookies)).getBody();
+    assertEquals("username, token", body);
+}
+
+```
+
+For describing HTTP method use RestMethod class with appropriate annotation in Service object class.  
+**@POST("endpoint")** - for POST method  
+**@GET("endpoint")** - for GET method  
+**@DELETE("endpoint")** - for DELETE method  
+**@PUT("endpoint")** - for PUT method  
+
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">Test example in Java</a>
+
+
+Available methods for sending HTTP request in JDI dark: 
+
+|Method | Description | Return Type
+--- | --- | ---
+**call(RequestData requestData)**| send request with Request Data parameters | RestResponse
+**call(JAction1<RequestData> action)**| send request with Request Data parameters | RestResponse
+**call()**| send request | RestResponse
+**call(RequestSpecification requestSpecification)**| send request with RequestSpecification | RestResponse
+**call(RestAssuredConfig restAssuredConfig)**| send request with RestAssuredConfig  | RestResponse
+**call(String queryParams)**| send request with query parameters | RestResponse
+**callWithNamedParams(String... namedParams)**| send request with named query parameters | RestResponse
+**callAsData(Class<T> c)**| send request and map response to Java object | java object
+**post(Object body)**| send post/put request with body| RestResponse
+**post(Object body, Class<T> c)**| send post/put request with body and parse result to object | java object
+
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples" target="_blank">Test examples in Java</a>
+<br>
+
+
 ## Request Data
 You might need to use specific request data in your requests. *Cookies*, *headers*, *query parameters* and *Content-type* are available in annotated form.
 Therefore, you can specify them in your Service Object class providing name and value.
@@ -121,7 +195,7 @@ Methods for passing path params (with/without query params) in RestMethod:
 **callWithNamedParams(String... namedParams)** | pass parameters to a path without key| RestResponse
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/PathParamTests.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
 <br />
 <br />
@@ -261,7 +335,7 @@ Method allow to send specific query parameters in url in RestMethod:
 **call(String queryParams)** | pass query parameters | RestResponse
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ParamTest.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
 <br>  
 <br />
 <br />
@@ -313,7 +387,7 @@ You can set RequestSpecification for your request. Get RestAssured RequestSpecif
 **call(RequestSpecification spec)** | make request with RequestSpecification | RestResponse 
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/ConfigITest.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/ConfigITest.java" target="_blank">Test examples in Java</a>
 <br>
  
 *For general setting RestAssured config see [Accessing RestAssured](https://jdi-docs.github.io/jdi-dark/#access-restassured)*
@@ -767,7 +841,7 @@ For customizing logging you should redefine these static variables
 + For customizing allure logging -it's necessary to redefine it in both variables: LOG_REQUEST and LOG_RESPONSE    
 
 See full example with redefining variables for console logging and allure.
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/LoggingCustomizeTests.java" target="_blank">Test example in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/LoggingCustomizeTests.java" target="_blank">Test example in Java</a>
 
 
 ## Response data
@@ -842,7 +916,7 @@ Response body and status can be also retrieved using *body* and *status* fields 
 
 JDI Dark supports header addition to Service endpoints using annotations.
 
-### Single header can be added with usage of @Header annotation:
+**Single header can be added with usage of @Header annotation:**  
 
 ```java
 @GET("/header")
@@ -853,9 +927,9 @@ Here's a simple example of adding a header to an endpoint
 <br />
 <br />
 <br />
+<br />
+<br />
 
-
-### Multiple headers are also supported through @Headers annotation:
 
 ```java
 @GET("/multiHeaderReflect")
@@ -863,12 +937,12 @@ Here's a simple example of adding a header to an endpoint
 @Header(name = "Header_name2", value = "Header_value2")})
 public static RestMethod getMultiHeaderReflect;
 ```
+**Multiple headers are also supported through @Headers annotation:**  
 <br />
 <br />
 <br />
 <br />
-
-### Headers with same name, with no value and with multiple values can be added as well.
+<br />
 
 ```java
 @GET("/header")
@@ -886,8 +960,10 @@ public static RestMethod getHeaderWithNoValue;
 @Header(name = "MultiValueHeader", value = "Header_value_1", additionalValues = "Header_value_2")
 public static RestMethod getMultiValueHeader;
 ```
+
+**Headers with same name, with no value and with multiple values can be added as well.**  
+
 @Headers annotation is used to add 2 headers with the same name - "Header_name"
-<br />
 <br />
 <br />
 <br />
@@ -900,8 +976,10 @@ public static RestMethod getMultiValueHeader;
 @Header is used here to pass a multiple-value header
 <br />
 <br />
-
-### Methods to add Headers to Request Data. 
+<br />
+<br />
+**Methods to add Headers to Request Data.**  
+ 
 Headers can be passed as strings, header objects, maps, and even arrays of objects.
 Headers without value and with multiple values can be added as well.
 
@@ -1036,76 +1114,6 @@ public void usingProxySpecification() {
             body("greeting.lastName", equalTo("Doe"));
 }
 ```
-
-## Post
-
-For sending a POST request you can use the RestMethod class with a @POST annotation.
-
-```java
-    @POST("/greet")
-    public static RestMethod greetPost;
-
-    @Test
-    public void formParamsAcceptsIntArgumentsJDI() {
-        RestResponse response = greetPost
-                .call(requestFormParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
-        response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
-    }
-
-    @Test
-    public void bodyWithSingleHamcrestMatching() {
-        RestResponse response = greetPost
-                .call(requestQueryParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
-        response.isOk().body(containsString("greeting"));
-    }
-
-
-```
-
-|Method | Description | Return Type
---- | --- | ---
-**call(RequestData requestData)**| make request with Request Data parameters | RestResponse
-
-<br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/JSONPostTests.java" target="_blank">Test examples in Java</a>
-<br>
-
-## Delete
-
-For sending a DELETE request you can use the RestMethod class with a @DELETE annotation.
-
-```java
-@DELETE("/body")
-public static RestMethod deleteBody;
-@DELETE("/cookie")
-public static RestMethod deleteCookie;
-
-@Test
-public void deleteSupportsStringBody() {
-    RestResponse response = deleteBody.call(requestBody(TEST_BODY_VALUE));
-    response.assertThat().body(is(TEST_BODY_VALUE));
-}
-
-@Test
-public void requestSpecificationAllowsSpecifyingCookie() {
-    RestResponse response = deleteCookie.call(requestData(requestData ->
-            requestData.addCookies(new MapArray<>(new Object[][]{
-                    {USERNAME, FIRST_NAME_VALUE},
-                    {TOKEN, TOKEN_VALUE}
-            }))));
-    assertEquals(response.body, "username, token");
-}
-
-
-```
-
-|Method | Description | Return Type
---- | --- | ---
-**call(RequestData requestData)**| make request with Request Data parameters | RestResponse
-
-<br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/DeleteTest.java" target="_blank">Test examples in Java</a>
-<br>
 
 ## Authentication
 
@@ -1289,7 +1297,8 @@ For example, if status codes 502 - more likely it's temporary server-side issue 
 public static RestMethod get451;
 ```
 
-### Annotation has parameters to specify:<br>
+**Annotation has parameters to specify:** 
+ 
 1. numberOfRetryAttempts - how many times retry request after failing one.<br>
 2. errorCodes - on which status codes retry request.<br>
 3. delay - after what time to repeat the request.<br>
@@ -1308,12 +1317,14 @@ public class RetryingService {
 }
 ```
 
-### @RetryOnFailure can be applied to class and to field:
+**@RetryOnFailure can be applied to class and to field:**  
+
 JDI Dark will merge annotations data if it's 
 were placed in both places - so you need to specify annotation data only if you want to change some parameters to specific 
 endpoint.<br>
 
-### Default annotation param values are:<br>
+**Default annotation param values are:**  
+ 
 1. numberOfRetryAttempts - 3<br>
 2. errorCodes - {502,503}<br>
 3. delay - 10<br>
@@ -1326,7 +1337,8 @@ endpoint.<br>
 public static RestMethod ignoreRetrying;
 ```
 
-### @RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:
+**@RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:**  
+
 In that case even if status code will be in specified list of errorCodes no retry requests will be send.
 
 ## Access RestAssured

@@ -289,10 +289,6 @@ You can see the various examples of feature files <a href="https://github.com/jd
 
 - IDE plugin for Cucumber
 
-## 5. JDI Dark Performance
-TBD
-## JDI Dark settings at a glance
-TBD
 ## API Testing Framework structure
 
 JDI dark consists of next packages:
