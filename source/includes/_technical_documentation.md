@@ -434,26 +434,55 @@ public class ServiceExample {
 } 
 ```
 
-It's possible to describe tested web service as a Service Object class using annotations.
+It's possible to describe tested web service as a Service Object class using annotations:
+
+- @ContentType
 <br />
+- @Header
 <br />
+- @Headers
 <br />
+- @Cookie
 <br />
+- @Cookies
 <br />
+- @FormParameter
 <br />
+- @FormParameters
 <br />
+- @QueryParameter
 <br />
+- @QueryParameters
 <br />
+- @MultiPart
 <br />
+- @HEAD
 <br />
+- @GET
 <br />
+- @DELETE
 <br />
+- @PATCH
 <br />
+- @POST
 <br />
+- @PUT
 <br />
+- @OPTIONS
 <br />
+- @IgnoreRetry
 <br />
+- @Method
 <br />
+- @Proxy
+<br />
+- @RetryOnFailure
+<br />
+- @ServiceDomain
+<br />
+- @TrustStore
+<br />
+- @URL
 
 ### Create tests for service
 
@@ -1367,7 +1396,64 @@ In order to restore the initial RestAssured config after test execution, the ```
     }
 ```
 
-## BDD
+## JDI Dark BDD Steps
+
+### Request Steps
+
+Actions:
+<br>
+When I do <method> request
+<br>
+When I verify that <method> method is alive
+<br>
+When I have the following headers:
+<br>
+      | key_1 | key_2 |
+<br>
+      | value | value |
+<br>
+When I set JSON request content type
+<br>
+
+### Response Steps
+
+Validations:
+Then Performance results don't have any fails
+<br>
+Then I check number of requests
+<br>
+Then Response status code equals <status>
+<br>
+Then Response body is empty
+<br>
+Then Response status type is <responseStatus>
+<br>
+Then Response <parameter> is <value>
+<br>
+Then Response <parameter> contains <value>
+<br>
+Then Response body has values
+<br>
+      | key_1 | key_2 |
+<br>
+      | value | value |
+<br>
+Then I check if performance results contain any fails
+<br>
+Then Response header <parameter> is <value>
+<br>
+Then Average response time is lesser than <seconds> sec
+<br>
+Then I print response
+
+### Service Steps
+
+Actions:
+<br>
+When I load service for <seconds> sec with <methodName> requests
+<br>
+When I do status request with <status> code
+<br>
 
 ## Review Guide
 
