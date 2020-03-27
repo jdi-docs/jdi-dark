@@ -1426,7 +1426,7 @@ log.level=INFO
 1. Create .properties file with your service host in format: service.name = service.url
 2. Place it to src/test/resources/
 3. Declare annotation **@ServiceDomain** on service class.
-4. Specify parameter "value" with key of variable placed in your .properties: **@ServiceDomain("service.name")** 
+4. Specify parameter "value" with key of variable placed in your .properties: **@ServiceDomain("${service.name}")** 
 5. Let know JDI Dark about your .properties file, there are ways:
  + **Manual way:**
       + Go to src/test/resources/pom.properties
