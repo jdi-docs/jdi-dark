@@ -2355,7 +2355,7 @@ endpoint.<br></p>
 <li>Create .properties file with your service host in format: service.name = service.url</li>
 <li>Place it to src/test/resources/</li>
 <li>Declare annotation <strong>@ServiceDomain</strong> on service class.</li>
-<li>Specify parameter &quot;value&quot; with key of variable placed in your .properties: <strong>@ServiceDomain(&quot;service.name&quot;)</strong> </li>
+<li>Specify parameter &quot;value&quot; with key of variable placed in your .properties: <strong>@ServiceDomain(&quot;${service.name}&quot;)</strong> </li>
 <li>Let know JDI Dark about your .properties file, there are ways:
 
 <ul>
