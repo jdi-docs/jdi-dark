@@ -36,13 +36,14 @@ public static RestMethod getHello;
 @PUT("/cookie")
 public static RestMethod putCookie;
 
-
 @Test
 public void formParamsAcceptsIntArgumentsJDI() {
-    RestResponse response = greetPost
-            .call(requestFormParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
-    response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
-}
+    Object[][] queryPramsArray = new Object[][]{{"firstName", 1234}, {"lastName", 5678}};
+
+    JettyService.greetPost(queryPramsArray)
+                .isOk()
+                .body("greeting", equalTo("Greetings 1234 5678"));
+    }
 
 @Test
 public void deleteSupportsStringBody() {
@@ -145,7 +146,7 @@ public static RestMethod getUser;
 @Test
 public void supportsPassingPathParamsToRequestSpec(){
     RestResponse response = getUser
-            .call(requestPathParams(new Object[][]{{"firstName", "John"}, {"lastName", "Doe"}}));
+            .call(pathParams().addAll(new Object[][]{{"firstName", "John"}, {"lastName", "Doe"}}));
     response.isOk().body("fullName", equalTo("John Doe"));
 }
 
@@ -161,7 +162,7 @@ public void urlEncodesPathParamsInMap(){
     params.put("firstName", "John: å");
     params.put("lastName", "Doe");
     RestResponse response = getUser
-            .call(requestData(d -> d.pathParams.addAll(params)));
+            .call(pathParams().addAll(params));
     response.isOk().body("fullName", equalTo("John: å Doe"));
 }
 
@@ -225,10 +226,13 @@ public static RestMethod greetPost;
 
 @Test
 public void charsetIsReallyDefined() {
+    Map<String, String> formParamsMap = new HashMap<>();
+    formParamsMap.put("firstName", "Some & firstname");
+    formParamsMap.put("lastName", "<lastname>");
+
     RestResponse resp = greetPost.call(requestData(rd -> {
         rd.contentType = "application/x-www-form-urlencoded; charset=ISO-8859-1";
-        rd.formParams.add("firstName", "Some & firstname");
-        rd.formParams.add("lastName", "<lastname>");
+        rd.formParams.addAll(formParamsMap);
     }));
     resp.isOk().assertThat().body("greeting", equalTo("Greetings Some & firstname <lastname>"));
 }
@@ -238,10 +242,11 @@ public static RestMethod getGreet;
 
 @Test
 public void whenLastParamInGetRequestEndsWithEqualItsTreatedAsANoValueParam() {
-    JettyService.getGreet.call(requestData(d -> {
-        d.queryParams.add(FIRST_NAME, FIRST_NAME_VALUE);
-        d.queryParams.add(LAST_NAME, "");
-    })).isOk().assertThat().body("greeting", equalTo("Greetings John "));
+  Map<String, String> queryParamsMap = new HashMap<>();
+  queryParamsMap.put(FIRST_NAME, FIRST_NAME_VALUE);
+  queryParamsMap.put(LAST_NAME, StringUtils.EMPTY);
+  
+  JettyService.getGreet.call(queryParams().addAll(queryParamsMap)).isOk().assertThat().body("greeting", equalTo("Greetings John "));
 }
 
 @POST("multipart/multiple")
@@ -264,7 +269,7 @@ public static RestMethod deleteGreet;
 
 @Test
 public void bodyHamcrestMatcherWithOutKey() {
-    deleteGreet.call(requestQueryParams(
+    deleteGreet.call(queryParams().addAll(
             new Object[][]{{FIRST_NAME, FIRST_NAME_VALUE},
                     {LAST_NAME, LAST_NAME_VALUE}
             })).isOk().assertThat().body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
@@ -276,7 +281,7 @@ public static RestMethod greetPost;
 @Test
 public void formParamsAcceptsIntArgumentsJDI() {
     RestResponse response = greetPost
-            .call(requestFormParams(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+            .call(formParams().addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
     response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
 }
 
@@ -1125,9 +1130,8 @@ public void usingProxyAnnotationOnServiceLayer() {
     final Map<String, String> params = new HashMap<>();
     params.put("firstName", "John");
     params.put("lastName", "Doe");
-    JettyService.getGreenJSONWithProxyParams.call(RequestData.requestData(rd -> {
-        rd.queryParams.addAll(params);
-    })).isOk().assertThat().
+    JettyService.getGreenJSONWithProxyParams.call(RequestData.requestData(queryParams().addAll(params))
+            .isOk().assertThat().
             body("greeting.firstName", equalTo("John")).
             body("greeting.lastName", equalTo("Doe"));
 }
@@ -1181,7 +1185,7 @@ public void basicAuthTest() {
         BasicAuthScheme basicAuth = new BasicAuthScheme();
         basicAuth.setUserName("postman");
         basicAuth.setPassword("password");
-        RestResponse resp = postmanAuthBasic.call(requestData(requestData -> requestData.setAuth(basicAuth)));
+        RestResponse resp = postmanAuthBasic.call(auth(basicAuth));
         assertEquals(resp.status.code, HttpStatus.SC_OK);
     }
 ```
@@ -1400,6 +1404,45 @@ public static RestMethod ignoreRetrying;
 
 In that case even if status code will be in specified list of errorCodes no retry requests will be send.
 
+## Service parameterization
+```java
+@ServiceDomain("${trello}")
+@QueryParameters({
+        @QueryParameter(name = "key", value = "3445103a21ddca2619eaceb0e833d0db"),
+        @QueryParameter(name = "token", value = "a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0")
+})
+public class TrelloService {
+    
+}
+```
+JDI Dark gives you opportunity to configure your service objects via .properties files.
+
+**To use it:**
+
+```java
+domain=local=http://localhost:8080, trello=https://api.trello.com/1
+log.level=INFO
+```
+1. Create .properties file with your service host in format: service.name = service.url
+2. Place it to src/test/resources/
+3. Declare annotation **@ServiceDomain** on service class.
+4. Specify parameter "value" with key of variable placed in your .properties: **@ServiceDomain("service.name")** 
+5. Let know JDI Dark about your .properties file, there are ways:
+ + **Manual way:**
+      + Go to src/test/resources/pom.properties
+      + Change ${profile} to name of your .properties file without extension
+ + **Maven:**
+      + ``` mvn clean install -DBUILD_PROFILE=name of your .properties ```
+      <br>**or**<br>
+      +  ``` EXPORT BUILD_PROFILE=name of your .properties file && mvn clean install  ```
+ + **Gradle:**
+      + ``` gradlew clean build -PBUILD_PROFILE=name of your .properties file ``` 
+      <br>**or**<br>
+      + ``` gradlew clean build -DBUILD_PROFILE=name of your .properties file ```
+      <br>**or**<br>
+      + ``` EXPORT BUILD_PROFILE=name of your .properties file && gradlew clean build  ```
+
+ 
 ## Access RestAssured
 
 ### Accessing RestAssured.config
