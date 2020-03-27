@@ -373,6 +373,9 @@
                       <a href="#retry-request-option" class="toc-h2 toc-link" data-title="Retry Request Option">Retry Request Option</a>
                     </li>
                     <li>
+                      <a href="#service-parameterization" class="toc-h2 toc-link" data-title="Service parameterization">Service parameterization</a>
+                    </li>
+                    <li>
                       <a href="#access-restassured" class="toc-h2 toc-link" data-title="Access RestAssured">Access RestAssured</a>
                           <ul class="toc-list-h2">
                               <li>
@@ -847,13 +850,14 @@ Then, values in your method annotations might be just specific URL paths.</p>
 <span class="nd">@PUT</span><span class="o">(</span><span class="s">"/cookie"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">putCookie</span><span class="o">;</span>
 
-
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
-            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestFormParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
-    <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
-<span class="o">}</span>
+    <span class="n">Object</span><span class="o">[][]</span> <span class="n">queryPramsArray</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}};</span>
+
+    <span class="n">JettyService</span><span class="o">.</span><span class="na">greetPost</span><span class="o">(</span><span class="n">queryPramsArray</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
+    <span class="o">}</span>
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteSupportsStringBody</span><span class="o">()</span> <span class="o">{</span>
@@ -990,7 +994,7 @@ with the following fields:</p>
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">supportsPassingPathParamsToRequestSpec</span><span class="o">(){</span>
     <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span>
-            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestPathParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">}}));</span>
+            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">pathParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">}}));</span>
     <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"fullName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John Doe"</span><span class="o">));</span>
 <span class="o">}</span>
 
@@ -1006,7 +1010,7 @@ with the following fields:</p>
     <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"John: å"</span><span class="o">);</span>
     <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">);</span>
     <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span>
-            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span><span class="n">d</span> <span class="o">-&gt;</span> <span class="n">d</span><span class="o">.</span><span class="na">pathParams</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">params</span><span class="o">)));</span>
+            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">pathParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">params</span><span class="o">));</span>
     <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"fullName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John: å Doe"</span><span class="o">));</span>
 <span class="o">}</span>
 
@@ -1089,10 +1093,13 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">charsetIsReallyDefined</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">formParamsMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">formParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"Some &amp; firstname"</span><span class="o">);</span>
+    <span class="n">formParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"&lt;lastname&gt;"</span><span class="o">);</span>
+
     <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">greetPost</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span><span class="n">rd</span> <span class="o">-&gt;</span> <span class="o">{</span>
         <span class="n">rd</span><span class="o">.</span><span class="na">contentType</span> <span class="o">=</span> <span class="s">"application/x-www-form-urlencoded; charset=ISO-8859-1"</span><span class="o">;</span>
-        <span class="n">rd</span><span class="o">.</span><span class="na">formParams</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"Some &amp; firstname"</span><span class="o">);</span>
-        <span class="n">rd</span><span class="o">.</span><span class="na">formParams</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"&lt;lastname&gt;"</span><span class="o">);</span>
+        <span class="n">rd</span><span class="o">.</span><span class="na">formParams</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">formParamsMap</span><span class="o">);</span>
     <span class="o">}));</span>
     <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings Some &amp; firstname &lt;lastname&gt;"</span><span class="o">));</span>
 <span class="o">}</span>
@@ -1102,10 +1109,11 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">whenLastParamInGetRequestEndsWithEqualItsTreatedAsANoValueParam</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">JettyService</span><span class="o">.</span><span class="na">getGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span><span class="n">d</span> <span class="o">-&gt;</span> <span class="o">{</span>
-        <span class="n">d</span><span class="o">.</span><span class="na">queryParams</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">FIRST_NAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">);</span>
-        <span class="n">d</span><span class="o">.</span><span class="na">queryParams</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
-    <span class="o">})).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings John "</span><span class="o">));</span>
+  <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">queryParamsMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+  <span class="n">queryParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">FIRST_NAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">);</span>
+  <span class="n">queryParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="n">StringUtils</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">);</span>
+
+  <span class="n">JettyService</span><span class="o">.</span><span class="na">getGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">queryParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">queryParamsMap</span><span class="o">)).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings John "</span><span class="o">));</span>
 <span class="o">}</span>
 
 <span class="nd">@POST</span><span class="o">(</span><span class="s">"multipart/multiple"</span><span class="o">)</span>
@@ -1128,7 +1136,7 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">bodyHamcrestMatcherWithOutKey</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">deleteGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestQueryParams</span><span class="o">(</span>
+    <span class="n">deleteGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">queryParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span>
             <span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="n">FIRST_NAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">},</span>
                     <span class="o">{</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="n">LAST_NAME_VALUE</span><span class="o">}</span>
             <span class="o">})).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">equalTo</span><span class="o">(</span><span class="s">"{\"greeting\":\"Greetings John Doe\"}"</span><span class="o">));</span>
@@ -1140,7 +1148,7 @@ You can use them in your Service Object methods and replace placeholders with va
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
     <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
-            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestFormParams</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
+            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">formParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
     <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
 <span class="o">}</span>
 
@@ -2075,9 +2083,8 @@ Cookies without value and with multiple values can be added as well.</p>
     <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
     <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">);</span>
     <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">);</span>
-    <span class="n">JettyService</span><span class="o">.</span><span class="na">getGreenJSONWithProxyParams</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">RequestData</span><span class="o">.</span><span class="na">requestData</span><span class="o">(</span><span class="n">rd</span> <span class="o">-&gt;</span> <span class="o">{</span>
-        <span class="n">rd</span><span class="o">.</span><span class="na">queryParams</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
-    <span class="o">})).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span>
+    <span class="n">JettyService</span><span class="o">.</span><span class="na">getGreenJSONWithProxyParams</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">RequestData</span><span class="o">.</span><span class="na">requestData</span><span class="o">(</span><span class="n">queryParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">params</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span>
             <span class="n">body</span><span class="o">(</span><span class="s">"greeting.firstName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John"</span><span class="o">)).</span>
             <span class="n">body</span><span class="o">(</span><span class="s">"greeting.lastName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Doe"</span><span class="o">));</span>
 <span class="o">}</span>
@@ -2133,7 +2140,7 @@ Cookies without value and with multiple values can be added as well.</p>
         <span class="n">BasicAuthScheme</span> <span class="n">basicAuth</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BasicAuthScheme</span><span class="o">();</span>
         <span class="n">basicAuth</span><span class="o">.</span><span class="na">setUserName</span><span class="o">(</span><span class="s">"postman"</span><span class="o">);</span>
         <span class="n">basicAuth</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">"password"</span><span class="o">);</span>
-        <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">postmanAuthBasic</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span><span class="n">requestData</span> <span class="o">-&gt;</span> <span class="n">requestData</span><span class="o">.</span><span class="na">setAuth</span><span class="o">(</span><span class="n">basicAuth</span><span class="o">)));</span>
+        <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">postmanAuthBasic</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">auth</span><span class="o">(</span><span class="n">basicAuth</span><span class="o">));</span>
         <span class="n">assertEquals</span><span class="o">(</span><span class="n">resp</span><span class="o">.</span><span class="na">status</span><span class="o">.</span><span class="na">code</span><span class="o">,</span> <span class="n">HttpStatus</span><span class="o">.</span><span class="na">SC_OK</span><span class="o">);</span>
     <span class="o">}</span>
 </code></pre>
@@ -2329,6 +2336,53 @@ endpoint.<br></p>
 <p><strong>@RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:</strong>  </p>
 
 <p>In that case even if status code will be in specified list of errorCodes no retry requests will be send.</p>
+<h2 id='service-parameterization'>Service parameterization</h2><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"${trello}"</span><span class="o">)</span>
+<span class="nd">@QueryParameters</span><span class="o">({</span>
+        <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"key"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"3445103a21ddca2619eaceb0e833d0db"</span><span class="o">),</span>
+        <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"token"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0"</span><span class="o">)</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloService</span> <span class="o">{</span>
+
+<span class="o">}</span>
+</code></pre>
+<p>JDI Dark gives you opportunity to configure your service objects via .properties files.</p>
+
+<p><strong>To use it:</strong></p>
+<pre class="highlight java tab-java"><code><span class="n">domain</span><span class="o">=</span><span class="n">local</span><span class="o">=</span><span class="nl">http:</span><span class="c1">//localhost:8080, trello=https://api.trello.com/1</span>
+<span class="n">log</span><span class="o">.</span><span class="na">level</span><span class="o">=</span><span class="n">INFO</span>
+</code></pre>
+<ol>
+<li>Create .properties file with your service host in format: service.name = service.url</li>
+<li>Place it to src/test/resources/</li>
+<li>Declare annotation <strong>@ServiceDomain</strong> on service class.</li>
+<li>Specify parameter &quot;value&quot; with key of variable placed in your .properties: <strong>@ServiceDomain(&quot;service.name&quot;)</strong> </li>
+<li>Let know JDI Dark about your .properties file, there are ways:
+
+<ul>
+<li><strong>Manual way:</strong>
+
+<ul>
+<li>Go to src/test/resources/pom.properties</li>
+<li>Change ${profile} to name of your .properties file without extension</li>
+</ul></li>
+<li><strong>Maven:</strong>
+
+<ul>
+<li><code>mvn clean install -DBUILD_PROFILE=name of your .properties</code>
+<br><strong>or</strong><br></li>
+<li> <code>EXPORT BUILD_PROFILE=name of your .properties file &amp;&amp; mvn clean install</code></li>
+</ul></li>
+<li><strong>Gradle:</strong>
+
+<ul>
+<li><code>gradlew clean build -PBUILD_PROFILE=name of your .properties file</code> 
+<br><strong>or</strong><br></li>
+<li><code>gradlew clean build -DBUILD_PROFILE=name of your .properties file</code>
+<br><strong>or</strong><br></li>
+<li><code>EXPORT BUILD_PROFILE=name of your .properties file &amp;&amp; gradlew clean build</code></li>
+</ul></li>
+</ul></li>
+</ol>
 <h2 id='access-restassured'>Access RestAssured</h2><h3 id='accessing-restassured-config'>Accessing RestAssured.config</h3>
 <p>Sometime, for testing purposes, some RestAssured configuration properties might be changed.
 You can access RestAssured from test or define desired properties in @BeforeTest.</p>
