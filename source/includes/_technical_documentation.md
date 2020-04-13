@@ -1324,7 +1324,7 @@ Read more about <a href="https://testng.org/doc/documentation-main.html#parallel
 For example, for <a href="http://petstore.swagger.io/v2/swagger.json" target="_blank">the petshop swagger scheme</a> after running the command  
 *java -jar target/DarkGenerator.jar generate -i http://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop*  
 will be created the project with structure as on this image:  
-<img src="../images/generated-structure.png" alt="project structure" width="50%" height="50%"/>
+<img src="/images/generated-structure.png" alt="project structure" width="50%" height="50%"/>
 
 **Options**
 
