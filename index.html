@@ -364,6 +364,9 @@
                       <a href="#parallel-running" class="toc-h2 toc-link" data-title="Parallel running">Parallel running</a>
                     </li>
                     <li>
+                      <a href="#rest-generator" class="toc-h2 toc-link" data-title="Rest Generator">Rest Generator</a>
+                    </li>
+                    <li>
                       <a href="#performance-testing" class="toc-h2 toc-link" data-title="Performance testing">Performance testing</a>
                     </li>
                     <li>
@@ -2259,6 +2262,66 @@ RestAssured, so the following methods are already implemented: Basic, Digest, NT
 <p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/PreconditionParallelTests" target="_blank">Parallel Data Provider test</a></p>
 
 <p>Read more about <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG parallel running</a> </p>
+<h2 id='rest-generator'>Rest Generator</h2>
+<p>You can auto-generate service object classes, model classes and also test classes based on a swagger scheme.</p>
+
+<p>Run this command for auto-generation:<br>
+  <strong>java -jar target/DarkGenerator.jar generate -i &lt;specification swagger file&gt; -o &lt;output directory&gt; -p &lt;package&gt;</strong></p>
+
+<p>For example, for <a href="http://petstore.swagger.io/v2/swagger.json" target="_blank">the petshop swagger scheme</a> after running the command<br>
+<em>java -jar target/DarkGenerator.jar generate -i http://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop</em><br>
+will be created the project with structure as on this image:<br>
+<img src="../images/generated-structure.png" alt="project structure" width="50%" height="50%"/></p>
+
+<p><strong>Options</strong></p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>-a &lt;authorization&gt; or --auth &lt;authorization&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>--api-package &lt;api package&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>--artifact-id &lt;artifact id&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>--artifact-version &lt;artifact version&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>--group-id &lt;group id&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>-i &lt;spec file&gt; or --input-spec &lt;spec file&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>--invoker-package &lt;invoker package&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>--model-package &lt;model package&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>-o &lt;output directory&gt; or --output &lt;output directory&gt;</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>-p</strong></td>
+<td></td>
+</tr>
+</tbody></table>
 <h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeMSec</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">weightRequests</span><span class="o">)</span>
