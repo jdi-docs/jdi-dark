@@ -2282,44 +2282,40 @@ will be created the project with structure as on this image:<br>
 </tr>
 </thead><tbody>
 <tr>
+<td><strong>-i &lt;spec file&gt; or --input-spec &lt;spec file&gt;</strong></td>
+<td>location file specification</td>
+</tr>
+<tr>
+<td><strong>-o &lt;output directory&gt; or --output &lt;output directory&gt;</strong></td>
+<td>project directory name</td>
+</tr>
+<tr>
+<td><strong>--invoker-package &lt;invoker package&gt; or -p&lt;invoker package&gt;</strong></td>
+<td>name main package</td>
+</tr>
+<tr>
+<td><strong>--model-package &lt;model package&gt;</strong></td>
+<td>name package for model classes</td>
+</tr>
+<tr>
+<td><strong>--api-package &lt;api package&gt;</strong></td>
+<td>name package for api classes</td>
+</tr>
+<tr>
 <td><strong>-a &lt;authorization&gt; or --auth &lt;authorization&gt;</strong></td>
 <td></td>
 </tr>
 <tr>
-<td><strong>--api-package &lt;api package&gt;</strong></td>
-<td></td>
-</tr>
-<tr>
 <td><strong>--artifact-id &lt;artifact id&gt;</strong></td>
-<td></td>
+<td>project artifact id</td>
 </tr>
 <tr>
 <td><strong>--artifact-version &lt;artifact version&gt;</strong></td>
-<td></td>
+<td>project artifact version</td>
 </tr>
 <tr>
 <td><strong>--group-id &lt;group id&gt;</strong></td>
-<td></td>
-</tr>
-<tr>
-<td><strong>-i &lt;spec file&gt; or --input-spec &lt;spec file&gt;</strong></td>
-<td></td>
-</tr>
-<tr>
-<td><strong>--invoker-package &lt;invoker package&gt;</strong></td>
-<td></td>
-</tr>
-<tr>
-<td><strong>--model-package &lt;model package&gt;</strong></td>
-<td></td>
-</tr>
-<tr>
-<td><strong>-o &lt;output directory&gt; or --output &lt;output directory&gt;</strong></td>
-<td></td>
-</tr>
-<tr>
-<td><strong>-p</strong></td>
-<td></td>
+<td>project group id</td>
 </tr>
 </tbody></table>
 <h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
