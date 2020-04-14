@@ -15,6 +15,7 @@ includes:
   - introduction
   - tutorial
   - technical_documentation
+  - jdi_generators
 
 search: true
 ---
