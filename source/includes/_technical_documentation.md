@@ -1330,18 +1330,15 @@ will be created the project with structure as on this image:
 
 |Method | Description 
 --- | --- 
+**-i \<spec file\> or --input-spec \<spec file\>** | location file specification
+**-o \<output directory\> or --output \<output directory\>** |  project directory name
+**--invoker-package \<invoker package\> or -p\<invoker package\>** | name main package 
+**--model-package \<model package\>** |  name package for model classes
+**--api-package \<api package\>** |  name package for api classes
 **-a \<authorization\> or --auth \<authorization\>** |  
-**--api-package \<api package\>** | 
-**--artifact-id \<artifact id\>** | 
-**--artifact-version \<artifact version\>** | 
-**--group-id \<group id\>** | 
-**-i \<spec file\> or --input-spec \<spec file\>** | 
-**--invoker-package \<invoker package\>** | 
-**--model-package \<model package\>** | 
-**-o \<output directory\> or --output \<output directory\>** |  
-**-p** | 
-
-  
+**--artifact-id \<artifact id\>** | project artifact id
+**--artifact-version \<artifact version\>** | project artifact version
+**--group-id \<group id\>** | project group id
 
     
 ## Performance testing
