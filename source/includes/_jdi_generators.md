@@ -26,7 +26,7 @@ will be created the project with structure as on this image:
 **--invoker-package \<invoker package\> or -p\<invoker package\>** | name main package 
 **--model-package \<model package\>** |  name package for model classes
 **--api-package \<api package\>** |  name package for api classes
-**-a \<authorization\> or --auth \<authorization\>** |  
+**-a \<authorization\> or --auth \<authorization\>** |  add auth data in header(specify in key:value format)
 **--artifact-id \<artifact id\>** | project artifact id
 **--artifact-version \<artifact version\>** | project artifact version
 **--group-id \<group id\>** | project group id
