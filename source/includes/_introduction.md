@@ -44,7 +44,7 @@ The HTTP GET method described in the service class is being called here. Next, t
 
 You can check other tests by following the link:
  
- [JDI Dark test examples](https://github.com/jdi-testing/jdi-dark/tree/master/jdi-httpTests)
+ [JDI Dark test examples](https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples)
 
 ## 3. Create tests without using Service Object
 
