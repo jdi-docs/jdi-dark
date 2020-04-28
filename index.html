@@ -1037,7 +1037,7 @@ with the following fields:</p>
 <p>A URL can have one or several path parameters, each denoted with curly braces, e.g. <em>/get/{board_id}</em>, <em>/boards/{board_id}/cards/{short_card_id}/</em>. 
 You can use them in your Service Object methods and replace placeholders with values when making request calls.</p>
 
-<p>There are methods provided for passing path params to RequestData:</p>
+<p>Methods allow to send path params to RequestData:</p>
 
 <table><thead>
 <tr>
@@ -1047,12 +1047,17 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>requestPathParams(String paramName, String paramValue)</strong></td>
+<td><strong>pathParams().add(paramName, paramValue)</strong></td>
 <td>pass one parameter to a path</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>requestPathParams(Object[][] params)</strong></td>
+<td><strong>pathParams().addAll(Object[][] array2D)</strong></td>
+<td>pass multiple parameters to a path</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>pathParams().addAll(Map map)</strong></td>
 <td>pass multiple parameters to a path</td>
 <td>RequestData</td>
 </tr>
@@ -1209,11 +1214,6 @@ You can use them in your Service Object methods and replace placeholders with va
 <td>set multipart parameters</td>
 <td></td>
 </tr>
-<tr>
-<td><strong>setMultiPart(File file)</strong></td>
-<td>set File parameter</td>
-<td></td>
-</tr>
 </tbody></table>
 
 <p>Methods allow to send query params to RequestData:</p>
@@ -1226,13 +1226,18 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>requestQueryParams(String paramName, String paramValue)</strong></td>
-<td>pass one query parameter to a path</td>
+<td><strong>queryParams().add(paramName, paramValue)</strong></td>
+<td>pass one parameter to a path</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>requestQueryParams(Object[][] params)</strong></td>
-<td>pass multiple query parameters to a path</td>
+<td><strong>queryParams().addAll(Object[][] array2D)</strong></td>
+<td>pass multiple parameters to a path</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>queryParams().addAll(Map map)</strong></td>
+<td>pass multiple parameters to a path</td>
 <td>RequestData</td>
 </tr>
 </tbody></table>
@@ -1247,13 +1252,18 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>requestFormParams(String paramName, String paramValue)</strong></td>
+<td><strong>formParams().add(paramName, paramValue)</strong></td>
 <td>pass one form parameter to a path</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>requestFormParams(Object[][] params)</strong></td>
-<td>pass multiple form parameters to a path</td>
+<td><strong>formParams().addAll(Object[][] array2D)</strong></td>
+<td>pass multiple parameters to a path</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>formParams().addAll(Map map)</strong></td>
+<td>pass multiple parameters to a path</td>
 <td>RequestData</td>
 </tr>
 </tbody></table>
@@ -1336,7 +1346,7 @@ You can use them in your Service Object methods and replace placeholders with va
 </tbody></table>
 
 <p><br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/ConfigITest.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/ConfigITests.java" target="_blank">Test examples in Java</a>
 <br></p>
 
 <p><em>For general setting RestAssured config see <a href="https://jdi-docs.github.io/jdi-dark/#access-restassured">Accessing RestAssured</a></em></p>
@@ -1954,17 +1964,25 @@ Response body and status can be also retrieved using <em>body</em> and <em>statu
 
 <p>Headers can be passed as strings, header objects, maps, and even arrays of objects.
 Headers without value and with multiple values can be added as well.</p>
-<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeader</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">value</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">additionalValues</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeader</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Object</span> <span class="n">value</span><span class="o">,</span> <span class="n">Object</span><span class="o">...</span> <span class="n">cookieNameValuePairs</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Object</span><span class="o">[][]</span> <span class="n">objects</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">MapArray</span> <span class="n">mapArray</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Map</span> <span class="n">map</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Header</span><span class="o">&gt;</span> <span class="n">headers</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addHeaders</span><span class="o">(</span><span class="n">Header</span><span class="o">...</span> <span class="n">headers</span><span class="o">)</span>
+<pre class="highlight java tab-java"><code>
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">requestDataAllowsSpecifyingHeaderWithoutServiceObjectMethods</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getMultiHeaderReflect</span>
+            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">headers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="s">"MyHeader"</span><span class="o">,</span> <span class="s">"TestValue"</span><span class="o">));</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">header</span><span class="o">(</span><span class="s">"MyHeader"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"TestValue"</span><span class="o">));</span>
+<span class="o">}</span>
 
-<span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">MyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
-                <span class="n">requestData</span> <span class="o">-&gt;</span> <span class="n">requestData</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"Header_example"</span><span class="o">,</span> <span class="s">"Test_value"</span><span class="o">)));</span>
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">requestSpecificationAllowsSpecifyingMultiValueHeadersWithoutServiceObjectMethod</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getMultiHeaderReflect</span>
+            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">headers</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{</span>
+                    <span class="o">{</span><span class="s">"MyHeader"</span><span class="o">,</span> <span class="s">"Something"</span><span class="o">},</span>
+                    <span class="o">{</span><span class="s">"MyHeader"</span><span class="o">,</span> <span class="s">"SomethingElse"</span><span class="o">}}));</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">();</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">headers</span><span class="o">().</span><span class="na">getValues</span><span class="o">(</span><span class="s">"MyHeader"</span><span class="o">).</span><span class="na">size</span><span class="o">(),</span> <span class="n">is</span><span class="o">(</span><span class="mi">2</span><span class="o">));</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">headers</span><span class="o">().</span><span class="na">getValues</span><span class="o">(</span><span class="s">"MyHeader"</span><span class="o">),</span> <span class="n">hasItems</span><span class="o">(</span><span class="s">"Something"</span><span class="o">,</span> <span class="s">"SomethingElse"</span><span class="o">));</span>
+<span class="o">}</span>
+
 </code></pre>
 <table><thead>
 <tr>
@@ -1974,43 +1992,28 @@ Headers without value and with multiple values can be added as well.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>addHeader(String name, String value, String... additionalValues)</strong></td>
-<td>pass name and value of header. If additional values are specified, then several cookies will be created with the same name (multiple-value header)</td>
+<td><strong>headers().add(paramName, paramValue)</strong></td>
+<td>pass name and value of header</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>addHeader(String name)</strong></td>
-<td>pass header name without value</td>
-<td>RequestData</td>
-</tr>
-<tr>
-<td><strong>addHeaders(Object[][] objects)</strong></td>
+<td><strong>headers().addAll(Object[][] array2D)</strong></td>
 <td>pass array with header names and values</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>addHeaders(MapArray mapArray)</strong></td>
-<td>pass MapArray with header names and values</td>
-<td>RequestData</td>
-</tr>
-<tr>
-<td><strong>addHeaders(Map map)</strong></td>
+<td><strong>headers().addAll(Map map)</strong></td>
 <td>pass map with header names and values</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>addHeaders(Map map)</strong></td>
-<td>pass map with header names and values</td>
+<td><strong>headers().addAll(Header... header)</strong></td>
+<td>pass header objects</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>addHeaders(List list)</strong></td>
-<td>pass list of headers</td>
-<td>RequestData</td>
-</tr>
-<tr>
-<td><strong>addHeaders(Header... header)</strong></td>
-<td>pass header object</td>
+<td><strong>headers().add(String name)</strong></td>
+<td>pass header name without value</td>
 <td>RequestData</td>
 </tr>
 </tbody></table>
@@ -2032,8 +2035,7 @@ Headers without value and with multiple values can be added as well.</p>
 <span class="nd">@Cookie</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"key1"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"value1"</span><span class="o">,</span> <span class="n">additionalValues</span> <span class="o">=</span> <span class="s">"value2"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getMultiCookieWithCookies</span><span class="o">;</span>
 </code></pre>
-<p>There are methods to add cookies to Request Data. Cookies can be passed as name and value, name and value pairs, maps, and arrays of objects.
-Cookies without value and with multiple values can be added as well.</p>
+<p>There are methods to add cookies to Request Data. Cookies can be passed as name and value, name and value pairs, maps, and arrays of objects.</p>
 
 <table><thead>
 <tr>
@@ -2043,45 +2045,58 @@ Cookies without value and with multiple values can be added as well.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>addCookie(String name, String value, String... additionalValues)</strong></td>
-<td>pass name and value of cookie. If additional values are specified, then several cookies will be created with the same name (multiple-value cookie)</td>
+<td><strong>cookies().add(paramName, paramValue)</strong></td>
+<td>pass name and value of cookie</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>addCookie(String name)</strong></td>
-<td>pass cookie name to cookie without value</td>
-<td>RequestData</td>
-</tr>
-<tr>
-<td><strong>addCookies(String name, Object value, Object... cookieNameValuePairs)</strong></td>
-<td>pass several pairs of cookie names and values</td>
-<td>RequestData</td>
-</tr>
-<tr>
-<td><strong>addCookies(Object[][] objects)</strong></td>
+<td><strong>cookies().addAll(Object[][] array2D)</strong></td>
 <td>pass array with cookie names and values</td>
 <td>RequestData</td>
 </tr>
 <tr>
-<td><strong>addCookies(MapArray mapArray)</strong></td>
-<td>pass MapArray with cookie names and values</td>
-<td>RequestData</td>
-</tr>
-<tr>
-<td><strong>addCookies(Map map)</strong></td>
+<td><strong>cookies().addAll(Map map)</strong></td>
 <td>pass map with cookie names and values</td>
 <td>RequestData</td>
 </tr>
+<tr>
+<td><strong>cookies().add(String name)</strong></td>
+<td>pass cookie name without cookie</td>
+<td>RequestData</td>
+</tr>
+<tr>
+<td><strong>cookies().add(String name, String... values)</strong></td>
+<td>pass header name without value</td>
+<td>RequestData</td>
+</tr>
 </tbody></table>
-<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookie</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">value</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">additionalValues</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookie</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookies</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">Object</span> <span class="n">value</span><span class="o">,</span> <span class="n">Object</span><span class="o">...</span> <span class="n">cookieNameValuePairs</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookies</span><span class="o">(</span><span class="n">Object</span><span class="o">[][]</span> <span class="n">objects</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookies</span><span class="o">(</span><span class="n">MapArray</span> <span class="n">mapArray</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">RequestData</span> <span class="nf">addCookies</span><span class="o">(</span><span class="n">Map</span> <span class="n">map</span><span class="o">)</span>
+<pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/cookie_with_no_value"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getCookieWithNoValue</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestResponse</span> <span class="nf">getCookieWithOnlyName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">getCookieWithNoValue</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">cookies</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">name</span><span class="o">));</span>
+<span class="o">}</span>
 
-<span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">MyService</span><span class="o">.</span><span class="na">getHello</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
-                <span class="n">requestData</span> <span class="o">-&gt;</span> <span class="n">requestData</span><span class="o">.</span><span class="na">addCookie</span><span class="o">(</span><span class="s">"key1"</span><span class="o">,</span> <span class="s">"value1"</span><span class="o">)));</span>
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/cookie"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getCookie</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestResponse</span> <span class="nf">getCookieSpecifiedUsingMap</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">cookieMap</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">getCookie</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">cookies</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">cookieMap</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">requestSpecificationAllowsSpecifyingCookieWithNoValue</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">JettyService</span><span class="o">.</span><span class="na">getCookieWithOnlyName</span><span class="o">(</span><span class="s">"some_cookie"</span><span class="o">);</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getBody</span><span class="o">(),</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"some_cookie"</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">requestSpecificationAllowsSpecifyingCookieUsingMap</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">cookies</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">cookies</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"username"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">);</span>
+    <span class="n">cookies</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"token"</span><span class="o">,</span> <span class="s">"1234"</span><span class="o">);</span>
+
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">JettyService</span><span class="o">.</span><span class="na">getCookieSpecifiedUsingMap</span><span class="o">(</span><span class="n">cookies</span><span class="o">);</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getBody</span><span class="o">(),</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"username, token"</span><span class="o">));</span>
+<span class="o">}</span>
 </code></pre><h2 id='proxy'>Proxy</h2><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/greetJSON"</span><span class="o">)</span>
 <span class="nd">@Proxy</span><span class="o">(</span><span class="n">host</span> <span class="o">=</span> <span class="s">"127.0.0.1"</span><span class="o">,</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">8888</span><span class="o">,</span> <span class="n">scheme</span> <span class="o">=</span> <span class="s">"http"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getGreenJSONWithProxyParams</span><span class="o">;</span>
