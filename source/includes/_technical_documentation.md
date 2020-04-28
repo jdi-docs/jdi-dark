@@ -76,7 +76,7 @@ For describing HTTP method use RestMethod class with appropriate annotation in S
 **@DELETE("endpoint")** - for DELETE method  
 **@PUT("endpoint")** - for PUT method  
 
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">Test example in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyService.java" target="_blank">Test example in Java</a>
 
 
 Available methods for sending HTTP request in JDI dark: 
@@ -490,7 +490,7 @@ It's possible to describe tested web service as a Service Object class using ann
 <br />
 - @IgnoreRetry - represents ignore settings for failed tests
 <br />
-See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br />
 - @Method - represents any HTTP method
 <br />
@@ -505,7 +505,7 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
     - delay
     - unit
 <br />
-See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br />
 - @ServiceDomain - represents the domain name
 <br />
@@ -513,13 +513,13 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
     - pathToJks
     - password
 <br />
-See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyServiceHttps.java" target="_blank">here</a>.
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyServiceHttps.java" target="_blank">here</a>.
 <br />
 - @URL - represents HTTP get method, where value is uri
 
 See annotations <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark/src/main/java/com/epam/http/annotations" target="_blank">here</a>.
 <br />
-See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">here</a>.
+See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyService.java" target="_blank">here</a>.
 
 ### Create tests for service
 
@@ -1326,15 +1326,13 @@ public void createCardInBoard(Board board) {
   2. For running test classes in a separate thread - add attribute *parallel="classes"* in the tag *suite* or *test*  
   3. Specify the attribute *thread-count* how many threads should be allocated for this execution.  
   4. For parallel running Data Providers specify count of threads in the *data-provider-thread-count* attribute of the tag *suite*
- 
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> 
   
 **Setting Data Provider for parallel running directly in the test**  
 
  1. Add the attribute parallel = true to @DataProvider annotation.(By default a size of thread = 10)  
  2. Specify special count of threads in the attribute *threadPoolSize* in @DataProvider annotation 
 
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/PreconditionParallelTests" target="_blank">Parallel Data Provider test</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> 
 
 Read more about <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG parallel running</a> 
 

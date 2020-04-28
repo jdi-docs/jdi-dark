@@ -146,7 +146,7 @@ In our example we created TrelloDataGenerator class which contains  method for g
 
 2.Add test methods
     
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/TrelloTests.java" target="_blank">See test case example</a>.
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/entities/TrelloTests.java" target="_blank">See test case example</a>.
 
 
 ###Running test examples 
@@ -240,7 +240,7 @@ In this example we create tests for simple HTTP Request & Response Service. You 
   
   - Use other necessary annotation as described <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object" target="_blank">here</a>.
 
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/main/java/com/epam/jdi/httptests/ServiceExample.java" target="_blank">See example for Service Object class</a>.   
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/main/java/com/epam/jdi/services/ServiceExample.java" target="_blank">See example for Service Object class</a>.   
 <br/>
 
 **2. Create feature files**
@@ -255,7 +255,7 @@ In this example we create tests for simple HTTP Request & Response Service. You 
 Specify additional options/custom properties via @CucumberOptions (‘strict’, tags’, ‘plugin’, ‘features’, ‘glue’, ‘format’ are mostly used).
 For more details on @CucumberOptions and configs check cucumber documentation <a href="https://cucumber.io/docs/cucumber/api/" target="_blank">here</a>.   
 <br/>
-Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/CucumberTestRunner.java" target="_blank">here</a>.
+Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/CucumberTestRunner.java" target="_blank">here</a>.
 <br/>
 
 TestNG TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/HttpTestsRunner.java" target="_blank">here</a>.  
