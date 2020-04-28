@@ -182,12 +182,13 @@ public void statusTestWithQueryInPath() {
 A URL can have one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. 
 You can use them in your Service Object methods and replace placeholders with values when making request calls.
 
-There are methods provided for passing path params to RequestData:
+Methods allow to send path params to RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
-**requestPathParams(String paramName, String paramValue)** | pass one parameter to a path | RequestData
-**requestPathParams(Object[][] params)** | pass multiple parameters to a path | RequestData
+**pathParams().add(paramName, paramValue)** | pass one parameter to a path | RequestData
+**pathParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
+**pathParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
 
 Methods for passing path params (with/without query params) in RestMethod:
 
@@ -317,21 +318,22 @@ Methods allow to set multipart parameters to request data:
 |Method | Description | Return Type
 --- | --- | ---
 **setMultiPart(MultiPartSpecBuilder multiPartSpecBuilder)** | set multipart parameters | 
-**setMultiPart(File file)** | set File parameter | 
 
 Methods allow to send query params to RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
-**requestQueryParams(String paramName, String paramValue)** | pass one query parameter to a path | RequestData
-**requestQueryParams(Object[][] params)** | pass multiple query parameters to a path | RequestData
+**queryParams().add(paramName, paramValue)** | pass one parameter to a path | RequestData
+**queryParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
+**queryParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
 
 Methods allow to send form params to RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
-**requestFormParams(String paramName, String paramValue)** | pass one form parameter to a path | RequestData
-**requestFormParams(Object[][] params)** | pass multiple form parameters to a path | RequestData
+**formParams().add(paramName, paramValue)** | pass one form parameter to a path | RequestData
+**formParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
+**formParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
 
 Method allow to send specific query parameters in url in RestMethod:
 
@@ -392,7 +394,7 @@ You can set RequestSpecification for your request. Get RestAssured RequestSpecif
 **call(RequestSpecification spec)** | make request with RequestSpecification | RestResponse 
 
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/ConfigITest.java" target="_blank">Test examples in Java</a>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/ConfigITests.java" target="_blank">Test examples in Java</a>
 <br>
  
 *For general setting RestAssured config see [Accessing RestAssured](https://jdi-docs.github.io/jdi-dark/#access-restassured)*
@@ -1048,29 +1050,34 @@ Headers can be passed as strings, header objects, maps, and even arrays of objec
 Headers without value and with multiple values can be added as well.
 
 ```java
-public RequestData addHeader(String name, String value, String... additionalValues)
-public RequestData addHeader(String name)
-public RequestData addHeaders(String name, Object value, Object... cookieNameValuePairs)
-public RequestData addHeaders(Object[][] objects)
-public RequestData addHeaders(MapArray mapArray)
-public RequestData addHeaders(Map map)
-public RequestData addHeaders(List<Header> headers)
-public RequestData addHeaders(Header... headers)
 
-RestResponse response = MyService.getHello.call(requestData(
-                requestData -> requestData.addHeader("Header_example", "Test_value")));
+@Test
+public void requestDataAllowsSpecifyingHeaderWithoutServiceObjectMethods() {
+    RestResponse response = getMultiHeaderReflect
+            .call(headers().add("MyHeader", "TestValue"));
+    response.isOk().assertThat().header("MyHeader", equalTo("TestValue"));
+}
+
+@Test
+public void requestSpecificationAllowsSpecifyingMultiValueHeadersWithoutServiceObjectMethod() {
+    RestResponse response = getMultiHeaderReflect
+            .call(headers().addAll(new Object[][]{
+                    {"MyHeader", "Something"},
+                    {"MyHeader", "SomethingElse"}}));
+    response.isOk();
+    assertThat(response.headers().getValues("MyHeader").size(), is(2));
+    assertThat(response.headers().getValues("MyHeader"), hasItems("Something", "SomethingElse"));
+}
+
 ```
 
 |Method | Description | Return Type
 --- | --- | ---
-**addHeader(String name, String value, String... additionalValues)** | pass name and value of header. If additional values are specified, then several cookies will be created with the same name (multiple-value header) | RequestData
-**addHeader(String name)** | pass header name without value | RequestData
-**addHeaders(Object[][] objects)** | pass array with header names and values | RequestData
-**addHeaders(MapArray mapArray)** | pass MapArray with header names and values | RequestData
-**addHeaders(Map map)** | pass map with header names and values | RequestData
-**addHeaders(Map map)** | pass map with header names and values | RequestData
-**addHeaders(List list)** | pass list of headers | RequestData
-**addHeaders(Header... header)** | pass header object | RequestData
+**headers().add(paramName, paramValue)** | pass name and value of header | RequestData
+**headers().addAll(Object[][] array2D)** | pass array with header names and values | RequestData
+**headers().addAll(Map map)** | pass map with header names and values | RequestData
+**headers().addAll(Header... header)** | pass header objects | RequestData
+**headers().add(String name)** | pass header name without value | RequestData
 
 ## Cookies
 
@@ -1095,27 +1102,45 @@ public static RestMethod getMultiCookieWithCookies;
 ```
 
 There are methods to add cookies to Request Data. Cookies can be passed as name and value, name and value pairs, maps, and arrays of objects.
-Cookies without value and with multiple values can be added as well.
 
 |Method | Description | Return Type
 --- | --- | ---
-**addCookie(String name, String value, String... additionalValues)** | pass name and value of cookie. If additional values are specified, then several cookies will be created with the same name (multiple-value cookie) | RequestData
-**addCookie(String name)** | pass cookie name to cookie without value | RequestData
-**addCookies(String name, Object value, Object... cookieNameValuePairs)** | pass several pairs of cookie names and values | RequestData
-**addCookies(Object[][] objects)** | pass array with cookie names and values | RequestData
-**addCookies(MapArray mapArray)** | pass MapArray with cookie names and values | RequestData
-**addCookies(Map map)** | pass map with cookie names and values | RequestData
+**cookies().add(paramName, paramValue)** | pass name and value of cookie | RequestData
+**cookies().addAll(Object[][] array2D)** | pass array with cookie names and values | RequestData
+**cookies().addAll(Map map)** | pass map with cookie names and values | RequestData
+**cookies().add(String name)** | pass cookie name without cookie | RequestData
+**cookies().add(String name, String... values)** | pass header name without value | RequestData
+
+
 
 ```java
-public RequestData addCookie(String name, String value, String... additionalValues)
-public RequestData addCookie(String name)
-public RequestData addCookies(String name, Object value, Object... cookieNameValuePairs)
-public RequestData addCookies(Object[][] objects)
-public RequestData addCookies(MapArray mapArray)
-public RequestData addCookies(Map map)
+@GET("/cookie_with_no_value")
+public static RestMethod getCookieWithNoValue;
+public static RestResponse getCookieWithOnlyName(String name) {
+    return getCookieWithNoValue.call(cookies().add(name));
+}
 
-RestResponse response = MyService.getHello.call(requestData(
-                requestData -> requestData.addCookie("key1", "value1")));
+@GET("/cookie")
+public static RestMethod getCookie;
+public static RestResponse getCookieSpecifiedUsingMap(Map<String, String> cookieMap) {
+    return getCookie.call(cookies().addAll(cookieMap));
+}
+
+@Test
+public void requestSpecificationAllowsSpecifyingCookieWithNoValue() {
+    RestResponse response = JettyService.getCookieWithOnlyName("some_cookie");
+    assertThat(response.getBody(), equalTo("some_cookie"));
+}
+
+@Test
+public void requestSpecificationAllowsSpecifyingCookieUsingMap() {
+    Map<String, String> cookies = new LinkedHashMap<>();
+    cookies.put("username", "John");
+    cookies.put("token", "1234");
+
+    RestResponse response = JettyService.getCookieSpecifiedUsingMap(cookies);
+    assertThat(response.getBody(), equalTo("username, token"));
+}
 ```
 
 ## Proxy
