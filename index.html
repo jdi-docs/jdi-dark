@@ -496,7 +496,7 @@ We can create a Java class and describe the methods we want to test.</p>
 
 <p>You can check other tests by following the link:</p>
 
-<p><a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-httpTests">JDI Dark test examples</a></p>
+<p><a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples">JDI Dark test examples</a></p>
 <h2 id='3-create-tests-without-using-service-object'>3. Create tests without using Service Object</h2><pre class="highlight java tab-java"><code><span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">noServiceObjectTest</span><span class="o">(){</span>
     <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">GET</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span>
@@ -682,7 +682,7 @@ The latest version can be found in <a href="https://search.maven.org/classic/#se
 
 <p>2.Add test methods</p>
 
-<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/TrelloTests.java" target="_blank">See test case example</a>.</p>
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/entities/TrelloTests.java" target="_blank">See test case example</a>.</p>
 <h3 id='running-test-examples'>Running test examples</h3>
 <p>You can see and run various examples test cases in <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests" target="_blank">JDI DARK project </a>.
 Before first run test cases, execute maven commands:</p>
@@ -762,7 +762,7 @@ Before first run test cases, execute maven commands:</p>
 <li><p>Use other necessary annotation as described <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object" target="_blank">here</a>.</p></li>
 </ul>
 
-<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/main/java/com/epam/jdi/httptests/ServiceExample.java" target="_blank">See example for Service Object class</a>.<br>
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/main/java/com/epam/jdi/services/ServiceExample.java" target="_blank">See example for Service Object class</a>.<br>
 <br/></p>
 
 <p><strong>2. Create feature files</strong></p>
@@ -779,7 +779,7 @@ Before first run test cases, execute maven commands:</p>
 <p>Specify additional options/custom properties via @CucumberOptions (‘strict’, tags’, ‘plugin’, ‘features’, ‘glue’, ‘format’ are mostly used).
 For more details on @CucumberOptions and configs check cucumber documentation <a href="https://cucumber.io/docs/cucumber/api/" target="_blank">here</a>.<br>
 <br/>
-Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/CucumberTestRunner.java" target="_blank">here</a>.
+Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/CucumberTestRunner.java" target="_blank">here</a>.
 <br/></p>
 
 <p>TestNG TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/HttpTestsRunner.java" target="_blank">here</a>.<br>
@@ -897,7 +897,7 @@ Then, values in your method annotations might be just specific URL paths.</p>
 <strong>@DELETE(&quot;endpoint&quot;)</strong> - for DELETE method<br>
 <strong>@PUT(&quot;endpoint&quot;)</strong> - for PUT method  </p>
 
-<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">Test example in Java</a></p>
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyService.java" target="_blank">Test example in Java</a></p>
 
 <p>Available methods for sending HTTP request in JDI dark: </p>
 
@@ -1449,7 +1449,7 @@ They can be made accessible by importing <em>com.epam.http.requests.RestMethods.
 <br /></li>
 <li>@IgnoreRetry - represents ignore settings for failed tests
 <br />
-See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br /></li>
 <li>@Method - represents any HTTP method
 <br /></li>
@@ -1469,7 +1469,7 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
 <li>delay</li>
 <li>unit
 <br />
-See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/RetryingService.java" target="_blank">here</a>.
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br /></li>
 </ul></li>
 <li>@ServiceDomain - represents the domain name
@@ -1480,7 +1480,7 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
 <li>pathToJks</li>
 <li>password
 <br />
-See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyServiceHttps.java" target="_blank">here</a>.
+See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyServiceHttps.java" target="_blank">here</a>.
 <br /></li>
 </ul></li>
 <li>@URL - represents HTTP get method, where value is uri</li>
@@ -1488,7 +1488,7 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
 
 <p>See annotations <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark/src/main/java/com/epam/http/annotations" target="_blank">here</a>.
 <br />
-See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/JettyService.java" target="_blank">here</a>.</p>
+See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyService.java" target="_blank">here</a>.</p>
 <h3 id='create-tests-for-service'>Create tests for service</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="n">ServiceExample</span> <span class="n">service</span><span class="o">;</span>
@@ -2270,8 +2270,6 @@ RestAssured, so the following methods are already implemented: Basic, Digest, NT
 <li>For parallel running Data Providers specify count of threads in the <em>data-provider-thread-count</em> attribute of the tag <em>suite</em></li>
 </ol>
 
-<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> </p>
-
 <p><strong>Setting Data Provider for parallel running directly in the test</strong>  </p>
 
 <ol>
@@ -2279,7 +2277,7 @@ RestAssured, so the following methods are already implemented: Basic, Digest, NT
 <li>Specify special count of threads in the attribute <em>threadPoolSize</em> in @DataProvider annotation </li>
 </ol>
 
-<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/PreconditionParallelTests" target="_blank">Parallel Data Provider test</a></p>
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> </p>
 
 <p>Read more about <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG parallel running</a> </p>
 <h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
