@@ -2640,16 +2640,14 @@ object
 <ol>
 <li>Clone <a href="https://github.com/jdi-testing/jdi-dark-generator" target="_blank">Jdi dark generator</a><br></li>
 <li>Build Jdi dark generator by command <strong>mvn clean package</strong><br></li>
-<li>Run this command for auto-generation:<br>
-<strong>java -jar jdi-dark-rest-generator/target/DarkGenerator.jar<br>
-generate -i &lt;specification swagger file&gt; -o &lt;output directory&gt; -p &lt;package&gt;</strong></li>
+<li>Run this command for auto-generation:<br></li>
 </ol>
+
+<p><strong>java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i &lt;specification swagger file&gt; -o &lt;output directory&gt; -p &lt;package&gt;</strong></p>
 
 <p>For example, for <a href="http://petstore.swagger.io/v2/swagger.json" target="_blank">the petshop swagger scheme</a> after running the command  </p>
 
-<p><em>java -jar jdi-dark-rest-generator/target/DarkGenerator.jar<br>
- generate -i http://petstore.swagger.io/v2/swagger.json<br>
- -o ../sample -p com.petshop</em>  </p>
+<p><em>java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i http://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop</em>  </p>
 
 <p>will be created the project with structure as on this image:<br>
 <img src="images/generated-structure.png" alt="project structure" width="50%" height="50%"/></p>
