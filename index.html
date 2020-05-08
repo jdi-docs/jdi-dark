@@ -398,6 +398,23 @@
                           </ul>
                     </li>
                     <li>
+                      <a href="#soap" class="toc-h2 toc-link" data-title="SOAP">SOAP</a>
+                          <ul class="toc-list-h2">
+                              <li>
+                                <a href="#creating-service-object" class="toc-h2 h3 toc-link" data-title="Creating Service Object">Creating Service Object</a>
+                              </li>
+                              <li>
+                                <a href="#creating-objects" class="toc-h2 h3 toc-link" data-title="Creating Objects">Creating Objects</a>
+                              </li>
+                              <li>
+                                <a href="#jdi-dark-methods-for-soap" class="toc-h2 h3 toc-link" data-title="JDI Dark Methods for SOAP">JDI Dark Methods for SOAP</a>
+                              </li>
+                              <li>
+                                <a href="#creating-tests" class="toc-h2 h3 toc-link" data-title="Creating tests">Creating tests</a>
+                              </li>
+                          </ul>
+                    </li>
+                    <li>
                       <a href="#review-guide" class="toc-h2 toc-link" data-title="Review Guide">Review Guide</a>
                           <ul class="toc-list-h2">
                               <li>
@@ -2645,6 +2662,108 @@ When I do status request with &quot;&lt; status &gt;&quot; code
 <br>
 See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/LoadService.feature" target="_blank">here</a>.
 <br></p>
+<h2 id='soap'>SOAP</h2><h3 id='creating-service-object'>Creating Service Object</h3><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V04_01.asmx"</span><span class="o">)</span>
+<span class="nd">@SOAPNamespace</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GeoServices</span> <span class="o">{</span>
+
+    <span class="nd">@POST</span><span class="o">()</span>
+    <span class="nd">@SOAPAction</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/GeocodeAddressNonParsed"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SoapMethod</span><span class="o">&lt;</span><span class="n">GeocodeAddressNonParsed</span><span class="o">,</span> <span class="n">GeocodeAddressNonParsedResponse</span><span class="o">&gt;</span> <span class="n">geocodeAddressNonParsed</span><span class="o">;</span>
+
+    <span class="nd">@POST</span><span class="o">()</span>
+    <span class="nd">@SOAP12</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SoapMethod</span><span class="o">&lt;</span><span class="n">GeocodeAddressNonParsed</span><span class="o">,</span> <span class="n">GeocodeAddressNonParsedResponse</span><span class="o">&gt;</span> <span class="n">geocodeAddressNonParsed12</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre>
+<p>Available annotations for Service Object:</p>
+
+<table><thead>
+<tr>
+<th>Annotation</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>@ServiceDomain(&quot;value&quot;)</strong></td>
+<td>represents the domain name</td>
+</tr>
+<tr>
+<td><strong>@POST()</strong></td>
+<td>represents HTTP post method</td>
+</tr>
+<tr>
+<td><strong>@URL(&quot;value&quot;)</strong></td>
+<td>represents URL for SOAP request</td>
+</tr>
+<tr>
+<td><strong>@SOAPNamespace(&quot;value&quot;)</strong></td>
+<td>represents SOAP namespace</td>
+</tr>
+<tr>
+<td><strong>@SOAP12</strong></td>
+<td>represents SOAP 1.2</td>
+</tr>
+<tr>
+<td><strong>@SOAPAction(&quot;value&quot;)</strong></td>
+<td>add SOAPAction header to the SOAP request</td>
+</tr>
+</tbody></table>
+
+<p>See service examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/soap" target="_blank">here</a>.</p>
+<h3 id='creating-objects'>Creating Objects</h3>
+<p>Generate objects from your WSDL scheme using <a href="https://jdi-docs.github.io/jdi-dark/#soap-objects-generation-from-wsdl" target="_blank">JDI Dark generator</a>.</p>
+<h3 id='jdi-dark-methods-for-soap'>JDI Dark Methods for SOAP</h3>
+<p>For working with SOAP use <strong>SoapMethod &lt;T, S&gt; class</strong> in package <em>com.epam.http.requests</em>, where T - class describing the body of sending message, S - class describing body of the received message.</p>
+
+<p>Available methods for SoapMethod:</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>callSoap(T object)</strong></td>
+<td>makes SOAP request and get SOAP answer</td>
+<td>S Object</td>
+</tr>
+<tr>
+<td><strong>withSoapHeader(Object header)</strong></td>
+<td>adds header to the SOAP message</td>
+<td>SoapMethod &lt;T, S&gt; object</td>
+</tr>
+</tbody></table>
+<h3 id='creating-tests'>Creating tests</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">GeoServicesTests</span> <span class="o">{</span>
+
+    <span class="nd">@BeforeTest</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">init</span><span class="o">(</span><span class="n">GeoServices</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">negativeGeocodeAddressNonParsed</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">GeocodeAddressNonParsedResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">GeoServices</span><span class="o">.</span><span class="na">geocodeAddressNonParsed</span><span class="o">.</span><span class="na">callSoap</span><span class="o">(</span><span class="k">new</span> <span class="n">GeocodeAddressNonParsed</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">withStreetAddress</span><span class="o">(</span><span class="s">"9355 Burton Way"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withCity</span><span class="o">(</span><span class="s">"Beverly Hills"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withState</span><span class="o">(</span><span class="s">"ca"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withZip</span><span class="o">(</span><span class="s">"90210"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withApiKey</span><span class="o">(</span><span class="s">"wrong"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withVersion</span><span class="o">(</span><span class="mf">4.01</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withShouldCalculateCensus</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withCensusYear</span><span class="o">(</span><span class="n">CensusYear</span><span class="o">.</span><span class="na">ALL_AVAILABLE</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withShouldNotStoreTransactionDetails</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+        <span class="o">);</span>
+        <span class="n">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getGeocodeAddressNonParsedResult</span><span class="o">().</span><span class="na">getQueryStatusCodes</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">QueryStatusCodes</span><span class="o">.</span><span class="na">API_KEY_INVALID</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+<p>Service object class can be initialized in tests. Fields of initialized object can be used to send requests from tests.</p>
+
+<p>See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/soap" target="_blank">here</a>.</p>
 <h2 id='review-guide'>Review Guide</h2><h3 id='easy-way-to-pass-review'>Easy way to pass review</h3>
 <ul>
 <li>Good code style</li>
