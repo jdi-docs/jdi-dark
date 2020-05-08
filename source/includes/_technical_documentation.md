@@ -1694,6 +1694,83 @@ See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-
 See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/LoadService.feature" target="_blank">here</a>.
 <br>
 
+## SOAP
+###Creating Service Object
+
+```java
+@ServiceDomain("https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V04_01.asmx")
+@SOAPNamespace("https://geoservices.tamu.edu/")
+public class GeoServices {
+
+    @POST()
+    @SOAPAction("https://geoservices.tamu.edu/GeocodeAddressNonParsed")
+    public static SoapMethod<GeocodeAddressNonParsed, GeocodeAddressNonParsedResponse> geocodeAddressNonParsed;
+
+    @POST()
+    @SOAP12
+    public static SoapMethod<GeocodeAddressNonParsed, GeocodeAddressNonParsedResponse> geocodeAddressNonParsed12;
+}
+
+```
+Available annotations for Service Object:
+
+|Annotation | Description | 
+--- | --- | ---
+**@ServiceDomain("value")** | represents the domain name |
+**@POST()** |  represents HTTP post method | 
+**@URL("value")** | represents URL for SOAP request| 
+**@SOAPNamespace("value")** | represents SOAP namespace | 
+**@SOAP12** | represents SOAP 1.2 | 
+**@SOAPAction("value")** | add SOAPAction header to the SOAP request |
+   
+See service examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/soap" target="_blank">here</a>.
+
+###Creating Objects
+
+Generate objects from your WSDL scheme using <a href="https://jdi-docs.github.io/jdi-dark/#soap-objects-generation-from-wsdl" target="_blank">JDI Dark generator</a>.
+
+
+###JDI Dark Methods for SOAP
+For working with SOAP use **SoapMethod \<T, S\> class** in package *com.epam.http.requests*, where T - class describing the body of sending message, S - class describing body of the received message.
+
+Available methods for SoapMethod:
+
+|Method | Description | Return Type  
+--- | --- | ---  
+**callSoap(T object)** | makes SOAP request and get SOAP answer | S Object |
+**withSoapHeader(Object header)** | adds header to the SOAP message| SoapMethod \<T, S\> object |
+ 
+###Creating tests
+```java
+public class GeoServicesTests {
+
+    @BeforeTest
+    public void before() {
+        init(GeoServices.class);
+    }
+
+    @Test
+    public void negativeGeocodeAddressNonParsed() {
+        GeocodeAddressNonParsedResponse response = GeoServices.geocodeAddressNonParsed.callSoap(new GeocodeAddressNonParsed()
+                .withStreetAddress("9355 Burton Way")
+                .withCity("Beverly Hills")
+                .withState("ca")
+                .withZip("90210")
+                .withApiKey("wrong")
+                .withVersion(4.01)
+                .withShouldCalculateCensus(true)
+                .withCensusYear(CensusYear.ALL_AVAILABLE)
+                .withShouldNotStoreTransactionDetails(false)
+        );
+        Assertions.assertThat(response.getGeocodeAddressNonParsedResult().getQueryStatusCodes()).isEqualTo(QueryStatusCodes.API_KEY_INVALID);
+    }
+
+}
+```
+Service object class can be initialized in tests. Fields of initialized object can be used to send requests from tests.
+
+See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/soap" target="_blank">here</a>.
+
 ## Review Guide
 
 ### Easy way to pass review
