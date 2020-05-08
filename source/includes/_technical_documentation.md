@@ -1629,14 +1629,14 @@ public class GeoServices {
 ```
 Available annotations for Service Object:
 
-|Annotation | Description | Usage
+|Annotation | Description | 
 --- | --- | ---
-**@ServiceDomain** | represents the domain name | before Service object class |
-**@POST** |  represents HTTP post method | before SoapMethod object |
-**@URL** | represents HTTP get method, where value is uri | before SoapMethod object |
-**@SOAPNamespace** | represents SOAP namespace | before SoapMethod object |
-**@SOAP12** | marks SOAP message as 1.2 version | before SoapMethod object |
-**@SOAPAction** | add SOAPAction header to the SOAP request | before SoapMethod object |
+**@ServiceDomain("value")** | represents the domain name |
+**@POST()** |  represents HTTP post method | 
+**@URL("value")** | represents URL for SOAP request| 
+**@SOAPNamespace("value")** | represents SOAP namespace | 
+**@SOAP12** | represents SOAP 1.2 | 
+**@SOAPAction("value")** | add SOAPAction header to the SOAP request |
    
 See service examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/soap" target="_blank">here</a>.
 
