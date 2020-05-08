@@ -1385,7 +1385,69 @@ They can be made accessible by importing <em>com.epam.http.requests.RestMethods.
     <span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/delete"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">delete</span><span class="o">;</span>
     <span class="nd">@GET</span><span class="o">(</span><span class="s">"/status/{status}"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">status</span><span class="o">;</span>
 
+    <span class="nd">@Cookies</span><span class="o">({</span>
+            <span class="nd">@Cookie</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"session_id"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"1234"</span><span class="o">),</span>
+            <span class="nd">@Cookie</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"hello"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"world"</span><span class="o">)</span>
+    <span class="o">})</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/cookies"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">RestMethod</span> <span class="n">getCookies</span><span class="o">;</span>
 <span class="o">}</span> 
+
+<span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"http://localhost:8080"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JettyService</span> <span class="o">{</span>
+    <span class="nd">@POST</span><span class="o">(</span><span class="s">"/noValueParam"</span><span class="o">)</span>
+    <span class="nd">@FormParameters</span><span class="o">(</span>
+            <span class="nd">@FormParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"some1"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"one"</span><span class="o">)</span>
+    <span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">postNoValueParamWithPreDefinedFormParam</span><span class="o">;</span>
+
+    <span class="nd">@QueryParameters</span><span class="o">({</span>
+            <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"firstName"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"John"</span><span class="o">),</span>
+            <span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"lastName"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"Doe"</span><span class="o">)</span>
+    <span class="o">})</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/greetXML"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getGreetXml</span><span class="o">;</span>
+
+    <span class="nd">@POST</span><span class="o">(</span><span class="s">"/multipart/file"</span><span class="o">)</span>
+    <span class="nd">@MultiPart</span><span class="o">(</span><span class="n">controlName</span> <span class="o">=</span> <span class="s">"file"</span><span class="o">,</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"myFile"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">postMultiPartFile</span><span class="o">;</span>
+
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/greetJSON"</span><span class="o">)</span>
+    <span class="nd">@Proxy</span><span class="o">(</span><span class="n">host</span> <span class="o">=</span> <span class="s">"127.0.0.1"</span><span class="o">,</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">8888</span><span class="o">,</span> <span class="n">scheme</span> <span class="o">=</span> <span class="s">"http"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getGreenJSONWithProxyParams</span><span class="o">;</span>
+
+    <span class="nd">@URL</span><span class="o">(</span><span class="s">"http://www.google.se"</span><span class="o">)</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/search?q={query}&amp;hl=en"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">searchGoogle</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@RetryOnFailure</span>
+<span class="nd">@ServiceDomain</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"http://localhost:8080/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RetryingService</span> <span class="o">{</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"503"</span><span class="o">)</span>
+    <span class="nd">@RetryOnFailure</span><span class="o">(</span><span class="n">numberOfRetryAttempts</span> <span class="o">=</span> <span class="mi">2</span><span class="o">,</span> <span class="n">delay</span> <span class="o">=</span> <span class="mi">1</span><span class="o">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">get503</span><span class="o">;</span>
+
+    <span class="nd">@GET</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"502"</span><span class="o">)</span>
+    <span class="nd">@IgnoreRetry</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">ignoreRetrying</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://localhost:8443"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JettyServiceHttps</span> <span class="o">{</span>
+    <span class="nd">@GET</span><span class="o">(</span><span class="s">"/jsonStore"</span><span class="o">)</span>
+    <span class="nd">@TrustStore</span><span class="o">(</span><span class="n">pathToJks</span> <span class="o">=</span> <span class="s">"src/test/resources/truststore_mjvmobile.jks"</span><span class="o">,</span> <span class="n">password</span> <span class="o">=</span> <span class="s">"test4321"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getJsonStore</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"http://www.dneonline.com/calculator.asmx"</span><span class="o">)</span>
+<span class="nd">@SOAPNamespace</span><span class="o">(</span><span class="s">"http://tempuri.org/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DneOnlineCalculator</span> <span class="o">{</span>
+    <span class="nd">@POST</span><span class="o">()</span>
+    <span class="nd">@SOAPAction</span><span class="o">(</span><span class="s">"http://tempuri.org/Multiply"</span><span class="o">)</span>
+    <span class="nd">@SOAP12</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SoapMethod</span><span class="o">&lt;</span><span class="n">Multiply</span><span class="o">,</span> <span class="n">MultiplyResponse</span><span class="o">&gt;</span> <span class="n">multiply</span><span class="o">;</span>
+<span class="o">}</span>
 </code></pre>
 <p>It&#39;s possible to describe tested web service as a Service Object class using annotations:</p>
 
@@ -1432,30 +1494,65 @@ They can be made accessible by importing <em>com.epam.http.requests.RestMethods.
 <li>@MultiPart - represents MultiPart parameters:
 
 <ul>
-<li>fileName</li>
-<li>controlName
+<li>fileName, default = &quot;&quot;</li>
+<li>controlName, default = &quot;&quot;</li>
+<li>filePath, default = &quot;&quot;</li>
+<li>mimeType, default = &quot;&quot;
 <br /></li>
 </ul></li>
 <li>@HEAD - represents HTTP head method
+
+<ul>
+<li>value, default = &quot;&quot;
 <br /></li>
+</ul></li>
 <li>@GET - represents HTTP get method
+
+<ul>
+<li>value, default = &quot;&quot;
 <br /></li>
+</ul></li>
 <li>@DELETE - represents HTTP delete method
+
+<ul>
+<li>value, default = &quot;&quot;
 <br /></li>
+</ul></li>
 <li>@PATCH - represents HTTP patch method
+
+<ul>
+<li>value, default = &quot;&quot;
 <br /></li>
+</ul></li>
 <li>@POST - represents HTTP post method
+
+<ul>
+<li>value, default = &quot;&quot;
 <br /></li>
+</ul></li>
 <li>@PUT - represents HTTP put method
+
+<ul>
+<li>value, default = &quot;&quot;
 <br /></li>
+</ul></li>
 <li>@OPTIONS - represents HTTP options method
+
+<ul>
+<li>value, default = &quot;&quot;
 <br /></li>
+</ul></li>
 <li>@IgnoreRetry - represents ignore settings for failed tests
 <br />
 See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br /></li>
 <li>@Method - represents any HTTP method
+
+<ul>
+<li>value</li>
+<li>types, default = { GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS }
 <br /></li>
+</ul></li>
 <li>@Proxy - represents Proxy parameters:
 
 <ul>
@@ -1469,14 +1566,18 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
 <ul>
 <li>numberOfRetryAttempts, default = 3</li>
 <li>errorCodes, default = 502, 503</li>
-<li>delay</li>
-<li>unit
+<li>delay, default = 10</li>
+<li>unit, default = microseconds
 <br />
 See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br /></li>
 </ul></li>
 <li>@ServiceDomain - represents the domain name
+
+<ul>
+<li>value
 <br /></li>
+</ul></li>
 <li>@TrustStore - represents a TrustStore located on the file-system:
 
 <ul>
@@ -1486,12 +1587,32 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
 See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyServiceHttps.java" target="_blank">here</a>.
 <br /></li>
 </ul></li>
-<li>@URL - represents HTTP get method, where value is uri</li>
-</ul>
+<li>@URL - represents HTTP get method, where value is uri
 
-<p>See annotations <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark/src/main/java/com/epam/http/annotations" target="_blank">here</a>.
+<ul>
+<li>value
 <br />
-See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyService.java" target="_blank">here</a>.</p>
+<br /></li>
+</ul></li>
+<li>@SOAP12 - represents SOAP 1.2
+<br /></li>
+<li>@SOAPAction - represents the intention of the SOAP HTTP request
+
+<ul>
+<li>value
+<br /></li>
+</ul></li>
+<li>@SOAPNamespace - represents the namespace
+
+<ul>
+<li>value
+<br />
+<br />
+See annotations <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark/src/main/java/com/epam/http/annotations" target="_blank">here</a>.
+<br />
+See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyService.java" target="_blank">here</a>.</li>
+</ul></li>
+</ul>
 <h3 id='create-tests-for-service'>Create tests for service</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
 
     <span class="kd">private</span> <span class="n">ServiceExample</span> <span class="n">service</span><span class="o">;</span>
@@ -2710,12 +2831,14 @@ object
 
 <ul>
 <li>set wsdlUrls, for example:
+<br />
 <code>
 &lt;wsdlUrls&gt;
 &lt;wsdlUrl&gt;https://speller.yandex.net/services/spellservice?WSDL&lt;/wsdlUrl&gt;
 &lt;/wsdlUrls&gt;
 </code></li>
 <li>set the package name, for example:
+<br />
 <code>
 &lt;packageName&gt;com.epam.jdi.soap.net.yandex.speller.services.spellservice&lt;/packageName&gt;
 </code></li>
