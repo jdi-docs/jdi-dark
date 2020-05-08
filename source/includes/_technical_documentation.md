@@ -438,7 +438,69 @@ public class ServiceExample {
     @DELETE("/delete") RestMethod delete;
     @GET("/status/{status}") RestMethod status;
 
+    @Cookies({
+            @Cookie(name = "session_id", value = "1234"),
+            @Cookie(name = "hello", value = "world")
+    })
+    @GET("/cookies")
+    public RestMethod getCookies;
 } 
+
+@ServiceDomain("http://localhost:8080")
+public class JettyService {
+    @POST("/noValueParam")
+    @FormParameters(
+            @FormParameter(name = "some1", value = "one")
+    )
+    public static RestMethod postNoValueParamWithPreDefinedFormParam;
+    
+    @QueryParameters({
+            @QueryParameter(name = "firstName", value = "John"),
+            @QueryParameter(name = "lastName", value = "Doe")
+    })
+    @GET("/greetXML")
+    public static RestMethod getGreetXml;
+
+    @POST("/multipart/file")
+    @MultiPart(controlName = "file", fileName = "myFile")
+    public static RestMethod postMultiPartFile;
+
+    @GET("/greetJSON")
+    @Proxy(host = "127.0.0.1", port = 8888, scheme = "http")
+    public static RestMethod getGreenJSONWithProxyParams;
+
+    @URL("http://www.google.se")
+    @GET("/search?q={query}&hl=en")
+    public static RestMethod searchGoogle;
+}
+
+@RetryOnFailure
+@ServiceDomain(value = "http://localhost:8080/")
+public class RetryingService {
+    @GET(value = "503")
+    @RetryOnFailure(numberOfRetryAttempts = 2, delay = 1, unit = TimeUnit.SECONDS)
+    public static RestMethod get503;
+
+    @GET(value = "502")
+    @IgnoreRetry
+    public static RestMethod ignoreRetrying;
+}
+
+@ServiceDomain("https://localhost:8443")
+public class JettyServiceHttps {
+    @GET("/jsonStore")
+    @TrustStore(pathToJks = "src/test/resources/truststore_mjvmobile.jks", password = "test4321")
+    public static RestMethod getJsonStore;
+}
+
+@ServiceDomain("http://www.dneonline.com/calculator.asmx")
+@SOAPNamespace("http://tempuri.org/")
+public class DneOnlineCalculator {
+    @POST()
+    @SOAPAction("http://tempuri.org/Multiply")
+    @SOAP12
+    public static SoapMethod<Multiply, MultiplyResponse> multiply;
+}
 ```
 
 It's possible to describe tested web service as a Service Object class using annotations:
@@ -471,28 +533,39 @@ It's possible to describe tested web service as a Service Object class using ann
 - @QueryParameters - represents the collection of query parameters
 <br />
 - @MultiPart - represents MultiPart parameters:
-    - fileName
-    - controlName
+    - fileName, default = ""
+    - controlName, default = ""
+    - filePath, default = ""
+    - mimeType, default = ""
 <br />
 - @HEAD - represents HTTP head method
+    - value, default = ""
 <br />
 - @GET - represents HTTP get method
+    - value, default = ""
 <br />
 - @DELETE - represents HTTP delete method
+    - value, default = ""
 <br />
 - @PATCH - represents HTTP patch method
+    - value, default = ""
 <br />
 - @POST - represents HTTP post method
+    - value, default = ""
 <br />
 - @PUT - represents HTTP put method
+    - value, default = ""
 <br />
 - @OPTIONS - represents HTTP options method
+    - value, default = ""
 <br />
 - @IgnoreRetry - represents ignore settings for failed tests
 <br />
 See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br />
 - @Method - represents any HTTP method
+    - value
+    - types, default = { GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS }
 <br />
 - @Proxy - represents Proxy parameters:
     - host
@@ -502,12 +575,13 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
 - @RetryOnFailure - represents retry settings for failed tests:
     - numberOfRetryAttempts, default = 3
     - errorCodes, default = 502, 503
-    - delay
-    - unit
+    - delay, default = 10
+    - unit, default = microseconds
 <br />
 See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br />
 - @ServiceDomain - represents the domain name
+    - value
 <br />
 - @TrustStore - represents a TrustStore located on the file-system:
     - pathToJks
@@ -516,7 +590,18 @@ See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dar
 See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyServiceHttps.java" target="_blank">here</a>.
 <br />
 - @URL - represents HTTP get method, where value is uri
-
+    - value
+<br />
+<br />
+- @SOAP12 - represents SOAP 1.2
+<br />
+- @SOAPAction - represents the intention of the SOAP HTTP request
+    - value
+<br />
+- @SOAPNamespace - represents the namespace
+    - value
+<br />
+<br />
 See annotations <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark/src/main/java/com/epam/http/annotations" target="_blank">here</a>.
 <br />
 See service example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyService.java" target="_blank">here</a>.

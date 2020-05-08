@@ -36,12 +36,14 @@ You can generate automatically JDI Dark SOAP object classes based on your WSDL s
 2. Build JDI Dark generator by command **mvn clean package**  
 3. Modify pom.xml in jdi-dark-soap-generator: 
     * set wsdlUrls, for example:
+    <br />
     ```
       <wsdlUrls>
         <wsdlUrl>https://speller.yandex.net/services/spellservice?WSDL</wsdlUrl>
       </wsdlUrls>
     ```
     * set the package name, for example:
+    <br />
     ```
     <packageName>com.epam.jdi.soap.net.yandex.speller.services.spellservice</packageName>
     ```
