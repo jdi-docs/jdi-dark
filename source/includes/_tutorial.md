@@ -3,9 +3,10 @@
 In this tutorial we’ll take a glance at JDI Dark, a library that simplifies test automation, makes test run results stable, predictable and easy to maintain.
 
 1. **Quick Start** - a short instruction on how to add JDI Dark to your project and perform its basic configuration.
-2. **JDI Dark at a glance** -  a simple example for creating test case with JDI Dark. 
+2. **JDI Dark at a glance** -  a simple example for creating test cases for REST services with JDI Dark. 
 3. **JDI Dark Service Objects** - a Service Object class description
 4. **JDI Dark and Cucumber** -  a short instruction on how to create cucumber feature files with JDI Dark.
+5. **JDI Dark and SOAP** -  a short instruction on how to create test cases for SOAP with JDI Dark.
 
 ## 1. Quick Start
 ###Maven Dependencies
@@ -289,6 +290,62 @@ You can see the various examples of feature files <a href="https://github.com/jd
 
 - IDE plugin for Cucumber
 
+## 5. JDI Dark and SOAP
+In this example we create tests for SOAP service yandex-speller with WSDL <a href="https://speller.yandex.net/services/spellservice?WSDL" target="_blank">https://speller.yandex.net/services/spellservice?WSDL</a>
+
+**1. Generate objects from WSDL** 
+
+Generate objects classes from WSDL using <a href="https://jdi-docs.github.io/jdi-dark/#soap-objects-generation-from-wsdl" target="_blank">SOAP objects generation from WSDL</a>
+
+
+
+**2. Create the Service object class** 
+
+```java
+@ServiceDomain("http://speller.yandex.net/services/spellservice")
+public class YandexSpeller {
+
+    @POST()
+    public static SoapMethod<CheckTextRequest, CheckTextResponse> checkText;
+
+    @POST()
+    public static SoapMethod<CheckTextsRequest, CheckTextsResponse> checkTexts;
+}
+```
+1. Specify BaseURI service by using @ServiceDomain("https://speller.yandex.net/services/spellservice") annotation before class 
+
+2. Describe SOAP methods using SoapMethod<Request object, Response object> class.
+For example, for checking text - ``public static SoapMethod<CheckTextRequest, CheckTextResponse>``
+
+3. Add annotation @POST() for your method
+  
+You can use other necessary annotations as described <a href="https://jdi-docs.github.io/jdi-dark/#creating-service-object" target="_blank">here</a>.
+
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/soap/YandexSpeller.java" target="_blank">See an example for Service Object class</a>.   
+<br/>
+
+
+**3. Create the test class**  
+
+```java
+public class YandexSpellerSOAPTests {
+    @BeforeTest
+    public void before() {
+        init(YandexSpeller.class);
+    }
+
+    @Test
+    public void checkTestResponse() {
+        CheckTextResponse response = YandexSpeller.checkText.callSoap(new CheckTextRequest().withText("soap").withLang("en"));
+        Assertions.assertThat(response.getSpellResult().getError().size()).isZero();
+    }
+}
+```
+1.Initialize your service class in @BeforeClass
+
+2.Add test methods
+    
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/soap/YandexSpellerSOAPTests.java" target="_blank">See a test case example</a>.
 ## API Testing Framework structure
 
 JDI dark consists of next packages:
