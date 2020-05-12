@@ -74,18 +74,14 @@ In this test we are making an HTTP GET request with invoked request data contain
 ```
 
 ```java
-@QueryParameters({
-    @QueryParameter(name = "param1", value = "test"),
-    @QueryParameter(name = "param2", value = "test")
-})
+@QueryParameter(name = "param1", value = "test")
+@QueryParameter(name = "param2", value = "test")
 @GET("/get") RestMethod getInfo;
 ```
 
 ```java
-@Headers({
-    @Header(name = "Name", value = "Roman"),
-    @Header(name = "Id", value = "Test")
-})
+@Header(name = "Name", value = "Roman")
+@Header(name = "Id", value = "Test")
 @Cookie(name = "session_id", value = "1234")
 @GET("/get") RestMethod getInfo;
 ```

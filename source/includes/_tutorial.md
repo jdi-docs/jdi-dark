@@ -59,10 +59,8 @@ public class Board {
 
 //STEP 2 Creating class Service Object Model
 @ServiceDomain("${trello}")
-@QueryParameters({
-        @QueryParameter(name = "key", value = "3445103a21ddca2619eaceb0e833d0db"),
-        @QueryParameter(name = "token", value = "a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0")
-})
+@QueryParameter(name = "key", value = "3445103a21ddca2619eaceb0e833d0db")
+@QueryParameter(name = "token", value = "a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0")
 public class TrelloService {
 
     public static final String BOARDS = "/boards";
@@ -174,10 +172,8 @@ Before first run test cases, execute maven commands:
 public class ServiceExample {
     @ContentType(JSON)
     @GET("/get")
-    @Headers({
-            @Header(name = "Name", value = "Roman"),
-            @Header(name = "Id", value = "Test")
-    })
+    @Header(name = "Name", value = "Roman")
+    @Header(name = "Id", value = "Test")
     RestMethod getMethod;
 
     @ContentType(JSON)

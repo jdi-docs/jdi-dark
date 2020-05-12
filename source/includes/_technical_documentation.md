@@ -423,10 +423,8 @@ You can call these methods with either of given arguments:
 @ServiceDomain("https://httpbin.org/")
 public class ServiceExample {
     @ContentType(JSON) @GET("/get")
-    @Headers({
-        @Header(name = "Name", value = "Roman"),
-        @Header(name = "Id", value = "Test")
-    })
+    @Header(name = "Name", value = "Roman")
+    @Header(name = "Id", value = "Test")
     static RestMethod<Info> getInfo;
 
     @Header(name = "Type", value = "Test")
@@ -438,10 +436,8 @@ public class ServiceExample {
     @DELETE("/delete") RestMethod delete;
     @GET("/status/{status}") RestMethod status;
 
-    @Cookies({
-            @Cookie(name = "session_id", value = "1234"),
-            @Cookie(name = "hello", value = "world")
-    })
+    @Cookie(name = "session_id", value = "1234")
+    @Cookie(name = "hello", value = "world")
     @GET("/cookies")
     public RestMethod getCookies;
 } 
@@ -449,15 +445,11 @@ public class ServiceExample {
 @ServiceDomain("http://localhost:8080")
 public class JettyService {
     @POST("/noValueParam")
-    @FormParameters(
-            @FormParameter(name = "some1", value = "one")
-    )
+    @FormParameter(name = "some1", value = "one")
     public static RestMethod postNoValueParamWithPreDefinedFormParam;
     
-    @QueryParameters({
-            @QueryParameter(name = "firstName", value = "John"),
-            @QueryParameter(name = "lastName", value = "Doe")
-    })
+    @QueryParameter(name = "firstName", value = "John")
+    @QueryParameter(name = "lastName", value = "Doe")
     @GET("/greetXML")
     public static RestMethod getGreetXml;
 
@@ -489,7 +481,8 @@ public class RetryingService {
 @ServiceDomain("https://localhost:8443")
 public class JettyServiceHttps {
     @GET("/jsonStore")
-    @TrustStore(pathToJks = "src/test/resources/truststore_mjvmobile.jks", password = "test4321")
+    @TrustStore(pathToJks = "src/test/resources/truststore_mjvmobile.jks", 
+password = "test4321")
     public static RestMethod getJsonStore;
 }
 
@@ -563,10 +556,6 @@ It's possible to describe tested web service as a Service Object class using ann
 <br />
 See example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/RetryingService.java" target="_blank">here</a>.
 <br />
-- @Method - represents any HTTP method
-    - value
-    - types, default = { GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS }
-<br />
 - @Proxy - represents Proxy parameters:
     - host
     - port
@@ -635,7 +624,6 @@ public class ServiceTest {
                 body("url", equalTo("https://httpbin.org/post")).
                 body("headers.Host", equalTo("httpbin.org"));
     }
-
 }
 ```
 
@@ -896,7 +884,6 @@ public interface ErrorHandler {
 
 //example of implementation and using ErrorHandler
 public class ErrorHandlerTests {
-
     private ServiceSettings serviceSettings;
 
     @BeforeClass
@@ -1175,7 +1162,6 @@ Cookies with no value and with multiple values can be added as well.
 @Cookies({@Cookie(name = "username", value = "John"),
 @Cookie(name = "token", value = "1234")})
 public static RestMethod getCookie;
-
 
 @GET("/cookie_with_no_value")
 @Cookie(name = "some_cookie")
@@ -1519,10 +1505,8 @@ In that case even if status code will be in specified list of errorCodes no retr
 ## Service parameterization
 ```java
 @ServiceDomain("${trello}")
-@QueryParameters({
-        @QueryParameter(name = "key", value = "3445103a21ddca2619eaceb0e833d0db"),
-        @QueryParameter(name = "token", value = "a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0")
-})
+@QueryParameter(name = "key", value = "3445103a21ddca2619eaceb0e833d0db")
+@QueryParameter(name = "token", value = "a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0")
 public class TrelloService {
     
 }
