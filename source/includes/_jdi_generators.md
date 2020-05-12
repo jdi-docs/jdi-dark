@@ -6,12 +6,16 @@
 2. Build JDI Dark generator by command **mvn clean package**  
 2. Run this command for auto-generation:   
 
-  **java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i \<specification swagger file\> -o \<output directory\> -p \<package\>**
-  
+``
+  java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i <specification swagger file> -o <output directory> -p <package>
+``
+
 For example, for <a href="http://petstore.swagger.io/v2/swagger.json" target="_blank">the petshop swagger scheme</a> after running the command  
 
-*java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i http://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop*  
-  
+``
+ java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i http://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop  
+``
+
 the project with the following structure will be created:  
 <img src="images/generated-structure.png" alt="project structure" width="50%" height="50%"/>
 
