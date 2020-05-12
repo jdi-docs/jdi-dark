@@ -276,6 +276,9 @@
                       <a href="#4-jdi-dark-and-cucumber" class="toc-h2 toc-link" data-title="4. JDI Dark and Cucumber">4. JDI Dark and Cucumber</a>
                     </li>
                     <li>
+                      <a href="#5-jdi-dark-and-soap" class="toc-h2 toc-link" data-title="5. JDI Dark and SOAP">5. JDI Dark and SOAP</a>
+                    </li>
+                    <li>
                       <a href="#api-testing-framework-structure" class="toc-h2 toc-link" data-title="API Testing Framework structure">API Testing Framework structure</a>
                     </li>
               </ul>
@@ -570,9 +573,10 @@ You just need to use the <em>@QueryParameter</em> annotation in your method or s
 
 <ol>
 <li><strong>Quick Start</strong> - a short instruction on how to add JDI Dark to your project and perform its basic configuration.</li>
-<li><strong>JDI Dark at a glance</strong> -  a simple example for creating test case with JDI Dark. </li>
+<li><strong>JDI Dark at a glance</strong> -  a simple example for creating test cases for REST services with JDI Dark. </li>
 <li><strong>JDI Dark Service Objects</strong> - a Service Object class description</li>
 <li><strong>JDI Dark and Cucumber</strong> -  a short instruction on how to create cucumber feature files with JDI Dark.</li>
+<li><strong>JDI Dark and SOAP</strong> -  a short instruction on how to create test cases for SOAP with JDI Dark.</li>
 </ol>
 <h2 id='1-quick-start'>1. Quick Start</h2><h3 id='maven-dependencies'>Maven Dependencies</h3><pre class="highlight java tab-java"><code><span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="na">epam</span><span class="o">.</span><span class="na">jdi</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
@@ -835,6 +839,55 @@ Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/m
 <li><p>jUnit or TestNG runner</p></li>
 <li><p>IDE plugin for Cucumber</p></li>
 </ul>
+<h2 id='5-jdi-dark-and-soap'>5. JDI Dark and SOAP</h2>
+<p>In this example we create tests for SOAP service yandex-speller with WSDL <a href="https://speller.yandex.net/services/spellservice?WSDL" target="_blank">https://speller.yandex.net/services/spellservice?WSDL</a></p>
+
+<p><strong>1. Generate objects from WSDL</strong> </p>
+
+<p>Generate objects classes from WSDL using <a href="https://jdi-docs.github.io/jdi-dark/#soap-objects-generation-from-wsdl" target="_blank">SOAP objects generation from WSDL</a></p>
+
+<p><strong>2. Create the Service object class</strong> </p>
+<pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"http://speller.yandex.net/services/spellservice"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">YandexSpeller</span> <span class="o">{</span>
+
+    <span class="nd">@POST</span><span class="o">()</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SoapMethod</span><span class="o">&lt;</span><span class="n">CheckTextRequest</span><span class="o">,</span> <span class="n">CheckTextResponse</span><span class="o">&gt;</span> <span class="n">checkText</span><span class="o">;</span>
+
+    <span class="nd">@POST</span><span class="o">()</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SoapMethod</span><span class="o">&lt;</span><span class="n">CheckTextsRequest</span><span class="o">,</span> <span class="n">CheckTextsResponse</span><span class="o">&gt;</span> <span class="n">checkTexts</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+<ol>
+<li><p>Specify BaseURI service by using @ServiceDomain(&quot;https://speller.yandex.net/services/spellservice&quot;) annotation before class </p></li>
+<li><p>Describe SOAP methods using SoapMethod<Request object, Response object> class.
+For example, for checking text - <code>public static SoapMethod&lt;CheckTextRequest, CheckTextResponse&gt;</code></p></li>
+<li><p>Add annotation @POST() for your method</p></li>
+</ol>
+
+<p>You can use other necessary annotations as described <a href="https://jdi-docs.github.io/jdi-dark/#creating-service-object" target="_blank">here</a>.</p>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/soap/YandexSpeller.java" target="_blank">See an example for Service Object class</a>.<br>
+<br/></p>
+
+<p><strong>3. Create the test class</strong>  </p>
+<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">YandexSpellerSOAPTests</span> <span class="o">{</span>
+    <span class="nd">@BeforeTest</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">init</span><span class="o">(</span><span class="n">YandexSpeller</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">checkTestResponse</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">CheckTextResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">YandexSpeller</span><span class="o">.</span><span class="na">checkText</span><span class="o">.</span><span class="na">callSoap</span><span class="o">(</span><span class="k">new</span> <span class="n">CheckTextRequest</span><span class="o">().</span><span class="na">withText</span><span class="o">(</span><span class="s">"soap"</span><span class="o">).</span><span class="na">withLang</span><span class="o">(</span><span class="s">"en"</span><span class="o">));</span>
+        <span class="n">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getSpellResult</span><span class="o">().</span><span class="na">getError</span><span class="o">().</span><span class="na">size</span><span class="o">()).</span><span class="na">isZero</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+<p>1.Initialize your service class in @BeforeClass</p>
+
+<p>2.Add test methods</p>
+
+<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/soap/YandexSpellerSOAPTests.java" target="_blank">See a test case example</a>.</p>
 <h2 id='api-testing-framework-structure'>API Testing Framework structure</h2>
 <p>JDI dark consists of next packages:</p>
 
@@ -2886,11 +2939,15 @@ object
 <li>Run this command for auto-generation:<br></li>
 </ol>
 
-<p><strong>java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i &lt;specification swagger file&gt; -o &lt;output directory&gt; -p &lt;package&gt;</strong></p>
+<p><code>
+  java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i &lt;specification swagger file&gt; -o &lt;output directory&gt; -p &lt;package&gt;
+</code></p>
 
 <p>For example, for <a href="http://petstore.swagger.io/v2/swagger.json" target="_blank">the petshop swagger scheme</a> after running the command  </p>
 
-<p><em>java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i http://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop</em>  </p>
+<p><code>
+ java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i http://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop  
+</code></p>
 
 <p>the project with the following structure will be created:<br>
 <img src="images/generated-structure.png" alt="project structure" width="50%" height="50%"/></p>
