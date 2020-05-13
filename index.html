@@ -396,7 +396,7 @@
                                 <a href="#response-steps" class="toc-h2 h3 toc-link" data-title="Response Steps">Response Steps</a>
                               </li>
                               <li>
-                                <a href="#service-steps" class="toc-h2 h3 toc-link" data-title="Service Steps">Service Steps</a>
+                                <a href="#performance-steps" class="toc-h2 h3 toc-link" data-title="Performance Steps">Performance Steps</a>
                               </li>
                           </ul>
                     </li>
@@ -736,25 +736,19 @@ Before first run test cases, execute maven commands:</p>
     <span class="nd">@GET</span><span class="o">(</span><span class="s">"/status/{status}"</span><span class="o">)</span>
     <span class="n">RestMethod</span> <span class="n">status</span><span class="o">;</span>
 <span class="o">}</span>
+</code></pre><pre class="highlight gherkin tab-gherkin"><code><span class="c">#STEP 2, 4 Feature file creation (pre-created steps from JDI Dark BDD are used here)</span>
+<span class="kd">Feature</span><span class="p">:</span> Json response check
 
-
-
-<span class="c1">//STEP 2, 4 Feature file creation (pre-created steps from JDI Dark BDD are used here)</span>
-<span class="nl">Feature:</span> <span class="n">Json</span> <span class="n">response</span> <span class="n">check</span>
-
-  <span class="nl">Scenario:</span> <span class="n">Check</span> <span class="n">json</span> <span class="n">response</span>
-    <span class="n">Given</span> <span class="n">I</span> <span class="n">init</span> <span class="n">service</span>
-    <span class="n">And</span> <span class="n">I</span> <span class="n">set</span> <span class="n">JSON</span> <span class="n">request</span> <span class="n">content</span> <span class="n">type</span>
-    <span class="n">When</span> <span class="n">I</span> <span class="k">do</span> <span class="n">getMethod</span> <span class="n">request</span>
-    <span class="n">Then</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">type</span> <span class="n">is</span> <span class="n">OK</span>
-    <span class="n">And</span> <span class="n">Response</span> <span class="n">body</span> <span class="n">has</span> <span class="n">values</span>
-      <span class="o">|</span> <span class="n">url</span>          <span class="o">|</span> <span class="nl">http:</span><span class="c1">//httpbin.org/get |</span>
-      <span class="o">|</span> <span class="n">headers</span><span class="o">.</span><span class="na">Host</span> <span class="o">|</span> <span class="n">httpbin</span><span class="o">.</span><span class="na">org</span>            <span class="o">|</span>
-    <span class="n">And</span> <span class="n">Response</span> <span class="n">header</span> <span class="s">"Connection"</span> <span class="n">is</span> <span class="s">"keep-alive"</span>
-
-
-
-<span class="c1">//STEP 3 TestRunner creation (TestNG example)</span>
+  <span class="kn">Scenario</span><span class="p">:</span> Check json response
+    <span class="nf">Given</span> init service example
+    <span class="nf">And</span> set request content type to 'JSON'
+    <span class="nf">When</span> perform 'getMethod' request
+    <span class="nf">Then</span> response status type is OK
+    <span class="nf">And</span> response body has values
+      <span class="p">|</span> <span class="nv">url</span>          <span class="p">|</span> <span class="nv">http://httpbin.org/get</span> <span class="p">|</span>
+      <span class="p">|</span> <span class="n">headers.Host</span> <span class="p">|</span> <span class="n">httpbin.org</span>            <span class="p">|</span>
+    <span class="nf">And</span> response header <span class="s">"Connection"</span> is <span class="s">"keep-alive"</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="c1">//STEP 3 TestRunner creation (TestNG example)</span>
 <span class="nd">@CucumberOptions</span><span class="o">(</span><span class="n">features</span> <span class="o">=</span> <span class="s">"src/test/resources/features/"</span><span class="o">,</span>
         <span class="n">glue</span> <span class="o">=</span> <span class="o">{</span><span class="s">"com/epam/jdi/httptests/steps"</span><span class="o">,</span> <span class="s">"com/epam/jdi/http/stepdefs/en"</span><span class="o">},</span>
         <span class="n">tags</span> <span class="o">=</span> <span class="o">{</span><span class="s">"@smoke"</span><span class="o">})</span>
@@ -2591,98 +2585,85 @@ In order to restore the initial RestAssured config after test execution, the <co
                 <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="s">"header2"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"value2"</span><span class="o">));</span>
         <span class="n">RestAssured</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
     <span class="o">}</span>
-</code></pre><h2 id='jdi-dark-bdd-steps'>JDI Dark BDD Steps</h2><h3 id='request-steps'>Request Steps</h3><pre class="highlight java tab-java"><code><span class="nl">Feature:</span> <span class="n">Json</span> <span class="n">response</span> <span class="n">check</span>
+</code></pre><h2 id='jdi-dark-bdd-steps'>JDI Dark BDD Steps</h2><h3 id='request-steps'>Request Steps</h3><pre class="highlight gherkin tab-gherkin"><code><span class="kd">Feature</span><span class="p">:</span> Request headers check
 
-  <span class="nl">Scenario:</span> <span class="n">Check</span> <span class="n">json</span> <span class="n">response</span>
-    <span class="n">Given</span> <span class="n">I</span> <span class="n">init</span> <span class="n">service</span>
-    <span class="n">And</span> <span class="n">I</span> <span class="n">set</span> <span class="n">JSON</span> <span class="n">request</span> <span class="n">content</span> <span class="n">type</span>
-    <span class="n">When</span> <span class="n">I</span> <span class="k">do</span> <span class="n">getMethod</span> <span class="n">request</span>
-    <span class="n">Then</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">type</span> <span class="n">is</span> <span class="n">OK</span>
-    <span class="n">And</span> <span class="n">Response</span> <span class="n">body</span> <span class="n">has</span> <span class="n">values</span>
-      <span class="o">|</span> <span class="n">url</span>          <span class="o">|</span> <span class="nl">http:</span><span class="c1">//httpbin.org/get |</span>
-      <span class="o">|</span> <span class="n">headers</span><span class="o">.</span><span class="na">Host</span> <span class="o">|</span> <span class="n">httpbin</span><span class="o">.</span><span class="na">org</span>            <span class="o">|</span>
-    <span class="n">And</span> <span class="n">Response</span> <span class="n">header</span> <span class="s">"Connection"</span> <span class="n">is</span> <span class="s">"keep-alive"</span>
+  <span class="kn">Scenario</span><span class="p">:</span> Pass headers and check response
+    <span class="nf">Given</span> init service example
+    <span class="nf">When</span> set request headers
+      <span class="p">|</span> <span class="nv">Name</span> <span class="p">|</span> <span class="nv">Katarina</span> <span class="p">|</span>
+      <span class="p">|</span> <span class="n">Id</span>   <span class="p">|</span> <span class="n">1</span>        <span class="p">|</span>
+    <span class="nf">And</span> perform 'get' request
+    <span class="nf">And</span> print response
+    <span class="nf">Then</span> response status type is OK
+    <span class="nf">And</span> response parameter 'headers.Name' is 'Katarina'
+    <span class="nf">And</span> response parameter 'headers.Id' is '1'
 
 </code></pre>
-<p>Actions:
-<br>
-When I do &quot;&lt; method &gt;&quot; request
-<br>
-When I verify that &quot;&lt; method &gt;&quot; method is alive
-<br>
-When I have the following headers:
-<br>
-      | key_1 | key_2 |
-<br>
-      | value | value |
-<br>
-When I set &quot;&lt; type &gt;&quot; request content type
-<br></p>
+<p><strong>Actions</strong></p>
+
+<p><em>When</em> perform &quot;&lt;METHOD&gt;&quot; request<br>
+<em>When</em> set request content type to &quot;&lt;CONTENT-TYPE&gt;&quot;<br>
+<em>When</em> perform &quot;&lt;METHOD NAME&gt;&quot; request with named path parameters &quot;&lt;PATH PARAMETERS&gt;&quot;<br>
+<em>When</em> perform &quot;&lt;METHOD NAME&gt;&quot; request with query parameters &quot;&lt;QUERY PARAMETERS&gt;&quot;<br>
+<em>When</em> set request headers:<br>
+    |&lt;GHERKIN DATA TABLE&gt;|  </p>
+
+<p><strong>Validations</strong></p>
+
+<p><em>Then</em> &quot;&lt;METHOD NAME&gt;&quot; method is alive </p>
 
 <p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
 <br>
 See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/JsonResponse.feature" target="_blank">here</a>.
 <br></p>
-<h3 id='response-steps'>Response Steps</h3><pre class="highlight java tab-java"><code><span class="nl">Feature:</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">check</span>
+<h3 id='response-steps'>Response Steps</h3><pre class="highlight gherkin tab-gherkin"><code>
+<span class="kd">Feature</span><span class="p">:</span> Response status check
 
-  <span class="nl">Scenario:</span> <span class="n">Server</span> <span class="n">error</span> <span class="n">status</span> <span class="n">request</span>
-    <span class="n">Given</span> <span class="n">I</span> <span class="n">init</span> <span class="n">service</span>
-    <span class="n">When</span> <span class="n">I</span> <span class="k">do</span> <span class="n">status</span> <span class="n">request</span> <span class="n">with</span> <span class="mi">503</span> <span class="n">code</span>
-    <span class="n">Then</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">code</span> <span class="n">equals</span> <span class="mi">503</span>
-    <span class="n">And</span> <span class="n">Response</span> <span class="n">status</span> <span class="n">type</span> <span class="n">is</span> <span class="n">SERVER_ERROR</span>
-    <span class="n">And</span> <span class="n">Response</span> <span class="n">body</span> <span class="n">is</span> <span class="n">empty</span>
+  <span class="kn">Scenario</span><span class="p">:</span> Server error status request
+    <span class="nf">Given</span> init service example
+    <span class="nf">When</span> perform 'status' request with named path parameters '503'
+    <span class="nf">Then</span> response status code is 503
+    <span class="nf">And</span> response status type is SERVER_ERROR
+    <span class="nf">And</span> response body is empty
 
 </code></pre>
-<p>Validations:
-<br>
-Then Performance results don&#39;t have any fails
-<br>
-Then I check number of requests
-<br>
-Then Response status code equals &quot;&lt; status &gt;&quot;
-<br>
-Then Response body is empty
-<br>
-Then Response status type is &quot;&lt; responseStatus &gt;&quot;
-<br>
-Then Response &quot;&lt; parameter &gt;&quot; is &quot;&lt; value &gt;&quot;
-<br>
-Then Response &quot;&lt; parameter &gt;&quot; contains &quot;&lt; value &gt;&quot;
-<br>
-Then Response body has values
-<br>
-      | key_1 | key_2 |
-<br>
-      | value | value |
-<br>
-Then I check if performance results contain any fails
-<br>
-Then Response header &quot;&lt; parameter &gt;&quot; is &quot;&lt; value &gt;&quot;
-<br>
-Then Average response time is lesser than &quot;&lt; seconds &gt;&quot; sec
-<br>
-Then I print response</p>
+<p><strong>Actions</strong></p>
+
+<p><em>When</em> print response   </p>
+
+<p><strong>Validations</strong></p>
+
+<p><em>Then</em> response status code is &quot;&lt;STATUS CODE&gt;&quot;<br>
+<em>Then</em> response body is empty<br>
+<em>Then</em> response status type is &quot;&lt;TYPE&gt;&quot;<br>
+<em>Then</em> response parameter &quot;&lt;PARAMETER&gt;&quot; is &quot;&lt;VALUE&gt;&quot;<br>
+<em>Then</em> response parameter &quot;&lt;PARAMETER&gt;&quot; contains &quot;&lt;VALUE&gt;&quot;<br>
+<em>Then</em> response body has values:<br>
+   |&lt;GHERKIN DATA TABLE&gt;|<br>
+<em>Then</em> the average response time is less than &quot;&lt;SECONDS&gt;&quot; seconds<br>
+<em>Then</em> response header &quot;&lt;HEADER&gt;&quot; is &quot;&lt;VALUE&gt;&quot;  </p>
 
 <p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
 <br>
 See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/ResponseStatus.feature" target="_blank">here</a>.
 <br></p>
-<h3 id='service-steps'>Service Steps</h3><pre class="highlight java tab-java"><code><span class="nl">Feature:</span> <span class="n">Performance</span> <span class="n">after</span> <span class="n">load</span> <span class="n">check</span>
+<h3 id='performance-steps'>Performance Steps</h3><pre class="highlight gherkin tab-gherkin"><code><span class="kd">Feature</span><span class="p">:</span> Performance after load check
 
-  <span class="nl">Scenario:</span> <span class="n">Load</span> <span class="n">service</span>
-    <span class="n">Given</span> <span class="n">I</span> <span class="n">init</span> <span class="n">service</span>
-    <span class="n">When</span> <span class="n">I</span> <span class="n">load</span> <span class="n">service</span> <span class="k">for</span> <span class="mi">20</span> <span class="n">sec</span> <span class="n">with</span> <span class="n">getMethod</span> <span class="n">requests</span>
-    <span class="n">Then</span> <span class="n">I</span> <span class="n">check</span> <span class="n">number</span> <span class="n">of</span> <span class="n">requests</span>
-    <span class="n">And</span> <span class="n">I</span> <span class="n">check</span> <span class="k">if</span> <span class="n">performance</span> <span class="n">results</span> <span class="n">contain</span> <span class="n">any</span> <span class="n">fails</span>
-    <span class="n">And</span> <span class="n">Average</span> <span class="n">response</span> <span class="n">time</span> <span class="n">is</span> <span class="n">lesser</span> <span class="n">than</span> <span class="mi">2</span> <span class="n">sec</span>
+  <span class="kn">Scenario</span><span class="p">:</span> Load service
+    <span class="nf">Given</span> init service example
+    <span class="nf">When</span> load service for 20 seconds with 'getMethod' request
+    <span class="nf">Then</span> performance result doesn't have any fails
+    <span class="nf">And</span> the average response time is less than 2 seconds
 
 </code></pre>
-<p>Actions:
-<br>
-When I load service for <seconds> sec with &quot;&lt; methodName &gt;&quot; requests
-<br>
-When I do status request with &quot;&lt; status &gt;&quot; code
-<br></p>
+<p><strong>Actions</strong></p>
+
+<p><em>When</em> load service for &quot;&lt;SECONDS&gt;&quot; seconds with &quot;&lt;METHOD NAME&gt;&quot; request<br>
+<em>When</em> print number of performance results requests</p>
+
+<p><strong>Validation</strong></p>
+
+<p><em>Then</em> performance result doesn&#39;t have any fails</p>
 
 <p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
 <br>
