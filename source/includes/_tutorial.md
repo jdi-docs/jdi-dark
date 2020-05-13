@@ -174,10 +174,8 @@ Before first run test cases, execute maven commands:
 public class ServiceExample {
     @ContentType(JSON)
     @GET("/get")
-    @Headers({
-            @Header(name = "Name", value = "Roman"),
-            @Header(name = "Id", value = "Test")
-    })
+    @Header(name = "Name", value = "Roman")
+    @Header(name = "Id", value = "Test")
     RestMethod getMethod;
 
     @ContentType(JSON)
@@ -197,24 +195,23 @@ public class ServiceExample {
     @GET("/status/{status}")
     RestMethod status;
 }
+```
 
-
-
-//STEP 2, 4 Feature file creation (pre-created steps from JDI Dark BDD are used here)
+```gherkin
+#STEP 2, 4 Feature file creation (pre-created steps from JDI Dark BDD are used here)
 Feature: Json response check
 
   Scenario: Check json response
-    Given I init service
-    And I set JSON request content type
-    When I do getMethod request
-    Then Response status type is OK
-    And Response body has values
+    Given init service example
+    And set request content type to 'JSON'
+    When perform 'getMethod' request
+    Then response status type is OK
+    And response body has values
       | url          | http://httpbin.org/get |
       | headers.Host | httpbin.org            |
-    And Response header "Connection" is "keep-alive"
-
-
-
+    And response header "Connection" is "keep-alive"
+```
+```java
 //STEP 3 TestRunner creation (TestNG example)
 @CucumberOptions(features = "src/test/resources/features/",
         glue = {"com/epam/jdi/httptests/steps", "com/epam/jdi/http/stepdefs/en"},

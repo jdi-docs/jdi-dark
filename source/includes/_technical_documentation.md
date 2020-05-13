@@ -1584,35 +1584,34 @@ In order to restore the initial RestAssured config after test execution, the ```
 ## JDI Dark BDD Steps
 
 ### Request Steps
-```java
-Feature: Json response check
+```gherkin
+Feature: Request headers check
 
-  Scenario: Check json response
-    Given I init service
-    And I set JSON request content type
-    When I do getMethod request
-    Then Response status type is OK
-    And Response body has values
-      | url          | http://httpbin.org/get |
-      | headers.Host | httpbin.org            |
-    And Response header "Connection" is "keep-alive"
+  Scenario: Pass headers and check response
+    Given init service example
+    When set request headers
+      | Name | Katarina |
+      | Id   | 1        |
+    And perform 'get' request
+    And print response
+    Then response status type is OK
+    And response parameter 'headers.Name' is 'Katarina'
+    And response parameter 'headers.Id' is '1'
 
 ```
 
-Actions:
-<br>
-When I do "< method >" request
-<br>
-When I verify that "< method >" method is alive
-<br>
-When I have the following headers:
-<br>
-      | key_1 | key_2 |
-<br>
-      | value | value |
-<br>
-When I set "< type >" request content type
-<br>
+**Actions**
+ 
+*When* perform "\<METHOD\>" request  
+*When* set request content type to "\<CONTENT-TYPE\>"  
+*When* perform "\<METHOD NAME\>" request with named path parameters "\<PATH PARAMETERS\>"  
+*When* perform "\<METHOD NAME\>" request with query parameters "\<QUERY PARAMETERS\>"  
+*When* set request headers:  
+    |\<GHERKIN DATA TABLE\>|  
+
+**Validations**
+
+*Then* "\<METHOD NAME\>" method is alive 
 
 See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
 <br>
@@ -1621,73 +1620,64 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 
 ### Response Steps
 
-```java  
+```gherkin 
+
 Feature: Response status check
 
   Scenario: Server error status request
-    Given I init service
-    When I do status request with 503 code
-    Then Response status code equals 503
-    And Response status type is SERVER_ERROR
-    And Response body is empty
+    Given init service example
+    When perform 'status' request with named path parameters '503'
+    Then response status code is 503
+    And response status type is SERVER_ERROR
+    And response body is empty
 
 ```
 
-Validations:
-<br>
-Then Performance results don't have any fails
-<br>
-Then I check number of requests
-<br>
-Then Response status code equals "< status >"
-<br>
-Then Response body is empty
-<br>
-Then Response status type is "< responseStatus >"
-<br>
-Then Response "< parameter >" is "< value >"
-<br>
-Then Response "< parameter >" contains "< value >"
-<br>
-Then Response body has values
-<br>
-      | key_1 | key_2 |
-<br>
-      | value | value |
-<br>
-Then I check if performance results contain any fails
-<br>
-Then Response header "< parameter >" is "< value >"
-<br>
-Then Average response time is lesser than "< seconds >" sec
-<br>
-Then I print response
+**Actions**
+
+*When* print response   
+
+**Validations**
+
+*Then* response status code is "\<STATUS CODE\>"  
+*Then* response body is empty  
+*Then* response status type is "\<TYPE\>"  
+*Then* response parameter "\<PARAMETER\>" is "\<VALUE\>"  
+*Then* response parameter "\<PARAMETER\>" contains "\<VALUE\>"  
+*Then* response body has values:  
+   |\<GHERKIN DATA TABLE\>|  
+*Then* the average response time is less than "\<SECONDS\>" seconds  
+*Then* response header "\<HEADER\>" is "\<VALUE\>"  
+
 
 See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
 <br>
 See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/ResponseStatus.feature" target="_blank">here</a>.
 <br>
 
-### Service Steps
+### Performance Steps
 
-```java  
+```gherkin  
 Feature: Performance after load check
 
   Scenario: Load service
-    Given I init service
-    When I load service for 20 sec with getMethod requests
-    Then I check number of requests
-    And I check if performance results contain any fails
-    And Average response time is lesser than 2 sec
+    Given init service example
+    When load service for 20 seconds with 'getMethod' request
+    Then performance result doesn't have any fails
+    And the average response time is less than 2 seconds
 
 ```
 
-Actions:
-<br>
-When I load service for <seconds> sec with "< methodName >" requests
-<br>
-When I do status request with "< status >" code
-<br>
+**Actions**
+
+*When* load service for "\<SECONDS\>" seconds with "\<METHOD NAME\>" request  
+*When* print number of performance results requests
+
+
+**Validation**
+
+*Then* performance result doesn't have any fails
+
 
 See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
 <br>
