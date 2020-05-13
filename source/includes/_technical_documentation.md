@@ -1567,7 +1567,8 @@ In order to restore the initial RestAssured config after test execution, the ```
 
 ## JDI Dark BDD Steps
 
-### Request Steps
+ JDI Dark supports writing tests in BDD style. Create your tests using next steps:
+
 ```gherkin
 Feature: Request headers check
 
@@ -1592,37 +1593,13 @@ Feature: Request headers check
 *When* perform "\<METHOD NAME\>" request with query parameters "\<QUERY PARAMETERS\>"  
 *When* set request headers:  
     |\<GHERKIN DATA TABLE\>|  
+*When* print response   
+*When* load service for "\<SECONDS\>" seconds with "\<METHOD NAME\>" request  
+*When* print number of performance results requests    
 
 **Validations**
 
 *Then* "\<METHOD NAME\>" method is alive 
-
-See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
-<br>
-See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/JsonResponse.feature" target="_blank">here</a>.
-<br>
-
-### Response Steps
-
-```gherkin 
-
-Feature: Response status check
-
-  Scenario: Server error status request
-    Given init service example
-    When perform 'status' request with named path parameters '503'
-    Then response status code is 503
-    And response status type is SERVER_ERROR
-    And response body is empty
-
-```
-
-**Actions**
-
-*When* print response   
-
-**Validations**
-
 *Then* response status code is "\<STATUS CODE\>"  
 *Then* response body is empty  
 *Then* response status type is "\<TYPE\>"  
@@ -1632,41 +1609,13 @@ Feature: Response status check
    |\<GHERKIN DATA TABLE\>|  
 *Then* the average response time is less than "\<SECONDS\>" seconds  
 *Then* response header "\<HEADER\>" is "\<VALUE\>"  
-
-
-See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
-<br>
-See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/ResponseStatus.feature" target="_blank">here</a>.
-<br>
-
-### Performance Steps
-
-```gherkin  
-Feature: Performance after load check
-
-  Scenario: Load service
-    Given init service example
-    When load service for 20 seconds with 'getMethod' request
-    Then performance result doesn't have any fails
-    And the average response time is less than 2 seconds
-
-```
-
-**Actions**
-
-*When* load service for "\<SECONDS\>" seconds with "\<METHOD NAME\>" request  
-*When* print number of performance results requests
-
-
-**Validation**
-
 *Then* performance result doesn't have any fails
 
-
 See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
 <br>
-See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/LoadService.feature" target="_blank">here</a>.
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.
 <br>
+
 
 ## SOAP
 ###Creating Service Object
