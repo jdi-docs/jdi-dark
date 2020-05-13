@@ -388,17 +388,6 @@
                     </li>
                     <li>
                       <a href="#jdi-dark-bdd-steps" class="toc-h2 toc-link" data-title="JDI Dark BDD Steps">JDI Dark BDD Steps</a>
-                          <ul class="toc-list-h2">
-                              <li>
-                                <a href="#request-steps" class="toc-h2 h3 toc-link" data-title="Request Steps">Request Steps</a>
-                              </li>
-                              <li>
-                                <a href="#response-steps" class="toc-h2 h3 toc-link" data-title="Response Steps">Response Steps</a>
-                              </li>
-                              <li>
-                                <a href="#performance-steps" class="toc-h2 h3 toc-link" data-title="Performance Steps">Performance Steps</a>
-                              </li>
-                          </ul>
                     </li>
                     <li>
                       <a href="#soap" class="toc-h2 toc-link" data-title="SOAP">SOAP</a>
@@ -2585,7 +2574,9 @@ In order to restore the initial RestAssured config after test execution, the <co
                 <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="s">"header2"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"value2"</span><span class="o">));</span>
         <span class="n">RestAssured</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
     <span class="o">}</span>
-</code></pre><h2 id='jdi-dark-bdd-steps'>JDI Dark BDD Steps</h2><h3 id='request-steps'>Request Steps</h3><pre class="highlight gherkin tab-gherkin"><code><span class="kd">Feature</span><span class="p">:</span> Request headers check
+</code></pre><h2 id='jdi-dark-bdd-steps'>JDI Dark BDD Steps</h2>
+<p>JDI Dark supports writing tests in BDD style. Create your tests using next steps:</p>
+<pre class="highlight gherkin tab-gherkin"><code><span class="kd">Feature</span><span class="p">:</span> Request headers check
 
   <span class="kn">Scenario</span><span class="p">:</span> Pass headers and check response
     <span class="nf">Given</span> init service example
@@ -2606,34 +2597,15 @@ In order to restore the initial RestAssured config after test execution, the <co
 <em>When</em> perform &quot;&lt;METHOD NAME&gt;&quot; request with named path parameters &quot;&lt;PATH PARAMETERS&gt;&quot;<br>
 <em>When</em> perform &quot;&lt;METHOD NAME&gt;&quot; request with query parameters &quot;&lt;QUERY PARAMETERS&gt;&quot;<br>
 <em>When</em> set request headers:<br>
-    |&lt;GHERKIN DATA TABLE&gt;|  </p>
+    |&lt;GHERKIN DATA TABLE&gt;|<br>
+<em>When</em> print response<br>
+<em>When</em> load service for &quot;&lt;SECONDS&gt;&quot; seconds with &quot;&lt;METHOD NAME&gt;&quot; request<br>
+<em>When</em> print number of performance results requests    </p>
 
 <p><strong>Validations</strong></p>
 
-<p><em>Then</em> &quot;&lt;METHOD NAME&gt;&quot; method is alive </p>
-
-<p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
-<br>
-See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/JsonResponse.feature" target="_blank">here</a>.
-<br></p>
-<h3 id='response-steps'>Response Steps</h3><pre class="highlight gherkin tab-gherkin"><code>
-<span class="kd">Feature</span><span class="p">:</span> Response status check
-
-  <span class="kn">Scenario</span><span class="p">:</span> Server error status request
-    <span class="nf">Given</span> init service example
-    <span class="nf">When</span> perform 'status' request with named path parameters '503'
-    <span class="nf">Then</span> response status code is 503
-    <span class="nf">And</span> response status type is SERVER_ERROR
-    <span class="nf">And</span> response body is empty
-
-</code></pre>
-<p><strong>Actions</strong></p>
-
-<p><em>When</em> print response   </p>
-
-<p><strong>Validations</strong></p>
-
-<p><em>Then</em> response status code is &quot;&lt;STATUS CODE&gt;&quot;<br>
+<p><em>Then</em> &quot;&lt;METHOD NAME&gt;&quot; method is alive 
+<em>Then</em> response status code is &quot;&lt;STATUS CODE&gt;&quot;<br>
 <em>Then</em> response body is empty<br>
 <em>Then</em> response status type is &quot;&lt;TYPE&gt;&quot;<br>
 <em>Then</em> response parameter &quot;&lt;PARAMETER&gt;&quot; is &quot;&lt;VALUE&gt;&quot;<br>
@@ -2641,33 +2613,12 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 <em>Then</em> response body has values:<br>
    |&lt;GHERKIN DATA TABLE&gt;|<br>
 <em>Then</em> the average response time is less than &quot;&lt;SECONDS&gt;&quot; seconds<br>
-<em>Then</em> response header &quot;&lt;HEADER&gt;&quot; is &quot;&lt;VALUE&gt;&quot;  </p>
+<em>Then</em> response header &quot;&lt;HEADER&gt;&quot; is &quot;&lt;VALUE&gt;&quot;<br>
+<em>Then</em> performance result doesn&#39;t have any fails</p>
 
 <p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
 <br>
-See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/ResponseStatus.feature" target="_blank">here</a>.
-<br></p>
-<h3 id='performance-steps'>Performance Steps</h3><pre class="highlight gherkin tab-gherkin"><code><span class="kd">Feature</span><span class="p">:</span> Performance after load check
-
-  <span class="kn">Scenario</span><span class="p">:</span> Load service
-    <span class="nf">Given</span> init service example
-    <span class="nf">When</span> load service for 20 seconds with 'getMethod' request
-    <span class="nf">Then</span> performance result doesn't have any fails
-    <span class="nf">And</span> the average response time is less than 2 seconds
-
-</code></pre>
-<p><strong>Actions</strong></p>
-
-<p><em>When</em> load service for &quot;&lt;SECONDS&gt;&quot; seconds with &quot;&lt;METHOD NAME&gt;&quot; request<br>
-<em>When</em> print number of performance results requests</p>
-
-<p><strong>Validation</strong></p>
-
-<p><em>Then</em> performance result doesn&#39;t have any fails</p>
-
-<p>See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-dark-and-cucumber" target="_blank">Tutorial</a>.
-<br>
-See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features/LoadService.feature" target="_blank">here</a>.
+See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.
 <br></p>
 <h2 id='soap'>SOAP</h2><h3 id='creating-service-object'>Creating Service Object</h3><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V04_01.asmx"</span><span class="o">)</span>
 <span class="nd">@SOAPNamespace</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/"</span><span class="o">)</span>
