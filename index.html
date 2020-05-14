@@ -1092,7 +1092,6 @@ with the following fields:</p>
     <span class="n">assertEquals</span><span class="o">(</span><span class="n">resp</span><span class="o">.</span><span class="na">status</span><span class="o">.</span><span class="na">type</span><span class="o">,</span> <span class="n">SERVER_ERROR</span><span class="o">);</span>
     <span class="n">resp</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
 <span class="o">}</span>
-
 </code></pre>
 <p>A URL can have one or several path parameters, each denoted with curly braces, e.g. <em>/get/{board_id}</em>, <em>/boards/{board_id}/cards/{short_card_id}/</em>. 
 You can use them in your Service Object methods and replace placeholders with values when making request calls.</p>
@@ -1150,16 +1149,6 @@ You can use them in your Service Object methods and replace placeholders with va
 <br />
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br /></p>
 <h3 id='query-parameters'>Query parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@POST</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">greetPost</span><span class="o">;</span>
@@ -1170,7 +1159,8 @@ You can use them in your Service Object methods and replace placeholders with va
   <span class="n">queryParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">FIRST_NAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">);</span>
   <span class="n">queryParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="n">StringUtils</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">);</span>
 
-  <span class="n">JettyService</span><span class="o">.</span><span class="na">getGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">queryParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">queryParamsMap</span><span class="o">)).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings John "</span><span class="o">));</span>
+  <span class="n">JettyService</span><span class="o">.</span><span class="na">getGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">queryParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">queryParamsMap</span><span class="o">)).</span><span class="na">isOk</span><span class="o">()</span>
+<span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings John "</span><span class="o">));</span>
 <span class="o">}</span>
 
 <span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
@@ -1181,7 +1171,8 @@ You can use them in your Service Object methods and replace placeholders with va
     <span class="n">deleteGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">queryParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span>
             <span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="n">FIRST_NAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">},</span>
                     <span class="o">{</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="n">LAST_NAME_VALUE</span><span class="o">}</span>
-            <span class="o">})).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">equalTo</span><span class="o">(</span><span class="s">"{\"greeting\":\"Greetings John Doe\"}"</span><span class="o">));</span>
+            <span class="o">})).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">()</span>
+<span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="n">equalTo</span><span class="o">(</span><span class="s">"{\"greeting\":\"Greetings John Doe\"}"</span><span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
 <p>Methods allow to send query params to RequestData:</p>
@@ -1211,7 +1202,6 @@ You can use them in your Service Object methods and replace placeholders with va
 </tbody></table>
 
 <p><br />
-<br />
 <br />
 <br />
 <br />
@@ -1255,8 +1245,6 @@ You can use them in your Service Object methods and replace placeholders with va
 <br />
 <br />
 <br />
-<br />
-<br />
 <br /></p>
 <h3 id='form-parameters'>Form parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@POST</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">greetPost</span><span class="o">;</span>
@@ -1264,7 +1252,8 @@ You can use them in your Service Object methods and replace placeholders with va
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
     <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
-            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">formParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
+            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">formParams</span><span class="o">()</span>
+<span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
     <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
@@ -1293,18 +1282,16 @@ You can use them in your Service Object methods and replace placeholders with va
 <td>RequestData</td>
 </tr>
 </tbody></table>
-
-<p><br /></p>
 <h3 id='multipart-parameters'>Multipart parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@POST</span><span class="o">(</span><span class="s">"/multipart/file"</span><span class="o">)</span>
 <span class="nd">@MultiPart</span><span class="o">(</span><span class="n">controlName</span> <span class="o">=</span> <span class="s">"file"</span><span class="o">,</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"myFile"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">postMultiPartFile</span><span class="o">;</span>
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">multiPartByteArrays</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-    <span class="kd">final</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toByteArray</span><span class="o">(</span><span class="n">getClass</span><span class="o">().</span><span class="na">getResourceAsStream</span><span class="o">(</span><span class="s">"/car-records.xsd"</span><span class="o">));</span>
+    <span class="kd">final</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toByteArray</span><span class="o">(</span><span class="n">getClass</span><span class="o">()</span>
+<span class="o">.</span><span class="na">getResourceAsStream</span><span class="o">(</span><span class="s">"/car-records.xsd"</span><span class="o">));</span>
     <span class="n">JettyService</span><span class="o">.</span><span class="na">postMultiPartFile</span><span class="o">.</span><span class="na">withMultiPartContent</span><span class="o">(</span><span class="n">bytes</span><span class="o">).</span><span class="na">call</span><span class="o">().</span><span class="na">assertThat</span><span class="o">()</span>
-                <span class="o">.</span><span class="na">statusCode</span><span class="o">(</span><span class="mi">200</span><span class="o">)</span>
-                <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">bytes</span><span class="o">)));</span>
+                <span class="o">.</span><span class="na">statusCode</span><span class="o">(</span><span class="mi">200</span><span class="o">).</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">bytes</span><span class="o">)));</span>
     <span class="o">}</span>
 
 <span class="nd">@POST</span><span class="o">(</span><span class="s">"multipart/multiple"</span><span class="o">)</span>
@@ -1362,7 +1349,8 @@ You can use them in your Service Object methods and replace placeholders with va
         <span class="n">rd</span><span class="o">.</span><span class="na">contentType</span> <span class="o">=</span> <span class="s">"application/x-www-form-urlencoded; charset=ISO-8859-1"</span><span class="o">;</span>
         <span class="n">rd</span><span class="o">.</span><span class="na">formParams</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">formParamsMap</span><span class="o">);</span>
     <span class="o">}));</span>
-    <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings Some &amp; firstname &lt;lastname&gt;"</span><span class="o">));</span>
+    <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">()</span>
+<span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings Some &amp; firstname &lt;lastname&gt;"</span><span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
 <p>The method allows to send the request with invoked request data in RestMethod:</p>
@@ -1384,7 +1372,6 @@ You can use them in your Service Object methods and replace placeholders with va
 <p><br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
 <br><br>
-<br />
 <br />
 <br />
 <br />
