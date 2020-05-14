@@ -176,7 +176,6 @@ public void statusTestWithQueryInPath() {
     assertEquals(resp.status.type, SERVER_ERROR);
     resp.isEmpty();
 }
-
 ```
 
 A URL can have one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. 
@@ -208,16 +207,6 @@ Methods for passing path params (with/without query params) in RestMethod:
 <br />
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 
 ### Query parameters
 
@@ -231,7 +220,8 @@ public void whenLastParamInGetRequestEndsWithEqualItsTreatedAsANoValueParam() {
   queryParamsMap.put(FIRST_NAME, FIRST_NAME_VALUE);
   queryParamsMap.put(LAST_NAME, StringUtils.EMPTY);
   
-  JettyService.getGreet.call(queryParams().addAll(queryParamsMap)).isOk().assertThat().body("greeting", equalTo("Greetings John "));
+  JettyService.getGreet.call(queryParams().addAll(queryParamsMap)).isOk()
+.assertThat().body("greeting", equalTo("Greetings John "));
 }
 
 @DELETE("/greet")
@@ -242,7 +232,8 @@ public void bodyHamcrestMatcherWithOutKey() {
     deleteGreet.call(queryParams().addAll(
             new Object[][]{{FIRST_NAME, FIRST_NAME_VALUE},
                     {LAST_NAME, LAST_NAME_VALUE}
-            })).isOk().assertThat().body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
+            })).isOk().assertThat()
+.body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
 }
 ```
 
@@ -253,7 +244,6 @@ Methods allow to send query params to RequestData:
 **queryParams().add(paramName, paramValue)** | pass one parameter to a path | RequestData
 **queryParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
 **queryParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
-<br />
 <br />
 <br />
 <br />
@@ -291,8 +281,6 @@ The method allows to send specific query parameters in URL in RestMethod:
 <br />
 <br />
 <br />
-<br />
-<br />
 
 ### Form parameters
 
@@ -303,7 +291,8 @@ public static RestMethod greetPost;
 @Test
 public void formParamsAcceptsIntArgumentsJDI() {
     RestResponse response = greetPost
-            .call(formParams().addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+            .call(formParams()
+.addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
     response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
 }
 ```
@@ -314,7 +303,6 @@ Methods allow to send form params to RequestData:
 **formParams().add(paramName, paramValue)** | pass one form parameter to a path | RequestData
 **formParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
 **formParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
-<br />
 
 ### Multipart parameters
 
@@ -325,10 +313,10 @@ public static RestMethod postMultiPartFile;
 
 @Test
 public void multiPartByteArrays() throws Exception {
-    final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/car-records.xsd"));
+    final byte[] bytes = IOUtils.toByteArray(getClass()
+.getResourceAsStream("/car-records.xsd"));
     JettyService.postMultiPartFile.withMultiPartContent(bytes).call().assertThat()
-                .statusCode(200)
-                .body(is(new String(bytes)));
+                .statusCode(200).body(is(new String(bytes)));
     }
 
 @POST("multipart/multiple")
@@ -380,7 +368,8 @@ public void charsetIsReallyDefined() {
         rd.contentType = "application/x-www-form-urlencoded; charset=ISO-8859-1";
         rd.formParams.addAll(formParamsMap);
     }));
-    resp.isOk().assertThat().body("greeting", equalTo("Greetings Some & firstname <lastname>"));
+    resp.isOk().assertThat()
+.body("greeting", equalTo("Greetings Some & firstname <lastname>"));
 }
 ```
 
@@ -393,7 +382,6 @@ The method allows to send the request with invoked request data in RestMethod:
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
 <br>  
-<br />
 <br />
 <br />
 <br />
