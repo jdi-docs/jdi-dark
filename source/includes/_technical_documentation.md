@@ -103,7 +103,7 @@ Available methods for sending HTTP request in JDI dark:
 You might need to use specific request data in your requests. *Cookies*, *headers*, *query parameters* and *Content-type* are available in annotated form.
 Therefore, you can specify them in your Service Object class providing name and value.
 
-There is a class called *com.epam.http.requests.RequestData.** which represents the data sent along with your request.
+There is a class called *com.epam.http.requests.RequestData* which represents the data sent along with your request.
 
 It is also possible to specify request data when making a request call.
 ### Request body
@@ -146,7 +146,8 @@ public static RestMethod getUser;
 @Test
 public void supportsPassingPathParamsToRequestSpec(){
     RestResponse response = getUser
-            .call(pathParams().addAll(new Object[][]{{"firstName", "John"}, {"lastName", "Doe"}}));
+            .call(pathParams().addAll(new Object[][]{{"firstName", "John"}, 
+{"lastName", "Doe"}}));
     response.isOk().body("fullName", equalTo("John Doe"));
 }
 
@@ -175,7 +176,6 @@ public void statusTestWithQueryInPath() {
     assertEquals(resp.status.type, SERVER_ERROR);
     resp.isEmpty();
 }
-
 
 ```
 
@@ -219,7 +219,152 @@ Methods for passing path params (with/without query params) in RestMethod:
 <br />
 <br />
 
-### Parameters
+### Query parameters
+
+```java
+@POST("/greet")
+public static RestMethod greetPost;
+
+@Test
+public void whenLastParamInGetRequestEndsWithEqualItsTreatedAsANoValueParam() {
+  Map<String, String> queryParamsMap = new HashMap<>();
+  queryParamsMap.put(FIRST_NAME, FIRST_NAME_VALUE);
+  queryParamsMap.put(LAST_NAME, StringUtils.EMPTY);
+  
+  JettyService.getGreet.call(queryParams().addAll(queryParamsMap)).isOk().assertThat().body("greeting", equalTo("Greetings John "));
+}
+
+@DELETE("/greet")
+public static RestMethod deleteGreet;
+
+@Test
+public void bodyHamcrestMatcherWithOutKey() {
+    deleteGreet.call(queryParams().addAll(
+            new Object[][]{{FIRST_NAME, FIRST_NAME_VALUE},
+                    {LAST_NAME, LAST_NAME_VALUE}
+            })).isOk().assertThat().body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
+}
+```
+
+Methods allow to send query params to RequestData:
+
+|Method | Description | Return Type
+--- | --- | ---
+**queryParams().add(paramName, paramValue)** | pass one parameter to a path | RequestData
+**queryParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
+**queryParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Simplified Query parameters
+```java
+@GET("/noValueParam")
+public static RestMethod getNoValueParam;
+
+@Test
+public void singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
+    JettyService.getNoValueParam.call("some")
+            .isOk().assertThat().body(is("Params: some="));
+}
+
+@Test
+public void mixingStartingNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
+    JettyService.getNoValueParam.call("some1&some2=one")
+            .isOk().assertThat().body(is("Params: some1=some2=one"));
+}
+```
+The method allows to send specific query parameters in URL in RestMethod:
+
+|Method | Description | Return Type
+--- | --- | ---
+**call(String queryParams)** | pass query parameters | RestResponse
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
+<br>  
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Form parameters
+
+```java
+@POST("/greet")
+public static RestMethod greetPost;
+
+@Test
+public void formParamsAcceptsIntArgumentsJDI() {
+    RestResponse response = greetPost
+            .call(formParams().addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+    response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
+}
+```
+Methods allow to send form params to RequestData:
+
+|Method | Description | Return Type
+--- | --- | ---
+**formParams().add(paramName, paramValue)** | pass one form parameter to a path | RequestData
+**formParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
+**formParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
+<br />
+
+### Multipart parameters
+
+```java
+@POST("/multipart/file")
+@MultiPart(controlName = "file", fileName = "myFile")
+public static RestMethod postMultiPartFile;
+
+@Test
+public void multiPartByteArrays() throws Exception {
+    final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/car-records.xsd"));
+    JettyService.postMultiPartFile.withMultiPartContent(bytes).call().assertThat()
+                .statusCode(200)
+                .body(is(new String(bytes)));
+    }
+
+@POST("multipart/multiple")
+public static RestMethod postMultipartMultiple;
+
+@Test
+public void multiPartUploadingWorksForFormParamsAndByteArray() {
+    JettyService.postMultipartMultiple.call(requestData(rd -> {
+        rd.formParams.add("formParam1", "");
+        rd.formParams.add("formParam2", "formParamValue");
+        rd.setMultiPart(new MultiPartSpecBuilder("juX").controlName("file"));
+        rd.setMultiPart(new MultiPartSpecBuilder("body").controlName("string"));
+    })).assertThat()
+            .statusCode(200)
+            .body(containsString("formParam1 -> WrappedArray()"));
+}
+```
+Methods allow to set multipart parameters to request data:
+
+|Method | Description | Return Type
+--- | --- | ---
+**setMultiPart(MultiPartSpecBuilder multiPartSpecBuilder)** | set multipart parameters | RequestData
+
+*MultiPartSpecBuilder* - class for creating advanced multi-part requests
+<br>
+<br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a>
+<br>  
+<br>  
+<br>  
+<br>  
+<br>  
+<br>  
+<br>  
+
+### Using Request Data object as a parameter
 
 ```java
 @POST("/greet")
@@ -237,129 +382,17 @@ public void charsetIsReallyDefined() {
     }));
     resp.isOk().assertThat().body("greeting", equalTo("Greetings Some & firstname <lastname>"));
 }
-
-@GET("/greet")
-public static RestMethod getGreet;
-
-@Test
-public void whenLastParamInGetRequestEndsWithEqualItsTreatedAsANoValueParam() {
-  Map<String, String> queryParamsMap = new HashMap<>();
-  queryParamsMap.put(FIRST_NAME, FIRST_NAME_VALUE);
-  queryParamsMap.put(LAST_NAME, StringUtils.EMPTY);
-  
-  JettyService.getGreet.call(queryParams().addAll(queryParamsMap)).isOk().assertThat().body("greeting", equalTo("Greetings John "));
-}
-
-@POST("multipart/multiple")
-public static RestMethod postMultipartMultiple;
-
-@Test
-public void multiPartUploadingWorksForFormParamsAndByteArray() {
-    JettyService.postMultipartMultiple.call(requestData(rd -> {
-        rd.formParams.add("formParam1", "");
-        rd.formParams.add("formParam2", "formParamValue");
-        rd.setMultiPart(new MultiPartSpecBuilder("juX").controlName("file"));
-        rd.setMultiPart(new MultiPartSpecBuilder("body").controlName("string"));
-    })).assertThat()
-            .statusCode(200)
-            .body(containsString("formParam1 -> WrappedArray()"));
-}
-
-@DELETE("/greet")
-public static RestMethod deleteGreet;
-
-@Test
-public void bodyHamcrestMatcherWithOutKey() {
-    deleteGreet.call(queryParams().addAll(
-            new Object[][]{{FIRST_NAME, FIRST_NAME_VALUE},
-                    {LAST_NAME, LAST_NAME_VALUE}
-            })).isOk().assertThat().body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
-}
-
-@POST("/greet")
-public static RestMethod greetPost;
-
-@Test
-public void formParamsAcceptsIntArgumentsJDI() {
-    RestResponse response = greetPost
-            .call(formParams().addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
-    response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
-}
-
-@GET("/noValueParam")
-public static RestMethod getNoValueParam;
-
-@Test
-public void singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
-    JettyService.getNoValueParam.call("some")
-            .isOk().assertThat().body(is("Params: some="));
-}
-
-@Test
-public void mixingStartingNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
-    JettyService.getNoValueParam.call("some1&some2=one")
-            .isOk().assertThat().body(is("Params: some1=some2=one"));
-}
-
-
 ```
 
-JDI Dark supports query, form, multipart parameters addition in the request.
-
-Method allows to send the request with invoked request data in RestMethod:
+The method allows to send the request with invoked request data in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
 **call(RequestData requestData)** | make request with parameters indicated by Request Data| RestResponse
 
-
-Methods allow to set multipart parameters to request data:
-
-|Method | Description | Return Type
---- | --- | ---
-**setMultiPart(MultiPartSpecBuilder multiPartSpecBuilder)** | set multipart parameters | 
-
-Methods allow to send query params to RequestData:
-
-|Method | Description | Return Type
---- | --- | ---
-**queryParams().add(paramName, paramValue)** | pass one parameter to a path | RequestData
-**queryParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
-**queryParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
-
-Methods allow to send form params to RequestData:
-
-|Method | Description | Return Type
---- | --- | ---
-**formParams().add(paramName, paramValue)** | pass one form parameter to a path | RequestData
-**formParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
-**formParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
-
-Method allow to send specific query parameters in url in RestMethod:
-
-|Method | Description | Return Type
---- | --- | ---
-**call(String queryParams)** | pass query parameters | RestResponse
-
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
 <br>  
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 <br />
