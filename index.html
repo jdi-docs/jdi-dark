@@ -1042,12 +1042,12 @@ with the following fields:</p>
 <li>Object body</li>
 <li>String contentType</li>
 <li>Headers headers</li>
-<li>MultiMap<String, String> pathParams</li>
-<li>MultiMap<String, String> queryParams</li>
-<li>MultiMap<String, String> formParams</li>
+<li>MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#path-parameters">pathParams</a></li>
+<li>MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#query-parameters">queryParams</a> </li>
+<li>MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#form-parameters">formParams</a> </li>
 <li>Cookies cookies</li>
-<li>ArrayList<MultiPartSpecification> multiPartSpecifications</li>
-<li>ProxySpecification proxySpecification</li>
+<li>ArrayList<MultiPartSpecification> <a href="https://jdi-docs.github.io/jdi-dark/#multipart-parameters">multiPartSpecifications</a> </li>
+<li>ProxySpecification <a href="https://jdi-docs.github.io/jdi-dark/#proxy">proxySpecification</a> </li>
 </ul>
 
 <p>All of these fields can be set/updated from the <em>call()</em> method as well.</p>
@@ -1055,7 +1055,9 @@ with the following fields:</p>
 <p>You may need to statically import the <em>com.epam.http.requests.RequestData.</em>* package.</p>
 <pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="n">RestResponse</span> <span class="nf">call</span><span class="o">(</span><span class="n">RequestSpecification</span> <span class="n">requestSpecification</span><span class="o">)</span> 
 </code></pre>
-<p>JDI Dark also supports making request calls with Rest Assured request specification.</p>
+<p>Another way to generate request data is <a href="https://jdi-docs.github.io/jdi-dark/#using-request-data-object-as-a-parameter">using Request Data object as a parameter</a>
+<br>
+JDI Dark also supports making request calls with <a href="https://jdi-docs.github.io/jdi-dark/#requestspecification-configuration">Rest Assured request specification</a></p>
 <h3 id='path-parameters'>Path parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/{firstName}/{lastName}"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getUser</span><span class="o">;</span>
 
@@ -1141,10 +1143,6 @@ You can use them in your Service Object methods and replace placeholders with va
 <p><br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 <br />
@@ -1244,7 +1242,6 @@ You can use them in your Service Object methods and replace placeholders with va
 <br />
 <br />
 <br />
-<br />
 <br /></p>
 <h3 id='form-parameters'>Form parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@POST</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">greetPost</span><span class="o">;</span>
@@ -1328,8 +1325,7 @@ You can use them in your Service Object methods and replace placeholders with va
 <p><em>MultiPartSpecBuilder</em> - class for creating advanced multi-part requests
 <br>
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a>
-<br><br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a><br>
 <br><br>
 <br><br>
 <br><br>
@@ -1350,7 +1346,7 @@ You can use them in your Service Object methods and replace placeholders with va
         <span class="n">rd</span><span class="o">.</span><span class="na">formParams</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">formParamsMap</span><span class="o">);</span>
     <span class="o">}));</span>
     <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">()</span>
-<span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings Some &amp; firstname &lt;lastname&gt;"</span><span class="o">));</span>
+       <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings Some &amp; firstname &lt;lastname&gt;"</span><span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
 <p>The method allows to send the request with invoked request data in RestMethod:</p>
@@ -1381,10 +1377,10 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">supportsConfiguringJsonConfigProperties</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">RequestSpecification</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">getJsonStore</span><span class="o">.</span><span class="na">getInitSpec</span><span class="o">().</span>
-            <span class="n">config</span><span class="o">(</span><span class="n">RestAssuredConfig</span><span class="o">.</span><span class="na">newConfig</span><span class="o">().</span>
-                    <span class="n">jsonConfig</span><span class="o">(</span><span class="n">JsonConfig</span><span class="o">.</span><span class="na">jsonConfig</span><span class="o">().</span>
-                            <span class="n">numberReturnType</span><span class="o">(</span><span class="n">JsonPathConfig</span><span class="o">.</span><span class="na">NumberReturnType</span><span class="o">.</span><span class="na">BIG_DECIMAL</span><span class="o">)));</span>
+    <span class="n">RequestSpecification</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">getJsonStore</span><span class="o">.</span><span class="na">getInitSpec</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">config</span><span class="o">(</span><span class="n">RestAssuredConfig</span><span class="o">.</span><span class="na">newConfig</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">jsonConfig</span><span class="o">(</span><span class="n">JsonConfig</span><span class="o">.</span><span class="na">jsonConfig</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">numberReturnType</span><span class="o">(</span><span class="n">JsonPathConfig</span><span class="o">.</span><span class="na">NumberReturnType</span><span class="o">.</span><span class="na">BIG_DECIMAL</span><span class="o">)));</span>
     <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">getJsonStore</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">rs</span><span class="o">);</span>
     <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
             <span class="o">.</span><span class="na">rootPath</span><span class="o">(</span><span class="s">"store.book"</span><span class="o">)</span>
