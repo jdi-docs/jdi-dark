@@ -121,12 +121,12 @@ with the following fields:
  - Object body
  - String contentType
  - Headers headers
- - MultiMap<String, String> pathParams
- - MultiMap<String, String> queryParams
- - MultiMap<String, String> formParams
+ - MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#path-parameters">pathParams</a>
+ - MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#query-parameters">queryParams</a> 
+ - MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#form-parameters">formParams</a> 
  - Cookies cookies
- - ArrayList<MultiPartSpecification> multiPartSpecifications
- - ProxySpecification proxySpecification
+ - ArrayList<MultiPartSpecification> <a href="https://jdi-docs.github.io/jdi-dark/#multipart-parameters">multiPartSpecifications</a> 
+ - ProxySpecification <a href="https://jdi-docs.github.io/jdi-dark/#proxy">proxySpecification</a> 
 
 All of these fields can be set/updated from the *call()* method as well.
 
@@ -135,8 +135,9 @@ You may need to statically import the *com.epam.http.requests.RequestData.** pac
  ```java
 public RestResponse call(RequestSpecification requestSpecification) 
  ```
-
-JDI Dark also supports making request calls with Rest Assured request specification.
+Another way to generate request data is <a href="https://jdi-docs.github.io/jdi-dark/#using-request-data-object-as-a-parameter">using Request Data object as a parameter</a>
+<br>
+JDI Dark also supports making request calls with <a href="https://jdi-docs.github.io/jdi-dark/#requestspecification-configuration">Rest Assured request specification</a>
 ### Path parameters
 
 ```java
@@ -198,10 +199,6 @@ Methods for passing path params (with/without query params) in RestMethod:
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 <br />
@@ -280,7 +277,6 @@ The method allows to send specific query parameters in URL in RestMethod:
 <br />
 <br />
 <br />
-<br />
 
 ### Form parameters
 
@@ -343,8 +339,7 @@ Methods allow to set multipart parameters to request data:
 *MultiPartSpecBuilder* - class for creating advanced multi-part requests
 <br>
 <br>
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a>
-<br>  
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a>  
 <br>  
 <br>  
 <br>  
@@ -369,7 +364,7 @@ public void charsetIsReallyDefined() {
         rd.formParams.addAll(formParamsMap);
     }));
     resp.isOk().assertThat()
-.body("greeting", equalTo("Greetings Some & firstname <lastname>"));
+       .body("greeting", equalTo("Greetings Some & firstname <lastname>"));
 }
 ```
 
@@ -395,10 +390,10 @@ public static RestMethod getJsonStore;
 
 @Test
 public void supportsConfiguringJsonConfigProperties() {
-    RequestSpecification rs = getJsonStore.getInitSpec().
-            config(RestAssuredConfig.newConfig().
-                    jsonConfig(JsonConfig.jsonConfig().
-                            numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL)));
+    RequestSpecification rs = getJsonStore.getInitSpec()
+            .config(RestAssuredConfig.newConfig()
+            .jsonConfig(JsonConfig.jsonConfig()
+            .numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL)));
     RestResponse resp = getJsonStore.call(rs);
     resp.isOk()
             .rootPath("store.book")
@@ -436,10 +431,8 @@ You can call these methods with either of given arguments:
  - String URL
  - Rest Assured request specification: *io.restassured.specification.RequestSpecification*
 
-
 ## Tests with Service Object
 ### Create service
-
 ```java
 @ServiceDomain("https://httpbin.org/")
 public class ServiceExample {
