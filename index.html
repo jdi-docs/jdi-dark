@@ -477,9 +477,12 @@
 <h1 id='highlights'>Highlights</h1>
 <ul>
 <li>Obvious Service Object Model that helps to reduce test development effort and increase its speed</li>
+<li>REST and SOAP web service design support</li>
 <li>Extended capabilities of REST Assured framework with all its features kept</li>
 <li>Simple interface for sending requests and response analysis</li>
-<li>Performance testing support</li>
+<li>Automated service objects generation both for REST and SOAP</li>
+<li>Support of the BDD approach</li>
+<li>Retrying of failed tests with specified number of attempts</li>
 <li>Detailed logging of requests and responses in JSON format which can be used in your reports</li>
 </ul>
 <h1 id='simple-jdi-dark-examples'>Simple JDI Dark examples</h1><h2 id='1-service-object-model'>1. Service Object Model</h2><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"http://httpbin.org/"</span><span class="o">)</span>
@@ -2395,9 +2398,7 @@ RestAssured, so the following methods are already implemented: Basic, Digest, NT
 </br></p>
 
 <p>If new authentication is also passed on test level, service level authentication will be overrode.</p>
-<h2 id='parallel-running'>Parallel running</h2>
-<p>For running tests in parallel are used standard TestNG possibility.</p>
-<pre class="highlight java tab-java"><code> <span class="o">&lt;?</span><span class="n">xml</span> <span class="n">version</span><span class="o">=</span><span class="s">"1.0"</span> <span class="n">encoding</span><span class="o">=</span><span class="s">"WINDOWS-1251"</span><span class="o">?&gt;</span>
+<h2 id='parallel-running'>Parallel running</h2><pre class="highlight java tab-java"><code> <span class="o">&lt;?</span><span class="n">xml</span> <span class="n">version</span><span class="o">=</span><span class="s">"1.0"</span> <span class="n">encoding</span><span class="o">=</span><span class="s">"WINDOWS-1251"</span><span class="o">?&gt;</span>
  <span class="o">&lt;!</span><span class="n">DOCTYPE</span> <span class="n">suite</span> <span class="n">SYSTEM</span> <span class="s">"http://testng.org/testng-1.0.dtd"</span><span class="o">&gt;</span>
  <span class="o">&lt;</span><span class="n">suite</span> <span class="n">name</span><span class="o">=</span><span class="s">"Http tests"</span> <span class="n">data</span><span class="o">-</span><span class="n">provider</span><span class="o">-</span><span class="n">thread</span><span class="o">-</span><span class="n">count</span><span class="o">=</span><span class="s">"3"</span><span class="o">&gt;</span>
      <span class="o">&lt;</span><span class="n">test</span> <span class="n">name</span><span class="o">=</span><span class="s">"parallel classes running"</span> <span class="n">parallel</span><span class="o">=</span><span class="s">"classes"</span> <span class="n">thread</span><span class="o">-</span><span class="n">count</span><span class="o">=</span><span class="s">"4"</span><span class="o">&gt;</span>
@@ -2429,20 +2430,25 @@ RestAssured, so the following methods are already implemented: Basic, Digest, NT
     <span class="n">assertEquals</span><span class="o">(</span><span class="n">gotBoard</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">createdBoard</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="s">"Name of created board is incorrect"</span><span class="o">);</span>   
 <span class="o">}</span>
 </code></pre>
-<p><strong>Setting TestNG xml suite file for  parallel running tests</strong>  </p>
+<p>Here is an example of the parallel tests running based on the TestNG approach. 
+ <br />
+ <br />
+<strong>Setting TestNG xml suite file for the parallel tests running</strong>  </p>
 
 <ol>
-<li>For running test methods in separate threads - add attribute <em>parallel=&quot;methods&quot;</em> in the tag <em>suite</em> or <em>test</em><br></li>
-<li>For running test classes in a separate thread - add attribute <em>parallel=&quot;classes&quot;</em> in the tag <em>suite</em> or <em>test</em><br></li>
-<li>Specify the attribute <em>thread-count</em> how many threads should be allocated for this execution.<br></li>
-<li>For parallel running Data Providers specify count of threads in the <em>data-provider-thread-count</em> attribute of the tag <em>suite</em></li>
+<li>Specify the <em>parallel</em> attribute in the tag <em>suite</em> or <em>test</em><br>
+Set <em>parallel=&quot;methods&quot;</em> to run test <strong>methods</strong> in separate threads 
+<br />
+Set <em>parallel=&quot;classes&quot;</em> to run test <strong>classes</strong> in separate threads </li>
+<li>Specify the number of threads allocated for the execution in the attribute <em>thread-count</em> </li>
+<li>For Data Providers parallel running specify the count of threads in the <em>data-provider-thread-count</em> attribute of the tag <em>suite</em></li>
 </ol>
 
-<p><strong>Setting Data Provider for parallel running directly in the test</strong>  </p>
+<p><strong>Setting Data Provider for the parallel running directly in the test</strong>  </p>
 
 <ol>
-<li>Add the attribute parallel = true to @DataProvider annotation.(By default a size of thread = 10)<br></li>
-<li>Specify special count of threads in the attribute <em>threadPoolSize</em> in @DataProvider annotation </li>
+<li>Add the attribute <em>parallel</em> = true to the @DataProvider annotation. (By default the count of threads = 10)<br></li>
+<li>Specify the count of threads in the attribute <em>threadPoolSize</em> in @DataProvider annotation </li>
 </ol>
 
 <p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> </p>
