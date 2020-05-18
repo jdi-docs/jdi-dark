@@ -1637,6 +1637,57 @@ See more information in the <a href="https://jdi-docs.github.io/jdi-dark/#4-jdi-
 See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.
 <br>
 
+##WebSockets
+
+Use JDI Dark module *jdi-dark-ws* for working with sockets.
+
+###Creating WebSocket object 
+
+```java
+@ServerEndpoint("")
+public class TrelloSocket extends JdiWSServer {
+
+}
+```
+
+ For working with sockets create your WebSocket object class extending the JdiWSServer class. Mark it with the annotation @ServerEndpoint("")
+
+See the example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/TrelloSocket.java" target="_blank">here</a>.
+
+###JDI Dark methods for WebSockets
+
+```java
+public class TrelloTest {
+    private TrelloSocket trelloSocket = new TrelloSocket();
+
+    @Test
+    public void checkMessages() throws IOException, InterruptedException, DeploymentException, URISyntaxException {
+        trelloSocket.connect("wss://trello.com/1/Session/socket?token=" + token);
+        trelloSocket.sendMessage("{\"type\":\"subscribe\",\"modelType\":\"Member\",\"idModel\":\"5e8ef65b384f806fbb911f5d\",\"tags\":[\"messages\",\"updates\"],\"invitationTokens\":[],\"reqid\":5}");
+        trelloSocket.waitNewMessage(30);     
+    }
+```
+
+There are JdiWSServer methods for working with sockets:
+
+|Method | Description | Return Type
+--- | --- | ---
+**connect(URI path)** | connects to the URI | void
+**connect(String path)** | connects to specified path | void
+**closeSession()** | closes the session | void
+**sendMessage(String text)** | sends the web-socket message as a String| void
+**sendMessage(Object object)** | sends the web-socket message as an Object| void
+**sendBinary(ByteBuffer data)** | sends the web-socket message as a binary data | void
+**waitNewMessage(int sec)** | waiting for the message | void
+**waitAndGetNewMessage(int sec)** | waiting for the message and return it | JsonElement
+**waitNewMessages(int count, int sec)** | waiting for the messages | void
+**waitNewMessageMatches(String regex, int maxMsgCount, int sec)** | waiting the message which matches to regexp | void
+**waitNewMessageContainsText(String text, int maxMsgCount, int sec)** | waiting the message which contains the specified text | void
+**waitNewMessageContainsKey(String key, int maxMsgCount, int sec)** |waiting the message which contains the specified JSON key| void
+**getNewMessageAsJsonObject()** | get the message as Object | JsonObject
+**clearMessages()** | clear the received messages| void
+
+See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettest/TrelloTest.java" target="_blank">here</a>.
 
 ## SOAP
 ###Creating Service Object
