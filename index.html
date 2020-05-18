@@ -402,6 +402,14 @@
                       <a href="#jdi-dark-bdd-steps" class="toc-h2 toc-link" data-title="JDI Dark BDD Steps">JDI Dark BDD Steps</a>
                     </li>
                     <li>
+                      <a href="#websockets" class="toc-h2 toc-link" data-title="WebSockets">WebSockets</a>
+                          <ul class="toc-list-h2">
+                              <li>
+                                <a href="#jdi-dark-methods-for-websockets" class="toc-h2 h3 toc-link" data-title="JDI Dark methods for WebSockets">JDI Dark methods for WebSockets</a>
+                              </li>
+                          </ul>
+                    </li>
+                    <li>
                       <a href="#soap" class="toc-h2 toc-link" data-title="SOAP">SOAP</a>
                           <ul class="toc-list-h2">
                               <li>
@@ -2642,6 +2650,108 @@ In order to restore the initial RestAssured config after test execution, the <co
 <br>
 See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.
 <br></p>
+<h2 id='websockets'>WebSockets</h2>
+<p>Use JDI Dark module <em>jdi-dark-ws</em> for working with sockets.</p>
+<h3 id='jdi-dark-methods-for-websockets'>JDI Dark methods for WebSockets</h3>
+<p>For working with sockets create the WebSocket class extending the JdiWSServer class. Mark it with the annotation @ServerEndpoint(&quot;&quot;)</p>
+
+<p>There are available methods for working with sockets:  </p>
+<pre class="highlight java tab-java"><code><span class="nd">@ServerEndpoint</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloSocket</span> <span class="kd">extends</span> <span class="n">JdiWSServer</span> <span class="o">{</span>
+
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloTest</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">TrelloSocket</span> <span class="n">trelloSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TrelloSocket</span><span class="o">();</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">checkMessages</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span><span class="o">,</span> <span class="n">DeploymentException</span><span class="o">,</span> <span class="n">URISyntaxException</span> <span class="o">{</span>
+        <span class="n">trelloSocket</span><span class="o">.</span><span class="na">connect</span><span class="o">(</span><span class="s">"wss://trello.com/1/Session/socket?token="</span> <span class="o">+</span> <span class="n">token</span><span class="o">);</span>
+        <span class="n">trelloSocket</span><span class="o">.</span><span class="na">sendMessage</span><span class="o">(</span><span class="s">"{\"type\":\"subscribe\",\"modelType\":\"Member\",\"idModel\":\"5e8ef65b384f806fbb911f5d\",\"tags\":[\"messages\",\"updates\"],\"invitationTokens\":[],\"reqid\":5}"</span><span class="o">);</span>
+        <span class="n">trelloSocket</span><span class="o">.</span><span class="na">waitNewMessage</span><span class="o">(</span><span class="mi">30</span><span class="o">);</span>     
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>connect(URI path)</strong></td>
+<td>connects to the URI</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>connect(String path)</strong></td>
+<td>connects to specified path</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>closeSession()</strong></td>
+<td>closes the session</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>sendMessage(String text)</strong></td>
+<td>sends the web-socket message as a String</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>sendMessage(Object object)</strong></td>
+<td>sends the web-socket message as an Object</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>sendBinary(ByteBuffer data)</strong></td>
+<td>sends the web-socket message as a binary data</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>waitNewMessage(int sec)</strong></td>
+<td>waiting for the message</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>waitAndGetNewMessage(int sec)</strong></td>
+<td>waiting for the message and return it</td>
+<td>JsonElement</td>
+</tr>
+<tr>
+<td><strong>waitNewMessages(int count, int sec)</strong></td>
+<td>waiting for the messages</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>waitNewMessageMatches(String regex, int maxMsgCount, int sec)</strong></td>
+<td>waiting the message which matches to regexp</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>waitNewMessageContainsText(String text, int maxMsgCount, int sec)</strong></td>
+<td>waiting the message which contains the specified text</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>waitNewMessageContainsKey(String key, int maxMsgCount, int sec)</strong></td>
+<td>waiting the message which contains the specified JSON key</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>getNewMessageAsJsonObject()</strong></td>
+<td>get the message as Object</td>
+<td>JsonObject</td>
+</tr>
+<tr>
+<td><strong>clearMessages()</strong></td>
+<td>clear the received messages</td>
+<td>void</td>
+</tr>
+</tbody></table>
+
+<p>See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettest/TrelloTest.java" target="_blank">here</a>.</p>
 <h2 id='soap'>SOAP</h2><h3 id='creating-service-object'>Creating Service Object</h3><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V04_01.asmx"</span><span class="o">)</span>
 <span class="nd">@SOAPNamespace</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">GeoServices</span> <span class="o">{</span>
