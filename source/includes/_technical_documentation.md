@@ -1641,22 +1641,18 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 
 Use JDI Dark module *jdi-dark-ws* for working with sockets.
 
-###Creating WebSocket object 
+###JDI Dark methods for WebSockets 
+
+For working with sockets create the WebSocket class extending the JdiWSServer class. Mark it with the annotation @ServerEndpoint("")
+
+There are available methods for working with sockets:  
 
 ```java
 @ServerEndpoint("")
 public class TrelloSocket extends JdiWSServer {
 
 }
-```
 
- For working with sockets create your WebSocket object class extending the JdiWSServer class. Mark it with the annotation @ServerEndpoint("")
-
-See the example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/TrelloSocket.java" target="_blank">here</a>.
-
-###JDI Dark methods for WebSockets
-
-```java
 public class TrelloTest {
     private TrelloSocket trelloSocket = new TrelloSocket();
 
@@ -1666,10 +1662,8 @@ public class TrelloTest {
         trelloSocket.sendMessage("{\"type\":\"subscribe\",\"modelType\":\"Member\",\"idModel\":\"5e8ef65b384f806fbb911f5d\",\"tags\":[\"messages\",\"updates\"],\"invitationTokens\":[],\"reqid\":5}");
         trelloSocket.waitNewMessage(30);     
     }
+}
 ```
-
-There are JdiWSServer methods for working with sockets:
-
 |Method | Description | Return Type
 --- | --- | ---
 **connect(URI path)** | connects to the URI | void
