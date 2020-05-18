@@ -25,7 +25,10 @@ JDI Dark is a simple test automation framework for web service testing powered b
 
 # Highlights
  - Obvious Service Object Model that helps to reduce test development effort and increase its speed
+ - REST and SOAP web service design support
  - Extended capabilities of REST Assured framework with all its features kept
  - Simple interface for sending requests and response analysis
- - Performance testing support
+ - Automated service objects generation both for REST and SOAP
+ - Support of the BDD approach
+ - Retrying of failed tests with specified number of attempts
  - Detailed logging of requests and responses in JSON format which can be used in your reports

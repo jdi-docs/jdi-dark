@@ -1367,8 +1367,6 @@ If new authentication is also passed on test level, service level authentication
 
 
 ## Parallel running
- For running tests in parallel are used standard TestNG possibility.
-
  ```java
  <?xml version="1.0" encoding="WINDOWS-1251"?>
  <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
@@ -1404,18 +1402,22 @@ public void createCardInBoard(Board board) {
     assertEquals(gotBoard.name, createdBoard.name, "Name of created board is incorrect");   
 }
  ``` 
-  
-**Setting TestNG xml suite file for  parallel running tests**  
+ Here is an example of the parallel tests running based on the TestNG approach. 
+ <br />
+ <br />
+**Setting TestNG xml suite file for the parallel tests running**  
 
-  1. For running test methods in separate threads - add attribute *parallel="methods"* in the tag *suite* or *test*  
-  2. For running test classes in a separate thread - add attribute *parallel="classes"* in the tag *suite* or *test*  
-  3. Specify the attribute *thread-count* how many threads should be allocated for this execution.  
-  4. For parallel running Data Providers specify count of threads in the *data-provider-thread-count* attribute of the tag *suite*
+  1. Specify the *parallel* attribute in the tag *suite* or *test*  
+  Set *parallel="methods"* to run test **methods** in separate threads 
+  <br />
+  Set *parallel="classes"* to run test **classes** in separate threads 
+  2. Specify the number of threads allocated for the execution in the attribute *thread-count* 
+  3. For Data Providers parallel running specify the count of threads in the *data-provider-thread-count* attribute of the tag *suite*
   
-**Setting Data Provider for parallel running directly in the test**  
+**Setting Data Provider for the parallel running directly in the test**  
 
- 1. Add the attribute parallel = true to @DataProvider annotation.(By default a size of thread = 10)  
- 2. Specify special count of threads in the attribute *threadPoolSize* in @DataProvider annotation 
+ 1. Add the attribute *parallel* = true to the @DataProvider annotation. (By default the count of threads = 10)  
+ 2. Specify the count of threads in the attribute *threadPoolSize* in @DataProvider annotation 
 
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> 
 
