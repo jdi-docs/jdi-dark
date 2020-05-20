@@ -1518,43 +1518,6 @@ public static RestMethod ignoreRetrying;
 
 In that case even if status code will be in specified list of errorCodes no retry requests will be send.
 
-## Service parameterization
-```java
-@ServiceDomain("${trello}")
-@QueryParameter(name = "key", value = "3445103a21ddca2619eaceb0e833d0db")
-@QueryParameter(name = "token", value = "a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0")
-public class TrelloService {
-    
-}
-```
-JDI Dark gives you opportunity to configure your service objects via .properties files.
-
-**To use it:**
-
-```java
-domain=local=http://localhost:8080, trello=https://api.trello.com/1
-log.level=INFO
-```
-1. Create .properties file with your service host in format: service.name = service.url
-2. Place it to src/test/resources/
-3. Declare annotation **@ServiceDomain** on service class.
-4. Specify parameter "value" with key of variable placed in your .properties: **@ServiceDomain("${service.name}")** 
-5. Let know JDI Dark about your .properties file, there are ways:
- + **Manual way:**
-      + Go to src/test/resources/pom.properties
-      + Change ${profile} to name of your .properties file without extension
- + **Maven:**
-      + ``` mvn clean install -DBUILD_PROFILE=name of your .properties ```
-      <br>**or**<br>
-      +  ``` EXPORT BUILD_PROFILE=name of your .properties file && mvn clean install  ```
- + **Gradle:**
-      + ``` gradlew clean build -PBUILD_PROFILE=name of your .properties file ``` 
-      <br>**or**<br>
-      + ``` gradlew clean build -DBUILD_PROFILE=name of your .properties file ```
-      <br>**or**<br>
-      + ``` EXPORT BUILD_PROFILE=name of your .properties file && gradlew clean build  ```
-
- 
 ## Access RestAssured
 
 ### Accessing RestAssured.config
