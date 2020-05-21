@@ -1624,22 +1624,22 @@ public class TrelloTest {
 ```
 |Method | Description | Return Type
 --- | --- | ---
-**connect(URI path)** | connects to the URI | void
-**connect(String path)** | connects to specified path | void
-**closeSession()** | closes the session | void
-**sendMessage(String text)** | sends the web-socket message as a String| void
-**sendMessage(Object object)** | sends the web-socket message as an Object| void
-**sendBinary(ByteBuffer data)** | sends the web-socket message as a binary data | void
-**waitNewMessage(int sec)** | waiting for the message | void
-**waitAndGetNewMessage(int sec)** | waiting for the message and return it | JsonElement
-**waitNewMessages(int count, int sec)** | waiting for the messages | void
-**waitNewMessageMatches(String regex, int maxMsgCount, int sec)** | waiting the message which matches to regexp | void
-**waitNewMessageContainsText(String text, int maxMsgCount, int sec)** | waiting the message which contains the specified text | void
-**waitNewMessageContainsKey(String key, int maxMsgCount, int sec)** |waiting the message which contains the specified JSON key| void
+**connect(URI path)** | connect to the URI | void
+**connect(String path)** | connect to specified path | void
+**closeSession()** | close the session | void
+**sendMessage(String text)** | send the web-socket message as a String| void
+**sendMessage(Object object)** | send the web-socket message as an Object| void
+**sendBinary(ByteBuffer data)** | send the web-socket message as a binary data | void
+**waitNewMessage(int sec)** | wait for the message | void
+**waitAndGetNewMessage(int sec)** | wait for the message and return it | JsonElement
+**waitNewMessages(int count, int sec)** | wait for the messages | void
+**waitNewMessageMatches(String regex, int maxMsgCount, int sec)** | wait the message which matches regexp | void
+**waitNewMessageContainsText(String text, int maxMsgCount, int sec)** | wait the message which contains the specified text | void
+**waitNewMessageContainsKey(String key, int maxMsgCount, int sec)** |wait the message which contains the specified JSON key| void
 **getNewMessageAsJsonObject()** | get the message as Object | JsonObject
 **clearMessages()** | clear the received messages| void
 
-See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettest/TrelloTest.java" target="_blank">here</a>.
+See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettest/TrelloTest.java" target="_blank">here</a>
 
 ## SOAP
 ###Creating Service Object

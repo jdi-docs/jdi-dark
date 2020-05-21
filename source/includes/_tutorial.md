@@ -3,7 +3,7 @@
 In this tutorial we’ll take a glance at JDI Dark, a library that simplifies test automation, makes test run results stable, predictable and easy to maintain.
 
 1. **Quick Start** - a short instruction on how to add JDI Dark to your project and perform its basic configuration.
-2. **JDI Dark at a glance** -  a simple example for creating test cases for REST services with JDI Dark. 
+2. **JDI Dark at a glance** -  a simple example of creating test cases for REST services with JDI Dark. 
 3. **JDI Dark Service Objects** - a Service Object class description
 4. **JDI Dark and Cucumber** -  a short instruction on how to create cucumber feature files with JDI Dark.
 5. **JDI Dark and SOAP** -  a short instruction on how to create test cases for SOAP with JDI Dark.
@@ -124,11 +124,11 @@ Create class for <a href="https://developers.trello.com/reference/#board-object"
 <br/>
 **2. Create  service class with Rest methods** 
 
--Specify BaseURI service by using @ServiceDomain("${trello}") annotation before class 
+  - Specify BaseURI service by using @ServiceDomain("${trello}") annotation before class 
 
--Specify credentials via @QueryParameters - set  @QueryParameter key and token
+  - Specify credentials via @QueryParameters - set  @QueryParameter key and token
 
--Describe <a href="https://developers.trello.com/reference/#boardsid" target="_blank">trello endpoint for creating board</a>:
+  - Describe <a href="https://developers.trello.com/reference/#boardsid" target="_blank">trello endpoint for creating board</a>:
 
   - Add RestMethod<Board> boardsPos method
   
@@ -140,7 +140,7 @@ Create class for <a href="https://developers.trello.com/reference/#board-object"
 
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/TrelloService.java" target="_blank">See example class for TrelloService </a>.   
 <br/>  
-**3.If you need - create class helper for generating data** 
+**3. Create class helper for generating data if needed** 
 
 In our example we created TrelloDataGenerator class which contains  method for generating Trello board
 
@@ -148,25 +148,26 @@ In our example we created TrelloDataGenerator class which contains  method for g
 
 <br/>
 **4. Create test class**  
-1.Initialize your service class in @BeforeClass
-
-2.Add test methods
-    
+  - Initialize your service class in @BeforeClass
+<br/>  
+  - Add test methods
+<br/>  
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/entities/TrelloTests.java" target="_blank">See test case example</a>.
 
 
 ###Running test examples 
 
-You can see and run various examples test cases in <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests" target="_blank">JDI DARK project </a>.
-Before first run test cases, execute maven commands:
+You can find a lot of test examples <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests" target="_blank">JDI DARK project </a>.
+Before first running, execute maven commands:
 
 **mvn clean**<br/>
 **mvn compile**
 
 
 ## 3. JDI Dark Service Objects
-  JDI Dark provides describing web service as a Service Object class, what allows to make well-structure clear code.
-  So it is easy to create maintained and well-readable tests. See Tests with Service Object documentation <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">here</a>.
+  JDI Dark provides Service Object class to describe web services. Service Object class allows to create well-structured code.
+  <br/>
+  <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">See the examples here</a>
   
 
   
