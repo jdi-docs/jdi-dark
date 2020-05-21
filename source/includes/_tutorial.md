@@ -17,28 +17,35 @@ In this tutorial we’ll take a glance at JDI Dark, a library that simplifies te
     <version>{RELEASE}</version>
 </dependency>
  ```
-First, we need to add JDI Dark to the dependency section of our pom.xml file.
+First, you need to add JDI Dark to the dependency section of your pom.xml file.
 The latest version can be found in <a href="https://search.maven.org/classic/#search%7Cga%7C1%7Cjdi-dark" target="_blank">the Maven Central Repository</a>.
 ###Configuration
-For configuration project create **test.properties file** on path **src/test/resources**.
+For configuration of the project create **test.properties file** on path **src/test/resources**.
 
-Let’s look at them:
+Add domain and log.level into the properties file.
 
  ```java
 domain=local=http://localhost:8080, trello=https://api.trello.com/1
 log.level=WARNING
  ```
- + **domain** - there is several options how specify domain:
+ + **domain** 
  
- **-** Specify one domain - *domain=URI*. Than you can use this setting in service domain annotation in this way:  *@ServiceDomain("${domain}")*, *@ServiceDomain("${nameDomain2}")*
+ There are tree ways to specify your domain:
  
- **-** Specify list of domains - *domain=nameDomain=URI, nameDomain2=URI*. Than you can use this variables in service domain annotation in this way:  *@ServiceDomain("${nameDomain}")*, *@ServiceDomain("${nameDomain2}")*     
+ **-** If there is only one domain, specify *domain=URI* in the properties file. 
+ Then you can use the service domain annotation this way:  *@ServiceDomain("${domain}")*
+ 
+ **-** In case of a list of domains, specify *domain=nameDomain=URI, nameDomain2=URI*. 
+ Then use these variables in the service domain annotation:  
+ *@ServiceDomain("${nameDomain}")*
+  
+ *@ServiceDomain("${nameDomain2}")*     
        
- **-** If you don't specify domain here, you must directly specify your base URI in this way *@ServiceDomain("https://api.trello.com/1")*  
+ **-** It's possible to specify the domain directly in the service domain annotation *@ServiceDomain("https://api.trello.com/1")*  
     
-
-
- + **log.level** - you can set one of options - INFO, WARNING, OFF, FATAL, ERROR, STEP, DEBUG, TRACE, ALL
+ + **log.level** 
+  
+  Available options: INFO, WARNING, OFF, FATAL, ERROR, STEP, DEBUG, TRACE, ALL
 
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/test.properties" target="_blank">See example on GitHub</a>.
 
