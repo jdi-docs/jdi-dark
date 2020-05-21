@@ -388,9 +388,6 @@
                       <a href="#retry-request-option" class="toc-h2 toc-link" data-title="Retry Request Option">Retry Request Option</a>
                     </li>
                     <li>
-                      <a href="#service-parameterization" class="toc-h2 toc-link" data-title="Service parameterization">Service parameterization</a>
-                    </li>
-                    <li>
                       <a href="#access-restassured" class="toc-h2 toc-link" data-title="Access RestAssured">Access RestAssured</a>
                           <ul class="toc-list-h2">
                               <li>
@@ -592,28 +589,37 @@ You just need to use the <em>@QueryParameter</em> annotation in your method or s
     <span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;{</span><span class="n">RELEASE</span><span class="o">}&lt;/</span><span class="n">version</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
 </code></pre>
-<p>First, we need to add JDI Dark to the dependency section of our pom.xml file.
+<p>First, you need to add JDI Dark to the dependency section of your pom.xml file.
 The latest version can be found in <a href="https://search.maven.org/classic/#search%7Cga%7C1%7Cjdi-dark" target="_blank">the Maven Central Repository</a>.</p>
 <h3 id='configuration'>Configuration</h3>
-<p>For configuration project create <strong>test.properties file</strong> on path <strong>src/test/resources</strong>.</p>
+<p>For configuration of the project create <strong>test.properties file</strong> on path <strong>src/test/resources</strong>.</p>
 
-<p>Let’s look at them:</p>
+<p>Add domain and log.level into the properties file.</p>
 <pre class="highlight java tab-java"><code><span class="n">domain</span><span class="o">=</span><span class="n">local</span><span class="o">=</span><span class="nl">http:</span><span class="c1">//localhost:8080, trello=https://api.trello.com/1</span>
 <span class="n">log</span><span class="o">.</span><span class="na">level</span><span class="o">=</span><span class="n">WARNING</span>
 </code></pre>
 <ul>
-<li><strong>domain</strong> - there is several options how specify domain:</li>
+<li><strong>domain</strong> </li>
 </ul>
 
-<p><strong>-</strong> Specify one domain - <em>domain=URI</em>. Than you can use this setting in service domain annotation in this way:  <em>@ServiceDomain(&quot;${domain}&quot;)</em>, <em>@ServiceDomain(&quot;${nameDomain2}&quot;)</em></p>
+<p>There are tree ways to specify your domain:</p>
 
-<p><strong>-</strong> Specify list of domains - <em>domain=nameDomain=URI, nameDomain2=URI</em>. Than you can use this variables in service domain annotation in this way:  <em>@ServiceDomain(&quot;${nameDomain}&quot;)</em>, <em>@ServiceDomain(&quot;${nameDomain2}&quot;)</em>     </p>
+<p><strong>-</strong> If there is only one domain, specify <em>domain=URI</em> in the properties file. 
+ Then you can use the service domain annotation this way:  <em>@ServiceDomain(&quot;${domain}&quot;)</em></p>
 
-<p><strong>-</strong> If you don&#39;t specify domain here, you must directly specify your base URI in this way <em>@ServiceDomain(&quot;https://api.trello.com/1&quot;)</em>  </p>
+<p><strong>-</strong> In case of a list of domains, specify <em>domain=nameDomain=URI, nameDomain2=URI</em>. 
+ Then use these variables in the service domain annotation:<br>
+ <em>@ServiceDomain(&quot;${nameDomain}&quot;)</em></p>
+
+<p><em>@ServiceDomain(&quot;${nameDomain2}&quot;)</em>     </p>
+
+<p><strong>-</strong> It&#39;s possible to specify the domain directly in the service domain annotation <em>@ServiceDomain(&quot;https://api.trello.com/1&quot;)</em>  </p>
 
 <ul>
-<li><strong>log.level</strong> - you can set one of options - INFO, WARNING, OFF, FATAL, ERROR, STEP, DEBUG, TRACE, ALL</li>
+<li><strong>log.level</strong> </li>
 </ul>
+
+<p>Available options: INFO, WARNING, OFF, FATAL, ERROR, STEP, DEBUG, TRACE, ALL</p>
 
 <p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/test.properties" target="_blank">See example on GitHub</a>.</p>
 <h2 id='2-jdi-dark-at-a-glance'>2. JDI Dark at a glance</h2><pre class="highlight java tab-java"><code><span class="c1">//STEP 1 Creating class describing Board object with needed fields   </span>
@@ -2539,51 +2545,6 @@ endpoint.<br></p>
 <p><strong>@RetryOnFailure placed on class can be ignored by adding @IgnoreRetry to field:</strong>  </p>
 
 <p>In that case even if status code will be in specified list of errorCodes no retry requests will be send.</p>
-<h2 id='service-parameterization'>Service parameterization</h2><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"${trello}"</span><span class="o">)</span>
-<span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"key"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"3445103a21ddca2619eaceb0e833d0db"</span><span class="o">)</span>
-<span class="nd">@QueryParameter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"token"</span><span class="o">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">"a9b951262e529821308e7ecbc3e4b7cfb14a24fef5ea500a68c69d374009fcc0"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloService</span> <span class="o">{</span>
-
-<span class="o">}</span>
-</code></pre>
-<p>JDI Dark gives you opportunity to configure your service objects via .properties files.</p>
-
-<p><strong>To use it:</strong></p>
-<pre class="highlight java tab-java"><code><span class="n">domain</span><span class="o">=</span><span class="n">local</span><span class="o">=</span><span class="nl">http:</span><span class="c1">//localhost:8080, trello=https://api.trello.com/1</span>
-<span class="n">log</span><span class="o">.</span><span class="na">level</span><span class="o">=</span><span class="n">INFO</span>
-</code></pre>
-<ol>
-<li>Create .properties file with your service host in format: service.name = service.url</li>
-<li>Place it to src/test/resources/</li>
-<li>Declare annotation <strong>@ServiceDomain</strong> on service class.</li>
-<li>Specify parameter &quot;value&quot; with key of variable placed in your .properties: <strong>@ServiceDomain(&quot;${service.name}&quot;)</strong> </li>
-<li>Let know JDI Dark about your .properties file, there are ways:
-
-<ul>
-<li><strong>Manual way:</strong>
-
-<ul>
-<li>Go to src/test/resources/pom.properties</li>
-<li>Change ${profile} to name of your .properties file without extension</li>
-</ul></li>
-<li><strong>Maven:</strong>
-
-<ul>
-<li><code>mvn clean install -DBUILD_PROFILE=name of your .properties</code>
-<br><strong>or</strong><br></li>
-<li> <code>EXPORT BUILD_PROFILE=name of your .properties file &amp;&amp; mvn clean install</code></li>
-</ul></li>
-<li><strong>Gradle:</strong>
-
-<ul>
-<li><code>gradlew clean build -PBUILD_PROFILE=name of your .properties file</code> 
-<br><strong>or</strong><br></li>
-<li><code>gradlew clean build -DBUILD_PROFILE=name of your .properties file</code>
-<br><strong>or</strong><br></li>
-<li><code>EXPORT BUILD_PROFILE=name of your .properties file &amp;&amp; gradlew clean build</code></li>
-</ul></li>
-</ul></li>
-</ol>
 <h2 id='access-restassured'>Access RestAssured</h2><h3 id='accessing-restassured-config'>Accessing RestAssured.config</h3>
 <p>Sometime, for testing purposes, some RestAssured configuration properties might be changed.
 You can access RestAssured from test or define desired properties in @BeforeTest.</p>
