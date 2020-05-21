@@ -578,7 +578,7 @@ You just need to use the <em>@QueryParameter</em> annotation in your method or s
 
 <ol>
 <li><strong>Quick Start</strong> - a short instruction on how to add JDI Dark to your project and perform its basic configuration.</li>
-<li><strong>JDI Dark at a glance</strong> -  a simple example for creating test cases for REST services with JDI Dark. </li>
+<li><strong>JDI Dark at a glance</strong> -  a simple example of creating test cases for REST services with JDI Dark. </li>
 <li><strong>JDI Dark Service Objects</strong> - a Service Object class description</li>
 <li><strong>JDI Dark and Cucumber</strong> -  a short instruction on how to create cucumber feature files with JDI Dark.</li>
 <li><strong>JDI Dark and SOAP</strong> -  a short instruction on how to create test cases for SOAP with JDI Dark.</li>
@@ -691,13 +691,10 @@ The latest version can be found in <a href="https://search.maven.org/classic/#se
 <p><br/>
 <strong>2. Create  service class with Rest methods</strong> </p>
 
-<p>-Specify BaseURI service by using @ServiceDomain(&quot;${trello}&quot;) annotation before class </p>
-
-<p>-Specify credentials via @QueryParameters - set  @QueryParameter key and token</p>
-
-<p>-Describe <a href="https://developers.trello.com/reference/#boardsid" target="_blank">trello endpoint for creating board</a>:</p>
-
 <ul>
+<li><p>Specify BaseURI service by using @ServiceDomain(&quot;${trello}&quot;) annotation before class </p></li>
+<li><p>Specify credentials via @QueryParameters - set  @QueryParameter key and token</p></li>
+<li><p>Describe <a href="https://developers.trello.com/reference/#boardsid" target="_blank">trello endpoint for creating board</a>:</p></li>
 <li><p>Add RestMethod<Board> boardsPos method</p></li>
 <li><p>Create method createBoard for transfer and getting Board object in RestMethod  </p></li>
 <li><p>User annotation @POST(BOARDS) for specific post endpoint</p></li>
@@ -706,7 +703,7 @@ The latest version can be found in <a href="https://search.maven.org/classic/#se
 
 <p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/httptests/TrelloService.java" target="_blank">See example class for TrelloService </a>.<br>
 <br/><br>
-<strong>3.If you need - create class helper for generating data</strong> </p>
+<strong>3. Create class helper for generating data if needed</strong> </p>
 
 <p>In our example we created TrelloDataGenerator class which contains  method for generating Trello board</p>
 
@@ -714,20 +711,21 @@ The latest version can be found in <a href="https://search.maven.org/classic/#se
 
 <p><br/>
 <strong>4. Create test class</strong><br>
-1.Initialize your service class in @BeforeClass</p>
-
-<p>2.Add test methods</p>
-
-<p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/entities/TrelloTests.java" target="_blank">See test case example</a>.</p>
+  - Initialize your service class in @BeforeClass
+<br/><br>
+  - Add test methods
+<br/><br>
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/entities/TrelloTests.java" target="_blank">See test case example</a>.</p>
 <h3 id='running-test-examples'>Running test examples</h3>
-<p>You can see and run various examples test cases in <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests" target="_blank">JDI DARK project </a>.
-Before first run test cases, execute maven commands:</p>
+<p>You can find a lot of test examples <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests" target="_blank">JDI DARK project </a>.
+Before first running, execute maven commands:</p>
 
 <p><strong>mvn clean</strong><br/>
 <strong>mvn compile</strong></p>
 <h2 id='3-jdi-dark-service-objects'>3. JDI Dark Service Objects</h2>
-<p>JDI Dark provides describing web service as a Service Object class, what allows to make well-structure clear code.
-  So it is easy to create maintained and well-readable tests. See Tests with Service Object documentation <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">here</a>.</p>
+<p>JDI Dark provides Service Object class to describe web services. Service Object class allows to create well-structured code.
+  <br/>
+  <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object">See the examples here</a></p>
 <h2 id='4-jdi-dark-and-cucumber'>4. JDI Dark and Cucumber</h2><pre class="highlight java tab-java"><code><span class="c1">//STEP 1 Service Object Model class creation</span>
 <span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"http://httpbin.org/"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceExample</span> <span class="o">{</span>
@@ -2642,62 +2640,62 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 </thead><tbody>
 <tr>
 <td><strong>connect(URI path)</strong></td>
-<td>connects to the URI</td>
+<td>connect to the URI</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>connect(String path)</strong></td>
-<td>connects to specified path</td>
+<td>connect to specified path</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>closeSession()</strong></td>
-<td>closes the session</td>
+<td>close the session</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>sendMessage(String text)</strong></td>
-<td>sends the web-socket message as a String</td>
+<td>send the web-socket message as a String</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>sendMessage(Object object)</strong></td>
-<td>sends the web-socket message as an Object</td>
+<td>send the web-socket message as an Object</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>sendBinary(ByteBuffer data)</strong></td>
-<td>sends the web-socket message as a binary data</td>
+<td>send the web-socket message as a binary data</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>waitNewMessage(int sec)</strong></td>
-<td>waiting for the message</td>
+<td>wait for the message</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>waitAndGetNewMessage(int sec)</strong></td>
-<td>waiting for the message and return it</td>
+<td>wait for the message and return it</td>
 <td>JsonElement</td>
 </tr>
 <tr>
 <td><strong>waitNewMessages(int count, int sec)</strong></td>
-<td>waiting for the messages</td>
+<td>wait for the messages</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>waitNewMessageMatches(String regex, int maxMsgCount, int sec)</strong></td>
-<td>waiting the message which matches to regexp</td>
+<td>wait the message which matches regexp</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>waitNewMessageContainsText(String text, int maxMsgCount, int sec)</strong></td>
-<td>waiting the message which contains the specified text</td>
+<td>wait the message which contains the specified text</td>
 <td>void</td>
 </tr>
 <tr>
 <td><strong>waitNewMessageContainsKey(String key, int maxMsgCount, int sec)</strong></td>
-<td>waiting the message which contains the specified JSON key</td>
+<td>wait the message which contains the specified JSON key</td>
 <td>void</td>
 </tr>
 <tr>
@@ -2712,7 +2710,7 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 </tr>
 </tbody></table>
 
-<p>See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettest/TrelloTest.java" target="_blank">here</a>.</p>
+<p>See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettest/TrelloTest.java" target="_blank">here</a></p>
 <h2 id='soap'>SOAP</h2><h3 id='creating-service-object'>Creating Service Object</h3><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V04_01.asmx"</span><span class="o">)</span>
 <span class="nd">@SOAPNamespace</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">GeoServices</span> <span class="o">{</span>
