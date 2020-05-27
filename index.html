@@ -560,19 +560,18 @@ You just need to use the <em>@QueryParameter</em> annotation in your method or s
 <p>If you need to specify several query parameters, do it with the <em>@QueryParameters</em> annotation.</p>
 
 <p>The same way you can specify headers and cookies. JDI Dark has a special annotation for them as well.</p>
-<h2 id='5-performance-testing-support'>5. Performance testing support</h2><pre class="highlight java tab-java"><code> <span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">simplePerformanceTest</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">PerformanceResult</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">loadService</span><span class="o">(</span><span class="mi">3600</span><span class="o">,</span> <span class="n">getInfo</span><span class="o">);</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Average time: "</span> <span class="o">+</span> <span class="n">pr</span><span class="o">.</span><span class="na">AverageResponseTime</span> <span class="o">+</span> <span class="s">"ms"</span><span class="o">);</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Requests amount: "</span> <span class="o">+</span> <span class="n">pr</span><span class="o">.</span><span class="na">NumberOfRequests</span><span class="o">);</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">pr</span><span class="o">.</span><span class="na">NoFails</span><span class="o">(),</span> <span class="s">"Number of fails: "</span> <span class="o">+</span> <span class="n">pr</span><span class="o">.</span><span class="na">NumberOfFails</span><span class="o">);</span> 
-<span class="o">}</span>
+<h2 id='5-performance-testing-support'>5. Performance testing support</h2><pre class="highlight java tab-java"><code>    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">concurrentTest</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span><span class="o">,</span> <span class="n">ExecutionException</span> <span class="o">{</span>
+        <span class="n">PerformanceResult</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">RestLoad</span><span class="o">.</span><span class="na">loadService</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="n">ServiceExample</span><span class="o">.</span><span class="na">getInfo</span><span class="o">);</span>
+        <span class="n">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">(</span><span class="n">pr</span><span class="o">.</span><span class="na">getNumberOfFails</span><span class="o">()).</span><span class="na">describedAs</span><span class="o">(</span><span class="s">"Fails found"</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="n">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">(</span><span class="n">pr</span><span class="o">.</span><span class="na">getAverageResponseTime</span><span class="o">()).</span><span class="na">describedAs</span><span class="o">(</span><span class="s">"The average response time is greater than expected."</span><span class="o">).</span><span class="na">isLessThan</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+        <span class="n">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">(</span><span class="n">pr</span><span class="o">.</span><span class="na">getMaxResponseTime</span><span class="o">()).</span><span class="na">describedAs</span><span class="o">(</span><span class="s">"The maximum response time is greater than expected."</span><span class="o">).</span><span class="na">isLessThan</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span>
+    <span class="o">}</span>
 </code></pre>
-<p>JDI Dark supports measuring request time.</p>
+<p>JDI Dark supports simple performance testing. There is <em>com.epam.http.performance</em> package available that contains
+several classes and methods for collecting response statistics.</p>
 
-<p>You can call your service multiple times and get verbose results.</p>
-
-<p>You can also load your service and analyse response time.</p>
+<p>You can load your service and get the response time and the number of fails compared to the amount of requests. Just use the <em>loadService()</em> method with the parameters you need.</p>
 <h1 id='tutorial'>Tutorial</h1>
 <p>In this tutorial we’ll take a glance at JDI Dark, a library that simplifies test automation, makes test run results stable, predictable and easy to maintain.</p>
 
@@ -891,14 +890,14 @@ For example, for checking text - <code>public static SoapMethod&lt;CheckTextRequ
 
 <p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/soap/YandexSpellerSOAPTests.java" target="_blank">See a test case example</a>.</p>
 <h2 id='api-testing-framework-structure'>API Testing Framework structure</h2>
-<p>JDI dark consists of next packages:</p>
+<p>JDI Dark includes the packages:</p>
 
 <ul>
-<li>annotations - contain annotations that can be used in project<br></li>
-<li>logger - contain classes which implement JDI DARK logging</li>
-<li>requests - contain classes which implement JDI sending requests, error handling and initialization of service</li>
-<li>response - contain classes which used for working with Rest response</li>
-<li>performance - contain classes which used for perfomance testing</li>
+<li>annotations - annotations that can be used in project to simplify your test development<br></li>
+<li>logger - classes implementing JDI Dark logging</li>
+<li>requests - classes implementing JDI Dark sending requests, error handling and initialization of the services</li>
+<li>response - classes for working with Rest response</li>
+<li>performance - classes for the performance testing</li>
 </ul>
 <h1 id='documentation'>Documentation</h1><h2 id='framework-usage'>Framework usage</h2>
 <p>JDI Dark Framework provides great opportunities for web services testing.<br>
@@ -1014,7 +1013,7 @@ Then, values in your method annotations might be just specific URL paths.</p>
 <td>RestResponse</td>
 </tr>
 <tr>
-<td><strong>callWithNamedParams(String... namedParams)</strong></td>
+<td><strong>callPathParams(String... namedParams)</strong></td>
 <td>send request with named query parameters</td>
 <td>RestResponse</td>
 </tr>
@@ -1086,7 +1085,7 @@ JDI Dark also supports making request calls with <a href="https://jdi-docs.githu
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">canSpecifySpacePathParamsWithoutKey</span><span class="o">(){</span>
-    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span><span class="o">.</span><span class="na">callWithNamedParams</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="s">" "</span><span class="o">);</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span><span class="o">.</span><span class="na">callPathParams</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="s">" "</span><span class="o">);</span>
     <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John"</span><span class="o">)).</span><span class="na">body</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">" "</span><span class="o">));</span>
 <span class="o">}</span>
 
@@ -1104,7 +1103,7 @@ JDI Dark also supports making request calls with <a href="https://jdi-docs.githu
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">statusTestWithQueryInPath</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">statusWithQuery</span><span class="o">.</span><span class="na">callWithNamedParams</span><span class="o">(</span><span class="s">"503"</span><span class="o">,</span> <span class="s">"some"</span><span class="o">);</span>
+    <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">statusWithQuery</span><span class="o">.</span><span class="na">callPathParams</span><span class="o">(</span><span class="s">"503"</span><span class="o">,</span> <span class="s">"some"</span><span class="o">);</span>
     <span class="n">assertEquals</span><span class="o">(</span><span class="n">resp</span><span class="o">.</span><span class="na">status</span><span class="o">.</span><span class="na">code</span><span class="o">,</span> <span class="mi">503</span><span class="o">);</span>
     <span class="n">assertEquals</span><span class="o">(</span><span class="n">resp</span><span class="o">.</span><span class="na">status</span><span class="o">.</span><span class="na">type</span><span class="o">,</span> <span class="n">SERVER_ERROR</span><span class="o">);</span>
     <span class="n">resp</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
@@ -1113,7 +1112,7 @@ JDI Dark also supports making request calls with <a href="https://jdi-docs.githu
 <p>A URL can have one or several path parameters, each denoted with curly braces, e.g. <em>/get/{board_id}</em>, <em>/boards/{board_id}/cards/{short_card_id}/</em>. 
 You can use them in your Service Object methods and replace placeholders with values when making request calls.</p>
 
-<p>Methods allow to send path params to RequestData:</p>
+<p>Methods for sending path params to RequestData:</p>
 
 <table><thead>
 <tr>
@@ -1149,7 +1148,7 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>callWithNamedParams(String... namedParams)</strong></td>
+<td><strong>callPathParams(String... namedParams)</strong></td>
 <td>pass parameters to a path without key</td>
 <td>RestResponse</td>
 </tr>
@@ -1966,11 +1965,11 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
-<p>JDI allows to setup custom behaviour for catching and processing any unexpected responses.</p>
+<p>JDI Dark provides customized catching and processing of any unexpected responses.</p>
 
-<p>For this need inject implementation of ErrorHandler interface into RestMethods through call Service Object init() method.</p>
+<p>To do this just inject the implementation of ErrorHandler interface into RestMethods through call Service Object init() method.</p>
 
-<p>By default JDI uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.</p>
+<p>By default JDI Dark uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.</p>
 <h2 id='logging'>Logging</h2><pre class="highlight java tab-java"><code><span class="kd">private</span> <span class="kd">static</span> <span class="n">JFunc2</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">RequestData</span><span class="o">&gt;,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">LOG_REQUEST_TEMP</span><span class="o">;</span>
 <span class="kd">private</span> <span class="kd">static</span> <span class="n">JAction2</span><span class="o">&lt;</span><span class="n">RestResponse</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">LOG_RESPONSE_TEMP</span><span class="o">;</span>
 
@@ -2009,28 +2008,27 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
 <span class="o">}</span>
 
 </code></pre>
-<p>By default JDI logging is defined in the next variables:</p>
+<p>JDI Dark logging is defined in the variables:</p>
 
-<p><strong>LOG_REQUEST = RestMethod::logRequest</strong> located in package <em>com.epam.http.requests</em>, where logRequest method uses:</p>
+<p><strong>LOG_REQUEST = RestMethod::logRequest</strong> located in the package <em>com.epam.http.requests</em>, logRequest method uses:</p>
 
 <ul>
 <li>ILogger object method info(String msg, Object... args) - for console logging<br></li>
 <li>AllureLogger.startStep(String message, String requestData)  - for allure logging</li>
 </ul>
 
-<p><strong>LOG_RESPONSE = RestResponse::logResponse</strong> located in package <em>com.epam.http.response</em>, where logResponse method uses:</p>
+<p><strong>LOG_RESPONSE = RestResponse::logResponse</strong> located in the package <em>com.epam.http.response</em>, logResponse method uses:</p>
 
 <ul>
 <li>ILogger object method info(String msg, Object... args) - for console logging<br></li>
 <li>AllureLogger.passStep(String responseData, String uuid) - for allure logging<br></li>
 </ul>
 
-<p><strong>Customizing logging</strong> </p>
-
-<p>For customizing logging you should redefine these static variables</p>
+<p><strong>Customized logging</strong> </p>
 
 <ul>
-<li>For customizing logger just for one or several tests -it&#39;s necessary to return logging variable in original state.<br></li>
+<li>For customizing logger just for one or several tests:
+it&#39;s necessary to return logging variable in original state.<br></li>
 <li>If it is used allure logging - don&#39;t forget to include allure logging in the redefining variable.<br></li>
 <li>For customizing allure logging -it&#39;s necessary to redefine it in both variables: LOG_REQUEST and LOG_RESPONSE<br></li>
 </ul>
@@ -2466,19 +2464,26 @@ Set <em>parallel=&quot;classes&quot;</em> to run test <strong>classes</strong> i
 <p><a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/resources/parallelRunningExamples.xml" target="_blank">Parallel suite example</a> </p>
 
 <p>Read more about <a href="https://testng.org/doc/documentation-main.html#parallel-running" target="_blank">TestNG parallel running</a> </p>
-<h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeMSec</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">weightRequests</span><span class="o">)</span>
+<h2 id='performance-testing'>Performance testing</h2><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">int</span> <span class="n">concurrentThreads</span><span class="o">,</span> <span class="kt">long</span> <span class="n">liveTimeInSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">int</span> <span class="n">concurrentThreads</span><span class="o">,</span> <span class="kt">long</span> <span class="n">liveTimeInSec</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">weightRequests</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeInSec</span><span class="o">,</span> <span class="n">RestMethod</span><span class="o">...</span> <span class="n">requests</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">PerformanceResult</span> <span class="nf">loadService</span><span class="o">(</span><span class="kt">long</span> <span class="n">liveTimeInSec</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">RestMethod</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">weightRequests</span><span class="o">)</span>
 </code></pre>
-<p>Simple performance testing is supported by JDI Dark. There is a <em>com.epam.http.performance</em> package available that contains
-several classes and methods for collecting request statistics.</p>
+<p>JDI Dark supports simple performance testing. 
+Use <em>loadService()</em> function to provide the load you need for your performance tests.
+<br/>
+The <em>loadService()</em> parameters:
+- int concurrentThreads - number of threads
+- long liveTimeInSec - test running time
+- RestMethod... requests - rest method or methods
+- Map<RestMethod, Integer> weightRequests - rest methods with weights. The weight affects the share of the particular method in the total number of launches. </p>
 
-<p>You can load your service and get average response time and number of fails compared to amount of requests. Just use the <em>loadService()</em> method with suitable signatures.</p>
+<p>JDI Dark supports measuring of the minimum, maximum, average response time, number of client&#39;s fails, number of server&#39;s fails.  </p>
 <h2 id='reporting'>Reporting</h2>
 <p>If you want to use Allure framework for reporting, JDI Dark has out-of-the-box support for generating attachments for Allure reports.
 Simply install Allure as you would normally do, and those attachments will be automatically added to your reports.</p>
 
-<p>All test execution results are saved to the <strong>base_directory/allure-results</strong> folder.</p>
+<p>All tests execution results are saved to the <strong>base_directory/allure-results</strong> folder.</p>
 
 <p>If you use <code>maven</code>, then you will need to configure the <code>Allure maven plugin</code> to fetch results from a custom folder.</p>
 <pre class="highlight plaintext"><code>&lt;configuration&gt;
@@ -2564,7 +2569,7 @@ In order to restore the initial RestAssured config after test execution, the <co
         <span class="n">RestAssured</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
     <span class="o">}</span>
 </code></pre><h2 id='jdi-dark-bdd-steps'>JDI Dark BDD Steps</h2>
-<p>JDI Dark supports writing tests in BDD style. Create your tests using next steps:</p>
+<p>JDI Dark supports writing tests in BDD style. Create your tests using the following steps:</p>
 <pre class="highlight gherkin tab-gherkin"><code><span class="kd">Feature</span><span class="p">:</span> Request headers check
 
   <span class="kn">Scenario</span><span class="p">:</span> Pass headers and check response
