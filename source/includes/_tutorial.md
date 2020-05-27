@@ -351,13 +351,13 @@ public class YandexSpellerSOAPTests {
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/soap/YandexSpellerSOAPTests.java" target="_blank">See a test case example</a>.
 ## API Testing Framework structure
 
-JDI dark consists of next packages:
+JDI Dark includes the packages:
 
- - annotations - contain annotations that can be used in project    
- - logger - contain classes which implement JDI DARK logging
- - requests - contain classes which implement JDI sending requests, error handling and initialization of service
- - response - contain classes which used for working with Rest response
- - performance - contain classes which used for perfomance testing
+ - annotations - annotations that can be used in project to simplify your test development    
+ - logger - classes implementing JDI Dark logging
+ - requests - classes implementing JDI Dark sending requests, error handling and initialization of the services
+ - response - classes for working with Rest response
+ - performance - classes for the performance testing
 
  
 

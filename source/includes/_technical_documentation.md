@@ -89,7 +89,7 @@ Available methods for sending HTTP request in JDI dark:
 **call(RequestSpecification requestSpecification)**| send request with RequestSpecification | RestResponse
 **call(RestAssuredConfig restAssuredConfig)**| send request with RestAssuredConfig  | RestResponse
 **call(String queryParams)**| send request with query parameters | RestResponse
-**callWithNamedParams(String... namedParams)**| send request with named query parameters | RestResponse
+**callPathParams(String... namedParams)**| send request with named query parameters | RestResponse
 **callAsData(Class<T> c)**| send request and map response to Java object | java object
 **post(Object body)**| send post/put request with body| RestResponse
 **post(Object body, Class<T> c)**| send post/put request with body and parse result to object | java object
@@ -154,7 +154,7 @@ public void supportsPassingPathParamsToRequestSpec(){
 
 @Test
 public void canSpecifySpacePathParamsWithoutKey(){
-    RestResponse response = getUser.callWithNamedParams("John", " ");
+    RestResponse response = getUser.callPathParams("John", " ");
     response.isOk().body("firstName", equalTo("John")).body("lastName", equalTo(" "));
 }
 
@@ -172,7 +172,7 @@ public void urlEncodesPathParamsInMap(){
 
 @Test
 public void statusTestWithQueryInPath() {
-    RestResponse resp = service.statusWithQuery.callWithNamedParams("503", "some");
+    RestResponse resp = service.statusWithQuery.callPathParams("503", "some");
     assertEquals(resp.status.code, 503);
     assertEquals(resp.status.type, SERVER_ERROR);
     resp.isEmpty();
@@ -182,7 +182,7 @@ public void statusTestWithQueryInPath() {
 A URL can have one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. 
 You can use them in your Service Object methods and replace placeholders with values when making request calls.
 
-Methods allow to send path params to RequestData:
+Methods for sending path params to RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
@@ -194,7 +194,7 @@ Methods for passing path params (with/without query params) in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
-**callWithNamedParams(String... namedParams)** | pass parameters to a path without key| RestResponse
+**callPathParams(String... namedParams)** | pass parameters to a path without key| RestResponse
 
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
@@ -924,11 +924,11 @@ public class ErrorHandlerTests {
 }
 ```
 
-JDI allows to setup custom behaviour for catching and processing any unexpected responses.
+JDI Dark provides customized catching and processing of any unexpected responses.
 
-For this need inject implementation of ErrorHandler interface into RestMethods through call Service Object init() method.
+To do this just inject the implementation of ErrorHandler interface into RestMethods through call Service Object init() method.
 
-By default JDI uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.
+By default JDI Dark uses DefaultErrorHandler class for server (5XX) and client(4XX) errors.
 
 ## Logging
 
@@ -972,23 +972,22 @@ public void clearLogger() {
 
 ```
 
-By default JDI logging is defined in the next variables:
+JDI Dark logging is defined in the variables:
  
-**LOG_REQUEST = RestMethod::logRequest** located in package *com.epam.http.requests*, where logRequest method uses:
+**LOG_REQUEST = RestMethod::logRequest** located in the package *com.epam.http.requests*, logRequest method uses:
     
 + ILogger object method info(String msg, Object... args) - for console logging  
 + AllureLogger.startStep(String message, String requestData)  - for allure logging
 
-**LOG_RESPONSE = RestResponse::logResponse** located in package *com.epam.http.response*, where logResponse method uses:
+**LOG_RESPONSE = RestResponse::logResponse** located in the package *com.epam.http.response*, logResponse method uses:
  
 + ILogger object method info(String msg, Object... args) - for console logging  
 + AllureLogger.passStep(String responseData, String uuid) - for allure logging   
 
-**Customizing logging** 
+**Customized logging** 
 
-For customizing logging you should redefine these static variables
-
-+ For customizing logger just for one or several tests -it's necessary to return logging variable in original state.   
++ For customizing logger just for one or several tests:
+ it's necessary to return logging variable in original state.   
 + If it is used allure logging - don't forget to include allure logging in the redefining variable.  
 + For customizing allure logging -it's necessary to redefine it in both variables: LOG_REQUEST and LOG_RESPONSE    
 
@@ -1429,20 +1428,28 @@ Read more about <a href="https://testng.org/doc/documentation-main.html#parallel
     
 ## Performance testing
 ```java
-public static PerformanceResult loadService(long liveTimeSec, RestMethod... requests)
-public static PerformanceResult loadService(RestMethod... requests)
-public static PerformanceResult loadService(long liveTimeMSec, Map<RestMethod, Integer> weightRequests)
+public static PerformanceResult loadService(int concurrentThreads, long liveTimeInSec, RestMethod... requests)
+public static PerformanceResult loadService(int concurrentThreads, long liveTimeInSec, Map<RestMethod, Integer> weightRequests)
+public static PerformanceResult loadService(long liveTimeInSec, RestMethod... requests)
+public static PerformanceResult loadService(long liveTimeInSec, Map<RestMethod, Integer> weightRequests)
 ```
 
-Simple performance testing is supported by JDI Dark. There is a *com.epam.http.performance* package available that contains
-several classes and methods for collecting request statistics.
-
-You can load your service and get average response time and number of fails compared to amount of requests. Just use the *loadService()* method with suitable signatures.
+JDI Dark supports simple performance testing. 
+Use *loadService()* function to provide the load you need for your performance tests.
+<br/>
+The *loadService()* parameters:
+- int concurrentThreads - number of threads
+- long liveTimeInSec - test running time
+- RestMethod... requests - rest method or methods
+- Map<RestMethod, Integer> weightRequests - rest methods with weights. The weight affects the share of the particular method in the total number of launches. 
+ 
+JDI Dark supports measuring of the minimum, maximum, average response time, number of client's fails, number of server's fails.  
+ 
 ## Reporting
 If you want to use Allure framework for reporting, JDI Dark has out-of-the-box support for generating attachments for Allure reports.
 Simply install Allure as you would normally do, and those attachments will be automatically added to your reports.
 
-All test execution results are saved to the __base_directory/allure-results__ folder.
+All tests execution results are saved to the __base_directory/allure-results__ folder.
 
 If you use ```maven```, then you will need to configure the ```Allure maven plugin``` to fetch results from a custom folder.
 
@@ -1546,7 +1553,7 @@ In order to restore the initial RestAssured config after test execution, the ```
 
 ## JDI Dark BDD Steps
 
- JDI Dark supports writing tests in BDD style. Create your tests using next steps:
+ JDI Dark supports writing tests in BDD style. Create your tests using the following steps:
 
 ```gherkin
 Feature: Request headers check

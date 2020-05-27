@@ -96,17 +96,15 @@ The same way you can specify headers and cookies. JDI Dark has a special annotat
 ## 5. Performance testing support
 
 ```java
- @Test
-public void simplePerformanceTest() {
-    PerformanceResult pr = loadService(3600, getInfo);
-    System.out.println("Average time: " + pr.AverageResponseTime + "ms");
-    System.out.println("Requests amount: " + pr.NumberOfRequests);
-    Assert.assertTrue(pr.NoFails(), "Number of fails: " + pr.NumberOfFails); 
-}
+    @Test
+    public void concurrentTest() throws InterruptedException, ExecutionException {
+        PerformanceResult pr = RestLoad.loadService(5, 10, ServiceExample.getInfo);
+        Assertions.assertThat(pr.getNumberOfFails()).describedAs("Fails found").isEqualTo(0);
+        Assertions.assertThat(pr.getAverageResponseTime()).describedAs("The average response time is greater than expected.").isLessThan(1000);
+        Assertions.assertThat(pr.getMaxResponseTime()).describedAs("The maximum response time is greater than expected.").isLessThan(3000);
+    }
 ```
+JDI Dark supports simple performance testing. There is *com.epam.http.performance* package available that contains
+several classes and methods for collecting response statistics.
 
-JDI Dark supports measuring request time.
-
-You can call your service multiple times and get verbose results.
-
-You can also load your service and analyse response time.
+You can load your service and get the response time and the number of fails compared to the amount of requests. Just use the *loadService()* method with the parameters you need.
