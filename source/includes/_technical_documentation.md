@@ -1438,13 +1438,10 @@ Use *loadService()* function to provide the load you need for your performance t
 <br/>
 The *loadService()* parameters:
 <br/>
-   + int concurrentThreads - number of threads 
-   <br/>
-   + long liveTimeInSec - test running time
-   <br/>
-   + RestMethod... requests - rest method or methods
-   <br/>
-   + Map<RestMethod, Integer> weightRequests - rest methods with weights. The weight affects the share of the particular method in the total number of launches. 
++ int concurrentThreads - number of threads 
++ long liveTimeInSec - test running time
++ RestMethod... requests - rest method or methods
++ Map<RestMethod, Integer> weightRequests - rest methods with weights. The weight affects the share of the particular method in the total number of launches. 
  
 JDI Dark supports measuring of the minimum, maximum, average response time, number of client's fails, number of server's fails.  
  
@@ -1452,7 +1449,7 @@ JDI Dark supports measuring of the minimum, maximum, average response time, numb
 If you want to use Allure framework for reporting, JDI Dark has out-of-the-box support for generating attachments for Allure reports.
 Simply install Allure as you would normally do, and those attachments will be automatically added to your reports.
 
-All tests execution results are saved to the __base_directory/allure-results__ folder.
+All tests execution results are in the __base_directory/allure-results__ folder.
 
 If you use ```maven```, then you will need to configure the ```Allure maven plugin``` to fetch results from a custom folder.
 
