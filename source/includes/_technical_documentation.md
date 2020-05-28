@@ -1436,12 +1436,13 @@ public static PerformanceResult loadService(long liveTimeInSec, Map<RestMethod, 
 
 JDI Dark supports simple performance testing. 
 Use *loadService()* function to provide the load you need for your performance tests.
-<br/>
+</br>
 The *loadService()* parameters:
-- int concurrentThreads - number of threads
-- long liveTimeInSec - test running time
-- RestMethod... requests - rest method or methods
-- Map<RestMethod, Integer> weightRequests - rest methods with weights. The weight affects the share of the particular method in the total number of launches. 
+</br>
+   + int concurrentThreads - number of threads
+   + long liveTimeInSec - test running time
+   + RestMethod... requests - rest method or methods
+   + Map<RestMethod, Integer> weightRequests - rest methods with weights. The weight affects the share of the particular method in the total number of launches. 
  
 JDI Dark supports measuring of the minimum, maximum, average response time, number of client's fails, number of server's fails.  
  

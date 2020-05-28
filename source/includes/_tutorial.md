@@ -227,7 +227,7 @@ public class HttpTestsRunner extends AbstractTestNGCucumberTests {
 
 ```
 
-In this example we create tests for simple HTTP Request & Response Service. You can familiarize with API <a href="http://httpbin.org/" target="_blank">here</a>.
+In this example we will create tests for simple HTTP Request & Response Service. You can get acquainted with API <a href="http://httpbin.org/" target="_blank">here</a>.
 
 <br/>
 **1. Create  service class with Rest methods** 
@@ -240,48 +240,48 @@ In this example we create tests for simple HTTP Request & Response Service. You 
 
   - Use annotation @Headers, @Header for specific headers
 
-  - Use annotation @ContentType for specific content-type
+  - Use annotation @ContentType to specify the content-type
   
-  - Use other necessary annotation as described <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object" target="_blank">here</a>.
+  - Use other useful annotation described <a href="https://jdi-docs.github.io/jdi-dark/#tests-with-service-object" target="_blank">here</a>.
 
-<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/main/java/com/epam/jdi/services/ServiceExample.java" target="_blank">See example for Service Object class</a>.   
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/main/java/com/epam/jdi/services/ServiceExample.java" target="_blank">See example of the Service Object class</a>.   
 <br/>
 
 **2. Create feature files**
 
-- Create folder to have all *.feature files in place. Recommended to store in src/test/resources. But can be changed via @CucumberOptions -> ‘feature’ attribute
+- Create a folder to have all *.feature files in place. Recommended to store in src/test/resources. But can be changed via @CucumberOptions -> ‘feature’ attribute
 
-<a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">See examples for feature files</a>.   
+<a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">See examples of the feature files</a>.   
 <br/>
 
-**3. Create TestRunner class (JDI Dark support both TestNG and Junit)**
+**3. Create TestRunner class (JDI Dark supports both TestNG and Junit)**
 
-Specify additional options/custom properties via @CucumberOptions (‘strict’, tags’, ‘plugin’, ‘features’, ‘glue’, ‘format’ are mostly used).
+Specify additional options/custom properties via @CucumberOptions (‘strict’, tags’, ‘plugin’, ‘features’, ‘glue’, ‘format’).
 For more details on @CucumberOptions and configs check cucumber documentation <a href="https://cucumber.io/docs/cucumber/api/" target="_blank">here</a>.   
 <br/>
-Junit TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/CucumberTestRunner.java" target="_blank">here</a>.
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/CucumberTestRunner.java" target="_blank">Junit TestRunner example</a>.
 <br/>
 
-TestNG TestRunner example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/HttpTestsRunner.java" target="_blank">here</a>.  
+<a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/HttpTestsRunner.java" target="_blank">TestNG TestRunner example</a>.  
 <br/>
 
-**4. Create step definitions in java**
+**4. Create step definitions in Java**
 
 - Use pre-created <a href="https://jdi-docs.github.io/jdi-dark/#jdi-dark-bdd-steps" target="_blank">JDI Dark BDD Steps</a>.
 
 Check all pre-created JDI Dark BDD steps <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd/src/main/java/com/epam/jdi/http/stepdefs/en" target="_blank">here</a>.
 
-- Also, you can add your own steps. Create a package for step definitions in java.
+- Also, you can add your own steps. Create a package for step definitions in Java.
 
 Check the example <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/java/com/epam/jdi/httptests/steps/InitService.java" target="_blank">here</a>.
 
-**5. Install plugin for relevant IDEA**
+**5. Install Cucumber plugin for IDEA**
 
-Go File->Settings-->Plugins and double check the plugin installation. Then you can manage cucumber plugin as shown below This should redirect you to step definition when you click your test.
+Go File->Settings-->Plugins. Then add Cucumber plugin. This plugin redirects you to the step definition when clicking the step.
 
 **6. Create scenario description in Gherkin in feature file.**
 
-You can see the various examples of feature files <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.
+You can see the examples of feature files <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.
 
 **7. Run the tests via any available option**
 
@@ -294,7 +294,7 @@ You can see the various examples of feature files <a href="https://github.com/jd
 - IDE plugin for Cucumber
 
 ## 5. JDI Dark and SOAP
-In this example we create tests for SOAP service yandex-speller with WSDL <a href="https://speller.yandex.net/services/spellservice?WSDL" target="_blank">https://speller.yandex.net/services/spellservice?WSDL</a>
+In this example we will create a tests for SOAP service yandex-speller with WSDL <a href="https://speller.yandex.net/services/spellservice?WSDL" target="_blank">https://speller.yandex.net/services/spellservice?WSDL</a>
 
 **1. Generate objects from WSDL** 
 
