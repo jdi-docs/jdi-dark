@@ -1438,10 +1438,13 @@ Use *loadService()* function to provide the load you need for your performance t
 <br/>
 The *loadService()* parameters:
 <br/>
-+ int concurrentThreads - number of threads 
-+ long liveTimeInSec - test running time
-+ RestMethod... requests - rest method or methods
-+ Map<RestMethod, Integer> weightRequests - rest methods with weights. The weight affects the share of the particular method in the total number of launches. 
+- int concurrentThreads - number of threads 
+<br/>
+- long liveTimeInSec - test running time
+<br/>
+- RestMethod... requests - rest method or methods
+<br/>
+- Map<RestMethod, Integer> weightRequests - rest methods with weights. The weight affects the share of the particular method in the total number of launches. 
  
 JDI Dark supports measuring of the minimum, maximum, average response time, number of client's fails, number of server's fails.  
  
