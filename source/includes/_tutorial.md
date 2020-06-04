@@ -20,7 +20,7 @@ In this tutorial we’ll take a glance at JDI Dark, a library that simplifies te
 First, you need to add JDI Dark to the dependency section of your pom.xml file.
 The latest version can be found in <a href="https://search.maven.org/classic/#search%7Cga%7C1%7Cjdi-dark" target="_blank">the Maven Central Repository</a>.
 ###Configuration
-For configuration of the project create **test.properties file** on path **src/test/resources**.
+Create **test.properties file** on path **src/test/resources** to configure the project.
 
 Add domain and log.level into the properties file.
 

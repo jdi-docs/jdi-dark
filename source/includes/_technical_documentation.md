@@ -79,25 +79,29 @@ For describing HTTP method use RestMethod class with appropriate annotation in S
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/main/java/com/epam/jdi/services/JettyService.java" target="_blank">Test example in Java</a>
 
 
-Available methods for sending HTTP request in JDI dark: 
+Available methods for sending HTTP requests in JDI Dark: 
 
 |Method | Description | Return Type
 --- | --- | ---
-**call(RequestData requestData)**| send request with Request Data parameters | RestResponse
-**call(JAction1<RequestData> action)**| send request with Request Data parameters | RestResponse
 **call()**| send request | RestResponse
+**call(JAction1<RequestData> action)**| send request with Request Data parameters | RestResponse
+**call(RequestData requestData)**| send request with Request Data parameters | RestResponse
 **call(RequestSpecification requestSpecification)**| send request with RequestSpecification | RestResponse
+**callBasedOnSpec(RequestSpecification requestSpecification)**| send request with RequestSpecification | RestResponse
 **call(RestAssuredConfig restAssuredConfig)**| send request with RestAssuredConfig  | RestResponse
-**call(String queryParams)**| send request with query parameters | RestResponse
-**callPathParams(String... namedParams)**| send request with named query parameters | RestResponse
 **callAsData(Class<T> c)**| send request and map response to Java object | java object
+**callAsData()**| send request | java object
+**queryParams(String queryParams)**| send request with query parameters | RestMethod
+**pathParams(Object... pathParams)**| send request with named query parameters | RestResponse
+**body(Object body)**| send HTTP request with body| RestMethod
+**data(RequestData requestData)**| Send HTTP request with invoked request data| RestMethod
 **post(Object body)**| send post/put request with body| RestResponse
 **post(Object body, Class<T> c)**| send post/put request with body and parse result to object | java object
+**postAsData(Object object)**| send post/put request with body| java object
 
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples" target="_blank">Test examples in Java</a>
 <br>
-
 
 ## Request Data
 You might need to use specific request data in your requests. *Cookies*, *headers*, *query parameters* and *Content-type* are available in annotated form.
@@ -116,17 +120,18 @@ public static RequestData requestData(JAction1<RequestData> valueFunc)
 Request body can be set when making a request call. Just pass it as argument to the *call()* method or within the RequestData object 
 with the following fields:
 
- - String url
+ - String uri
  - String path
  - Object body
  - String contentType
  - Headers headers
+ - Cookies cookies
  - MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#path-parameters">pathParams</a>
  - MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#query-parameters">queryParams</a> 
  - MultiMap<String, String> <a href="https://jdi-docs.github.io/jdi-dark/#form-parameters">formParams</a> 
- - Cookies cookies
- - ArrayList<MultiPartSpecification> <a href="https://jdi-docs.github.io/jdi-dark/#multipart-parameters">multiPartSpecifications</a> 
- - ProxySpecification <a href="https://jdi-docs.github.io/jdi-dark/#proxy">proxySpecification</a> 
+ - ArrayList <a href="https://jdi-docs.github.io/jdi-dark/#multipart-parameters">multiPartSpec</a> 
+ - ProxySpecification <a href="https://jdi-docs.github.io/jdi-dark/#proxy">proxySpec</a> 
+ - ArrayList<Filter> filters
 
 All of these fields can be set/updated from the *call()* method as well.
 
@@ -154,8 +159,8 @@ public void supportsPassingPathParamsToRequestSpec(){
 
 @Test
 public void canSpecifySpacePathParamsWithoutKey(){
-    RestResponse response = getUser.callPathParams("John", " ");
-    response.isOk().body("firstName", equalTo("John")).body("lastName", equalTo(" "));
+     RestResponse response = getUser.pathParams("John", " ").call();
+         response.isOk().body("firstName", equalTo("John")).body("lastName", equalTo(" "));
 }
 
 @Test
@@ -172,7 +177,7 @@ public void urlEncodesPathParamsInMap(){
 
 @Test
 public void statusTestWithQueryInPath() {
-    RestResponse resp = service.statusWithQuery.callPathParams("503", "some");
+    RestResponse resp = service.statusWithQuery.pathParams("503", "some").call();
     assertEquals(resp.status.code, 503);
     assertEquals(resp.status.type, SERVER_ERROR);
     resp.isEmpty();
@@ -194,13 +199,11 @@ Methods for passing path params (with/without query params) in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
-**callPathParams(String... namedParams)** | pass parameters to a path without key| RestResponse
+**pathParams(Object... pathParams)** | pass parameters to a path without key| RestMethod
 
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
-<br />
-<br />
 <br />
 <br />
 <br />
@@ -276,7 +279,6 @@ The method allows to send specific query parameters in URL in RestMethod:
 <br />
 <br />
 <br />
-<br />
 
 ### Form parameters
 
@@ -311,7 +313,7 @@ public static RestMethod postMultiPartFile;
 public void multiPartByteArrays() throws Exception {
     final byte[] bytes = IOUtils.toByteArray(getClass()
 .getResourceAsStream("/car-records.xsd"));
-    JettyService.postMultiPartFile.withMultiPartContent(bytes).call().assertThat()
+    JettyService.postMultiPartFile.multipart(bytes).call().assertThat()
                 .statusCode(200).body(is(new String(bytes)));
     }
 
@@ -1254,7 +1256,7 @@ There is method to add proxy parameters to Request Data. JDI Dark also supports 
 
 |Method | Description | Return Type
 --- | --- | ---
-**setProxySpecification(String scheme, String host, int port)** | set proxy parameters to request data | 
+**setProxySpec(String scheme, String host, int port)** | set proxy parameters to request data | 
 
 ```java
 @GET("/greetJSON")
@@ -1266,7 +1268,7 @@ public void usingProxyWithSetProxySpecification() {
     params.put("firstName", "John");
     params.put("lastName", "Doe");
     JettyService.getGreenJSON.call(RequestData.requestData(rd -> {
-        rd.setProxySpecification("http", "localhost", 8888);
+        rd.setProxySpec("http", "localhost", 8888);
         rd.queryParams.addAll(params);
     })).isOk().assertThat().
             body("greeting.firstName", equalTo("John")).
@@ -1275,15 +1277,15 @@ public void usingProxyWithSetProxySpecification() {
 
 @Test
 public void usingProxySpecification() {
-    final Map<String, String> params = new HashMap<>();
-    params.put("firstName", "John");
-    params.put("lastName", "Doe");
-    JettyService.getGreenJSON.call(RequestData.requestData(rd -> {
-        rd.queryParams.addAll(params);
-        rd.proxySpecification = ProxySpecification.host("localhost");
-    })).isOk().assertThat().
-            body("greeting.firstName", equalTo("John")).
-            body("greeting.lastName", equalTo("Doe"));
+       final Map<String, String> params = new HashMap<>();
+        params.put("firstName", "John");
+        params.put("lastName", "Doe");
+        JettyService.getGreenJSON.call(rd -> {
+            rd.queryParamsUpdater().addAll(params);
+            rd.setProxySpec(ProxySpecification.host("localhost"));
+        }).isOk().assertThat().
+                body("greeting.firstName", equalTo("John")).
+                body("greeting.lastName", equalTo("Doe"));
 }
 ```
 
@@ -1297,50 +1299,27 @@ public void basicAuthTest() {
         RestResponse resp = postmanAuthBasic.call(auth(basicAuth));
         assertEquals(resp.status.code, HttpStatus.SC_OK);
     }
-```
 
-Authentication is performed using AuthenticationScheme interface. Many authentication methods are supported in 
-RestAssured, so the following methods are already implemented: Basic, Digest, NTLM, OAuth1, OAuth2, Form, Certificate
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-
-```java
-public class customAuthScheme implements AuthenticationScheme {
-
-    private String customAuthKey;
-
-    public void setCustomAuthKey(String customAuthKey) {
-        this.customAuthKey = customAuthKey;
-    }
+public class OauthCustomAuthScheme extends DataClass<OauthCustomAuthScheme> implements AuthenticationScheme {
+    public String consumerKey, signatureMethod, timestamp, nonce, version, signature;
 
     @Override
     public void authenticate(HTTPBuilder httpBuilder) {
         httpBuilder.getClient().addRequestInterceptor(
                 (request, context) ->
-                        request.addHeader("Authorization", this.customAuthKey));
+                        request.addHeader("Authorization", "OAuth oauth_consumer_key="+ consumerKey 
+                +",oauth_signature_method="
+                + signatureMethod +",oauth_timestamp="
+                + timestamp +",oauth_nonce="+ nonce +",oauth_version="
+                + version +",oauth_signature="+ signature));
     }
 }
 ```
-In order to create a custom authentication scheme one have to implement AuthenticationScheme interface, realising authenticate() method.
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
+Perform authentication using AuthenticationScheme interface. The following authentication methods have been implemented: 
+Basic, Digest, NTLM, OAuth1, OAuth2, Form, Certificate.
+<br/>
+<br/>
+In order to create a custom authentication scheme implement AuthenticationScheme interface realising authenticate() method.
 </br>
 
 ```java
@@ -1349,20 +1328,12 @@ public void before() {
     BasicAuthScheme authScheme = new BasicAuthScheme();
     authScheme.setUserName("postman");
     authScheme.setPassword("password");
-    init(AuthorizationPostman.class, ServiceSettings.builder().authenticationScheme(authScheme).build());
+    init(AuthorizationPostman.class, authScheme);
     }
 ```
-Authentication can be instantiated on service level. To do so authentication scheme should be passed to service settings at service init.
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-
-If new authentication is also passed on test level, service level authentication will be overrode.
+Authentication can be instantiated on service level. To do so just put your authentication scheme into the service's init() function.
+<br/>
+If you put your authentication scheme on the test level, the service level authentication will be overwritten.
 
 
 ## Parallel running
