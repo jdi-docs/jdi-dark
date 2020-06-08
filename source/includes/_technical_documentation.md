@@ -38,11 +38,10 @@ public static RestMethod putCookie;
 
 @Test
 public void formParamsAcceptsIntArgumentsJDI() {
-    Object[][] queryPramsArray = new Object[][]{{"firstName", 1234}, {"lastName", 5678}};
-
-    JettyService.greetPost(queryPramsArray)
-                .isOk()
-                .body("greeting", equalTo("Greetings 1234 5678"));
+        RestResponse response = greetPost
+                .call(formParams()
+                        .addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+        response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
     }
 
 @Test
@@ -113,11 +112,11 @@ It is also possible to specify request data when making a request call.
 ### Request body
 
 ```java
-public static RequestData requestBody(String body)
+public static RequestData body(Object body)
 public static RequestData requestData(JAction1<RequestData> valueFunc)
  ```
  
-Request body can be set when making a request call. Just pass it as argument to the *call()* method or within the RequestData object 
+Request body can be set when making a call request. Just pass your request body as an argument to the *call()* method or within the RequestData object 
 with the following fields:
 
  - String uri
@@ -150,27 +149,26 @@ JDI Dark also supports making request calls with <a href="https://jdi-docs.githu
 public static RestMethod getUser;
 
 @Test
-public void supportsPassingPathParamsToRequestSpec(){
-    RestResponse response = getUser
-            .call(pathParams().addAll(new Object[][]{{"firstName", "John"}, 
-{"lastName", "Doe"}}));
+public void supportsPassingPathParamsToRequestSpec() {
+    Object[][] pathParams = new Object[][]{{"firstName", "John"}, {"lastName", "Doe"}};
+    RestResponse response = getUser.call(pathParams().addAll(pathParams));
     response.isOk().body("fullName", equalTo("John Doe"));
 }
 
 @Test
 public void canSpecifySpacePathParamsWithoutKey(){
-     RestResponse response = getUser.pathParams("John", " ").call();
-         response.isOk().body("firstName", equalTo("John")).body("lastName", equalTo(" "));
+  RestResponse response = getUser.pathParams("John", " ").call();
+  response.isOk().body("firstName", equalTo("John")).body("lastName", equalTo(" "));
 }
 
 @Test
 public void urlEncodesPathParamsInMap(){
-    final Map<String, String> params = new HashMap<>();
-    params.put("firstName", "John: å");
-    params.put("lastName", "Doe");
-    RestResponse response = getUser
-            .call(pathParams().addAll(params));
-    response.isOk().body("fullName", equalTo("John: å Doe"));
+  final Map<String, String> params = new HashMap<>();
+  params.put("firstName", "John: å");
+  params.put("lastName", "Doe");
+  RestResponse response = getUser
+          .call(pathParams().addAll(params));
+  response.isOk().body("fullName", equalTo("John: å Doe"));
 }
 
 @GET("/status/{status}?q={value}") RestMethod statusWithQuery;
@@ -184,10 +182,10 @@ public void statusTestWithQueryInPath() {
 }
 ```
 
-A URL can have one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. 
-You can use them in your Service Object methods and replace placeholders with values when making request calls.
+A URL can contain one or several path parameters, each denoted with curly braces, e.g. */get/{board_id}*, */boards/{board_id}/cards/{short_card_id}/*. 
+You can use them in your Service Object methods and replace placeholders with values in request calls.
 
-Methods for sending path params to RequestData:
+Methods for sending path parameters to RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
@@ -195,11 +193,13 @@ Methods for sending path params to RequestData:
 **pathParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
 **pathParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
 
-Methods for passing path params (with/without query params) in RestMethod:
+Class **SpecUpdater** contains all variants of path parameters supported by pathParams().
+
+Methods for passing path parameters (with/without query params) in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
-**pathParams(Object... pathParams)** | pass parameters to a path without key| RestMethod
+**pathParams(Object... pathParams)**| pass parameters to a path | RestMethod
 
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
@@ -209,7 +209,6 @@ Methods for passing path params (with/without query params) in RestMethod:
 <br />
 
 ### Query parameters
-
 ```java
 @POST("/greet")
 public static RestMethod greetPost;
@@ -219,9 +218,10 @@ public void whenLastParamInGetRequestEndsWithEqualItsTreatedAsANoValueParam() {
   Map<String, String> queryParamsMap = new HashMap<>();
   queryParamsMap.put(FIRST_NAME, FIRST_NAME_VALUE);
   queryParamsMap.put(LAST_NAME, StringUtils.EMPTY);
-  
-  JettyService.getGreet.call(queryParams().addAll(queryParamsMap)).isOk()
-.assertThat().body("greeting", equalTo("Greetings John "));
+  JettyService.getGreet.call(rd -> rd.queryParams.addAll(queryParamsMap))
+                .isOk()
+                .assertThat()
+                .body("greeting", equalTo("Greetings John "));
 }
 
 @DELETE("/greet")
@@ -230,52 +230,46 @@ public static RestMethod deleteGreet;
 @Test
 public void bodyHamcrestMatcherWithOutKey() {
     deleteGreet.call(queryParams().addAll(
-            new Object[][]{{FIRST_NAME, FIRST_NAME_VALUE},
-                    {LAST_NAME, LAST_NAME_VALUE}
-            })).isOk().assertThat()
-.body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
+          new Object[][]{{FIRST_NAME, FIRST_NAME_VALUE},
+                    {LAST_NAME, LAST_NAME_VALUE}}))
+          .isOk().assertThat()
+          .body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
+
+@GET("/noValueParam")
+public static RestMethod getNoValueParam;
+
+@Test
+public void singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
+  JettyService.getNoValueParam.queryParams("some").call()
+            .isOk()
+            .assertThat()
+            .body(is("Params: some="));
+}
 }
 ```
-
-Methods allow to send query params to RequestData:
+Methods for sending query parameters to RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
 **queryParams().add(paramName, paramValue)** | pass one parameter to a path | RequestData
 **queryParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
 **queryParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 
-### Simplified Query parameters
-```java
-@GET("/noValueParam")
-public static RestMethod getNoValueParam;
-
-@Test
-public void singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
-    JettyService.getNoValueParam.call("some")
-            .isOk().assertThat().body(is("Params: some="));
-}
-
-@Test
-public void mixingStartingNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
-    JettyService.getNoValueParam.call("some1&some2=one")
-            .isOk().assertThat().body(is("Params: some1=some2=one"));
-}
-```
-The method allows to send specific query parameters in URL in RestMethod:
+The method allows sending of specific query parameters in URL in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
-**call(String queryParams)** | pass query parameters | RestResponse
-<br>
+**queryParams(String queryParams)** | pass query parameters | RestMethod
+
+Class **SpecUpdater** contains all variants of parameters supported by queryParams().
+<br />
+If you need to add both path parameter and query parameter to your request, use pathParams(Object... pathParams).
+<br />
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
-<br>  
+<br> 
+<br />
+<br />
+<br /> 
 <br />
 <br />
 <br />
@@ -288,19 +282,21 @@ public static RestMethod greetPost;
 
 @Test
 public void formParamsAcceptsIntArgumentsJDI() {
-    RestResponse response = greetPost
+RestResponse response = greetPost
             .call(formParams()
-.addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
-    response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
+            .addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
 }
 ```
-Methods allow to send form params to RequestData:
+Methods for sending form params to RequestData:
 
 |Method | Description | Return Type
 --- | --- | ---
 **formParams().add(paramName, paramValue)** | pass one form parameter to a path | RequestData
 **formParams().addAll(Object[][] array2D)** | pass multiple parameters to a path | RequestData
 **formParams().addAll(Map map)** | pass multiple parameters to a path | RequestData
+
+Class **SpecUpdater** contains all variants of parameters supported by formParams().
 
 ### Multipart parameters
 
@@ -332,16 +328,16 @@ public void multiPartUploadingWorksForFormParamsAndByteArray() {
             .body(containsString("formParam1 -> WrappedArray()"));
 }
 ```
-Methods allow to set multipart parameters to request data:
+Methods for sending multipart parameters to request data:
 
 |Method | Description | Return Type
 --- | --- | ---
 **setMultiPart(MultiPartSpecBuilder multiPartSpecBuilder)** | set multipart parameters | RequestData
 
-*MultiPartSpecBuilder* - class for creating advanced multi-part requests
-<br>
+Use *MultiPartSpecBuilder* class for creating advanced multi-part requests.
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a>  
+<br>  
 <br>  
 <br>  
 <br>  
@@ -360,17 +356,17 @@ public void charsetIsReallyDefined() {
     Map<String, String> formParamsMap = new HashMap<>();
     formParamsMap.put("firstName", "Some & firstname");
     formParamsMap.put("lastName", "<lastname>");
-
-    RestResponse resp = greetPost.call(requestData(rd -> {
-        rd.contentType = "application/x-www-form-urlencoded; charset=ISO-8859-1";
-        rd.formParams.addAll(formParamsMap);
-    }));
-    resp.isOk().assertThat()
-       .body("greeting", equalTo("Greetings Some & firstname <lastname>"));
+    RestResponse resp = greetPost.call(rd -> {
+          rd.setContentType("application/x-www-form-urlencoded; charset=ISO-8859-1");
+          rd.formParams.addAll(formParamsMap);
+    });
+    resp.isOk()
+         .assertThat()
+         .body("greeting", equalTo("Greetings Some & firstname <lastname>"));
 }
 ```
 
-The method allows to send the request with invoked request data in RestMethod:
+Method for sending requests with invoked request data in RestMethod:
 
 |Method | Description | Return Type
 --- | --- | ---
@@ -392,15 +388,13 @@ public static RestMethod getJsonStore;
 
 @Test
 public void supportsConfiguringJsonConfigProperties() {
-    RequestSpecification rs = getJsonStore.getInitSpec()
-            .config(RestAssuredConfig.newConfig()
-            .jsonConfig(JsonConfig.jsonConfig()
-            .numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL)));
-    RestResponse resp = getJsonStore.call(rs);
-    resp.isOk()
-            .rootPath("store.book")
-            .body("price.min()", is(new BigDecimal("8.95")))
-            .body("price.max()", is(new BigDecimal("22.99")));
+  RestResponse resp = getJsonStore.call(RestAssuredConfig.newConfig().
+           jsonConfig(JsonConfig.jsonConfig().
+                   numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL)));
+  resp.isOk()
+           .rootPath("store.book")
+           .body("price.min()", is(new BigDecimal("8.95")))
+           .body("price.max()", is(new BigDecimal("22.99")));
 }
 ```
 
@@ -409,7 +403,7 @@ You can set RequestSpecification for your request. Get RestAssured RequestSpecif
 |Method | Description | Return Type
 --- | --- | ---
 **getInitSpec()** | get RestAssured RequestSpecification | RequestSpecification 
-**call(RequestSpecification spec)** | make request with RequestSpecification | RestResponse 
+**call(RequestSpecification requestSpecification)** | make request with RequestSpecification | RestResponse 
 
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/customsettings/ConfigITests.java" target="_blank">Test examples in Java</a>
