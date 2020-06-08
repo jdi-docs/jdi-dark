@@ -310,9 +310,6 @@
                                 <a href="#query-parameters" class="toc-h2 h3 toc-link" data-title="Query parameters">Query parameters</a>
                               </li>
                               <li>
-                                <a href="#simplified-query-parameters" class="toc-h2 h3 toc-link" data-title="Simplified Query parameters">Simplified Query parameters</a>
-                              </li>
-                              <li>
                                 <a href="#form-parameters" class="toc-h2 h3 toc-link" data-title="Form parameters">Form parameters</a>
                               </li>
                               <li>
@@ -934,11 +931,10 @@ Then, values in your method annotations might be just specific URL paths.</p>
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">Object</span><span class="o">[][]</span> <span class="n">queryPramsArray</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}};</span>
-
-    <span class="n">JettyService</span><span class="o">.</span><span class="na">greetPost</span><span class="o">(</span><span class="n">queryPramsArray</span><span class="o">)</span>
-                <span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
-                <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
+        <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
+                <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">formParams</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
+        <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
     <span class="o">}</span>
 
 <span class="nd">@Test</span>
@@ -1069,10 +1065,10 @@ Therefore, you can specify them in your Service Object class providing name and 
 <p>There is a class called <em>com.epam.http.requests.RequestData</em> which represents the data sent along with your request.</p>
 
 <p>It is also possible to specify request data when making a request call.</p>
-<h3 id='request-body'>Request body</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">requestBody</span><span class="o">(</span><span class="n">String</span> <span class="n">body</span><span class="o">)</span>
+<h3 id='request-body'>Request body</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">body</span><span class="o">(</span><span class="n">Object</span> <span class="n">body</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RequestData</span> <span class="nf">requestData</span><span class="o">(</span><span class="n">JAction1</span><span class="o">&lt;</span><span class="n">RequestData</span><span class="o">&gt;</span> <span class="n">valueFunc</span><span class="o">)</span>
 </code></pre>
-<p>Request body can be set when making a request call. Just pass it as argument to the <em>call()</em> method or within the RequestData object 
+<p>Request body can be set when making a call request. Just pass your request body as an argument to the <em>call()</em> method or within the RequestData object 
 with the following fields:</p>
 
 <ul>
@@ -1102,27 +1098,26 @@ JDI Dark also supports making request calls with <a href="https://jdi-docs.githu
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getUser</span><span class="o">;</span>
 
 <span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">supportsPassingPathParamsToRequestSpec</span><span class="o">(){</span>
-    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span>
-            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">pathParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">},</span> 
-<span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">}}));</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">supportsPassingPathParamsToRequestSpec</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Object</span><span class="o">[][]</span> <span class="n">pathParams</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">}};</span>
+    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">pathParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">pathParams</span><span class="o">));</span>
     <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"fullName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John Doe"</span><span class="o">));</span>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">canSpecifySpacePathParamsWithoutKey</span><span class="o">(){</span>
-     <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span><span class="o">.</span><span class="na">pathParams</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="s">" "</span><span class="o">).</span><span class="na">call</span><span class="o">();</span>
-         <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John"</span><span class="o">)).</span><span class="na">body</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">" "</span><span class="o">));</span>
+  <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span><span class="o">.</span><span class="na">pathParams</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="s">" "</span><span class="o">).</span><span class="na">call</span><span class="o">();</span>
+  <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John"</span><span class="o">)).</span><span class="na">body</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">" "</span><span class="o">));</span>
 <span class="o">}</span>
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">urlEncodesPathParamsInMap</span><span class="o">(){</span>
-    <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
-    <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"John: å"</span><span class="o">);</span>
-    <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">);</span>
-    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span>
-            <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">pathParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">params</span><span class="o">));</span>
-    <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"fullName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John: å Doe"</span><span class="o">));</span>
+  <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+  <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"John: å"</span><span class="o">);</span>
+  <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">);</span>
+  <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getUser</span>
+          <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">pathParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">params</span><span class="o">));</span>
+  <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"fullName"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"John: å Doe"</span><span class="o">));</span>
 <span class="o">}</span>
 
 <span class="nd">@GET</span><span class="o">(</span><span class="s">"/status/{status}?q={value}"</span><span class="o">)</span> <span class="n">RestMethod</span> <span class="n">statusWithQuery</span><span class="o">;</span>
@@ -1135,10 +1130,10 @@ JDI Dark also supports making request calls with <a href="https://jdi-docs.githu
     <span class="n">resp</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
 <span class="o">}</span>
 </code></pre>
-<p>A URL can have one or several path parameters, each denoted with curly braces, e.g. <em>/get/{board_id}</em>, <em>/boards/{board_id}/cards/{short_card_id}/</em>. 
-You can use them in your Service Object methods and replace placeholders with values when making request calls.</p>
+<p>A URL can contain one or several path parameters, each denoted with curly braces, e.g. <em>/get/{board_id}</em>, <em>/boards/{board_id}/cards/{short_card_id}/</em>. 
+You can use them in your Service Object methods and replace placeholders with values in request calls.</p>
 
-<p>Methods for sending path params to RequestData:</p>
+<p>Methods for sending path parameters to RequestData:</p>
 
 <table><thead>
 <tr>
@@ -1164,7 +1159,9 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </tbody></table>
 
-<p>Methods for passing path params (with/without query params) in RestMethod:</p>
+<p>Class <strong>SpecUpdater</strong> contains all variants of path parameters supported by pathParams().</p>
+
+<p>Methods for passing path parameters (with/without query params) in RestMethod:</p>
 
 <table><thead>
 <tr>
@@ -1175,7 +1172,7 @@ You can use them in your Service Object methods and replace placeholders with va
 </thead><tbody>
 <tr>
 <td><strong>pathParams(Object... pathParams)</strong></td>
-<td>pass parameters to a path without key</td>
+<td>pass parameters to a path</td>
 <td>RestMethod</td>
 </tr>
 </tbody></table>
@@ -1194,9 +1191,10 @@ You can use them in your Service Object methods and replace placeholders with va
   <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">queryParamsMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
   <span class="n">queryParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">FIRST_NAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">);</span>
   <span class="n">queryParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="n">StringUtils</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">);</span>
-
-  <span class="n">JettyService</span><span class="o">.</span><span class="na">getGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">queryParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">queryParamsMap</span><span class="o">)).</span><span class="na">isOk</span><span class="o">()</span>
-<span class="o">.</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings John "</span><span class="o">));</span>
+  <span class="n">JettyService</span><span class="o">.</span><span class="na">getGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">rd</span> <span class="o">-&gt;</span> <span class="n">rd</span><span class="o">.</span><span class="na">queryParams</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">queryParamsMap</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">assertThat</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings John "</span><span class="o">));</span>
 <span class="o">}</span>
 
 <span class="nd">@DELETE</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
@@ -1205,13 +1203,24 @@ You can use them in your Service Object methods and replace placeholders with va
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">bodyHamcrestMatcherWithOutKey</span><span class="o">()</span> <span class="o">{</span>
     <span class="n">deleteGreet</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">queryParams</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span>
-            <span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="n">FIRST_NAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">},</span>
-                    <span class="o">{</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="n">LAST_NAME_VALUE</span><span class="o">}</span>
-            <span class="o">})).</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">()</span>
-<span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="n">equalTo</span><span class="o">(</span><span class="s">"{\"greeting\":\"Greetings John Doe\"}"</span><span class="o">));</span>
+          <span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="n">FIRST_NAME</span><span class="o">,</span> <span class="n">FIRST_NAME_VALUE</span><span class="o">},</span>
+                    <span class="o">{</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="n">LAST_NAME_VALUE</span><span class="o">}}))</span>
+          <span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">()</span>
+          <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="n">equalTo</span><span class="o">(</span><span class="s">"{\"greeting\":\"Greetings John Doe\"}"</span><span class="o">));</span>
+
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/noValueParam"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getNoValueParam</span><span class="o">;</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">JettyService</span><span class="o">.</span><span class="na">getNoValueParam</span><span class="o">.</span><span class="na">queryParams</span><span class="o">(</span><span class="s">"some"</span><span class="o">).</span><span class="na">call</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">assertThat</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="s">"Params: some="</span><span class="o">));</span>
+<span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
-<p>Methods allow to send query params to RequestData:</p>
+<p>Methods for sending query parameters to RequestData:</p>
 
 <table><thead>
 <tr>
@@ -1237,28 +1246,7 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </tbody></table>
 
-<p><br />
-<br />
-<br />
-<br />
-<br />
-<br /></p>
-<h3 id='simplified-query-parameters'>Simplified Query parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@GET</span><span class="o">(</span><span class="s">"/noValueParam"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getNoValueParam</span><span class="o">;</span>
-
-<span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">JettyService</span><span class="o">.</span><span class="na">getNoValueParam</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="s">"some"</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="s">"Params: some="</span><span class="o">));</span>
-<span class="o">}</span>
-
-<span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">mixingStartingNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">JettyService</span><span class="o">.</span><span class="na">getNoValueParam</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="s">"some1&amp;some2=one"</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="s">"Params: some1=some2=one"</span><span class="o">));</span>
-<span class="o">}</span>
-</code></pre>
-<p>The method allows to send specific query parameters in URL in RestMethod:</p>
+<p>The method allows sending of specific query parameters in URL in RestMethod:</p>
 
 <table><thead>
 <tr>
@@ -1268,15 +1256,21 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>call(String queryParams)</strong></td>
+<td><strong>queryParams(String queryParams)</strong></td>
 <td>pass query parameters</td>
-<td>RestResponse</td>
+<td>RestMethod</td>
 </tr>
 </tbody></table>
 
-<p><br>
+<p>Class <strong>SpecUpdater</strong> contains all variants of parameters supported by queryParams().
+<br />
+If you need to add both path parameter and query parameter to your request, use pathParams(Object... pathParams).
+<br />
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
-<br><br>
+<br> 
+<br />
+<br />
+<br /> 
 <br />
 <br />
 <br /></p>
@@ -1285,13 +1279,13 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">formParamsAcceptsIntArgumentsJDI</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
+<span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">greetPost</span>
             <span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">formParams</span><span class="o">()</span>
-<span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
-    <span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
+            <span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]{{</span><span class="s">"firstName"</span><span class="o">,</span> <span class="mi">1234</span><span class="o">},</span> <span class="o">{</span><span class="s">"lastName"</span><span class="o">,</span> <span class="mi">5678</span><span class="o">}}));</span>
+<span class="n">response</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings 1234 5678"</span><span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
-<p>Methods allow to send form params to RequestData:</p>
+<p>Methods for sending form params to RequestData:</p>
 
 <table><thead>
 <tr>
@@ -1316,6 +1310,8 @@ You can use them in your Service Object methods and replace placeholders with va
 <td>RequestData</td>
 </tr>
 </tbody></table>
+
+<p>Class <strong>SpecUpdater</strong> contains all variants of parameters supported by formParams().</p>
 <h3 id='multipart-parameters'>Multipart parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@POST</span><span class="o">(</span><span class="s">"/multipart/file"</span><span class="o">)</span>
 <span class="nd">@MultiPart</span><span class="o">(</span><span class="n">controlName</span> <span class="o">=</span> <span class="s">"file"</span><span class="o">,</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"myFile"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">postMultiPartFile</span><span class="o">;</span>
@@ -1343,7 +1339,7 @@ You can use them in your Service Object methods and replace placeholders with va
             <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="n">containsString</span><span class="o">(</span><span class="s">"formParam1 -&gt; WrappedArray()"</span><span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
-<p>Methods allow to set multipart parameters to request data:</p>
+<p>Methods for sending multipart parameters to request data:</p>
 
 <table><thead>
 <tr>
@@ -1359,10 +1355,10 @@ You can use them in your Service Object methods and replace placeholders with va
 </tr>
 </tbody></table>
 
-<p><em>MultiPartSpecBuilder</em> - class for creating advanced multi-part requests
-<br>
+<p>Use <em>MultiPartSpecBuilder</em> class for creating advanced multi-part requests.
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a><br>
+<br><br>
 <br><br>
 <br><br>
 <br><br>
@@ -1377,16 +1373,16 @@ You can use them in your Service Object methods and replace placeholders with va
     <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">formParamsMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
     <span class="n">formParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"firstName"</span><span class="o">,</span> <span class="s">"Some &amp; firstname"</span><span class="o">);</span>
     <span class="n">formParamsMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"lastName"</span><span class="o">,</span> <span class="s">"&lt;lastname&gt;"</span><span class="o">);</span>
-
-    <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">greetPost</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">requestData</span><span class="o">(</span><span class="n">rd</span> <span class="o">-&gt;</span> <span class="o">{</span>
-        <span class="n">rd</span><span class="o">.</span><span class="na">contentType</span> <span class="o">=</span> <span class="s">"application/x-www-form-urlencoded; charset=ISO-8859-1"</span><span class="o">;</span>
-        <span class="n">rd</span><span class="o">.</span><span class="na">formParams</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">formParamsMap</span><span class="o">);</span>
-    <span class="o">}));</span>
-    <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">()</span>
-       <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings Some &amp; firstname &lt;lastname&gt;"</span><span class="o">));</span>
+    <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">greetPost</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">rd</span> <span class="o">-&gt;</span> <span class="o">{</span>
+          <span class="n">rd</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">"application/x-www-form-urlencoded; charset=ISO-8859-1"</span><span class="o">);</span>
+          <span class="n">rd</span><span class="o">.</span><span class="na">formParams</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">formParamsMap</span><span class="o">);</span>
+    <span class="o">});</span>
+    <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
+         <span class="o">.</span><span class="na">assertThat</span><span class="o">()</span>
+         <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"greeting"</span><span class="o">,</span> <span class="n">equalTo</span><span class="o">(</span><span class="s">"Greetings Some &amp; firstname &lt;lastname&gt;"</span><span class="o">));</span>
 <span class="o">}</span>
 </code></pre>
-<p>The method allows to send the request with invoked request data in RestMethod:</p>
+<p>Method for sending requests with invoked request data in RestMethod:</p>
 
 <table><thead>
 <tr>
@@ -1414,15 +1410,13 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">supportsConfiguringJsonConfigProperties</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">RequestSpecification</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">getJsonStore</span><span class="o">.</span><span class="na">getInitSpec</span><span class="o">()</span>
-            <span class="o">.</span><span class="na">config</span><span class="o">(</span><span class="n">RestAssuredConfig</span><span class="o">.</span><span class="na">newConfig</span><span class="o">()</span>
-            <span class="o">.</span><span class="na">jsonConfig</span><span class="o">(</span><span class="n">JsonConfig</span><span class="o">.</span><span class="na">jsonConfig</span><span class="o">()</span>
-            <span class="o">.</span><span class="na">numberReturnType</span><span class="o">(</span><span class="n">JsonPathConfig</span><span class="o">.</span><span class="na">NumberReturnType</span><span class="o">.</span><span class="na">BIG_DECIMAL</span><span class="o">)));</span>
-    <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">getJsonStore</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">rs</span><span class="o">);</span>
-    <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
-            <span class="o">.</span><span class="na">rootPath</span><span class="o">(</span><span class="s">"store.book"</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"price.min()"</span><span class="o">,</span> <span class="n">is</span><span class="o">(</span><span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">"8.95"</span><span class="o">)))</span>
-            <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"price.max()"</span><span class="o">,</span> <span class="n">is</span><span class="o">(</span><span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">"22.99"</span><span class="o">)));</span>
+  <span class="n">RestResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">getJsonStore</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">RestAssuredConfig</span><span class="o">.</span><span class="na">newConfig</span><span class="o">().</span>
+           <span class="n">jsonConfig</span><span class="o">(</span><span class="n">JsonConfig</span><span class="o">.</span><span class="na">jsonConfig</span><span class="o">().</span>
+                   <span class="n">numberReturnType</span><span class="o">(</span><span class="n">JsonPathConfig</span><span class="o">.</span><span class="na">NumberReturnType</span><span class="o">.</span><span class="na">BIG_DECIMAL</span><span class="o">)));</span>
+  <span class="n">resp</span><span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
+           <span class="o">.</span><span class="na">rootPath</span><span class="o">(</span><span class="s">"store.book"</span><span class="o">)</span>
+           <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"price.min()"</span><span class="o">,</span> <span class="n">is</span><span class="o">(</span><span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">"8.95"</span><span class="o">)))</span>
+           <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">"price.max()"</span><span class="o">,</span> <span class="n">is</span><span class="o">(</span><span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">"22.99"</span><span class="o">)));</span>
 <span class="o">}</span>
 </code></pre>
 <p>You can set RequestSpecification for your request. Get RestAssured RequestSpecification from RestMethod object, set and use it.</p>
@@ -1440,7 +1434,7 @@ You can use them in your Service Object methods and replace placeholders with va
 <td>RequestSpecification</td>
 </tr>
 <tr>
-<td><strong>call(RequestSpecification spec)</strong></td>
+<td><strong>call(RequestSpecification requestSpecification)</strong></td>
 <td>make request with RequestSpecification</td>
 <td>RestResponse</td>
 </tr>
