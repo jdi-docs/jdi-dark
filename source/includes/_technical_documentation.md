@@ -204,9 +204,6 @@ Methods for passing path parameters (with/without query params) in RestMethod:
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
 <br>
-<br />
-<br />
-<br />
 
 ### Query parameters
 ```java
@@ -234,17 +231,26 @@ public void bodyHamcrestMatcherWithOutKey() {
                     {LAST_NAME, LAST_NAME_VALUE}}))
           .isOk().assertThat()
           .body(equalTo("{\"greeting\":\"Greetings John Doe\"}"));
+}
 
 @GET("/noValueParam")
 public static RestMethod getNoValueParam;
 
 @Test
 public void singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest() {
-  JettyService.getNoValueParam.queryParams("some").call()
+JettyService.getNoValueParam.queryParams("some").call()
             .isOk()
             .assertThat()
             .body(is("Params: some="));
 }
+
+@GET("/{channelName}/item-import/rss/import?source={url}")
+public static RestMethod getMixedParam;
+
+@Test
+public void mixingUnnamedPathParametersAndQueryParametersWorks() {
+  RestResponse response = getMixedParam.pathParams("games", "http://myurl.com").call();
+  assertEquals(response.getBody(), "Not found");
 }
 ```
 Methods for sending query parameters to RequestData:
@@ -263,7 +269,9 @@ The method allows sending of specific query parameters in URL in RestMethod:
 
 Class **SpecUpdater** contains all variants of parameters supported by queryParams().
 <br />
+<br />
 If you need to add both path parameter and query parameter to your request, use pathParams(Object... pathParams).
+<br />
 <br />
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
 <br> 
@@ -335,6 +343,7 @@ Methods for sending multipart parameters to request data:
 **setMultiPart(MultiPartSpecBuilder multiPartSpecBuilder)** | set multipart parameters | RequestData
 
 Use *MultiPartSpecBuilder* class for creating advanced multi-part requests.
+<br />
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a>  
 <br>  
@@ -661,12 +670,6 @@ Fields of initialized object can be used to send requests from tests.
 <br />
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 
 ### Use predefined RestSpecification
 
@@ -694,22 +697,16 @@ In this example basic auth credentials will be passed to all endpoints.
 <br />
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 
 ## Working with objects
 There are key ability for any Rest Client is working with objects:
 
- - Send object as request body
+ - Send an object as request body
  - Get response body as object
 
 ### Setup Object Mapper
 
-JDI allows user to setup Object Mapper for serialization/deserialization objects within endpoints.
+JDI allows the user to setup Object Mapper for serialization/deserialization objects within endpoints.
 After Object Mapper is set it will be used in all requests implicitly.
 
 ```java
@@ -748,22 +745,10 @@ public class BaseTest {
 
 There are 2 ways to setup Object Mapper:
 
- - For whole project
- - For specific service
+ - For the whole project
+ - For a specific service
 
 If Object Mapper isn't set default RestAssured mapper will be used.
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 <br />
@@ -813,7 +798,7 @@ If Object Mapper isn't set default RestAssured mapper will be used.
   }
  ```
 
-JDI allows create tests on business language using Service classes and working with objects.
+JDI allows creating tests on business language using Service classes and working with objects.
 <br />
 <br />
 <br />
