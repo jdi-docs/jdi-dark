@@ -1179,10 +1179,7 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <p><br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/PathParamTests.java" target="_blank">Test examples in Java</a>
-<br>
-<br />
-<br />
-<br /></p>
+<br></p>
 <h3 id='query-parameters'>Query parameters</h3><pre class="highlight java tab-java"><code><span class="nd">@POST</span><span class="o">(</span><span class="s">"/greet"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">greetPost</span><span class="o">;</span>
 
@@ -1207,17 +1204,26 @@ You can use them in your Service Object methods and replace placeholders with va
                     <span class="o">{</span><span class="n">LAST_NAME</span><span class="o">,</span> <span class="n">LAST_NAME_VALUE</span><span class="o">}}))</span>
           <span class="o">.</span><span class="na">isOk</span><span class="o">().</span><span class="na">assertThat</span><span class="o">()</span>
           <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="n">equalTo</span><span class="o">(</span><span class="s">"{\"greeting\":\"Greetings John Doe\"}"</span><span class="o">));</span>
+<span class="o">}</span>
 
 <span class="nd">@GET</span><span class="o">(</span><span class="s">"/noValueParam"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getNoValueParam</span><span class="o">;</span>
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">singleNoValueQueryParamWhenUsingQueryParamInUrlForGetRequest</span><span class="o">()</span> <span class="o">{</span>
-  <span class="n">JettyService</span><span class="o">.</span><span class="na">getNoValueParam</span><span class="o">.</span><span class="na">queryParams</span><span class="o">(</span><span class="s">"some"</span><span class="o">).</span><span class="na">call</span><span class="o">()</span>
+<span class="n">JettyService</span><span class="o">.</span><span class="na">getNoValueParam</span><span class="o">.</span><span class="na">queryParams</span><span class="o">(</span><span class="s">"some"</span><span class="o">).</span><span class="na">call</span><span class="o">()</span>
             <span class="o">.</span><span class="na">isOk</span><span class="o">()</span>
             <span class="o">.</span><span class="na">assertThat</span><span class="o">()</span>
             <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="n">is</span><span class="o">(</span><span class="s">"Params: some="</span><span class="o">));</span>
 <span class="o">}</span>
+
+<span class="nd">@GET</span><span class="o">(</span><span class="s">"/{channelName}/item-import/rss/import?source={url}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">RestMethod</span> <span class="n">getMixedParam</span><span class="o">;</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">mixingUnnamedPathParametersAndQueryParametersWorks</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">RestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">getMixedParam</span><span class="o">.</span><span class="na">pathParams</span><span class="o">(</span><span class="s">"games"</span><span class="o">,</span> <span class="s">"http://myurl.com"</span><span class="o">).</span><span class="na">call</span><span class="o">();</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getBody</span><span class="o">(),</span> <span class="s">"Not found"</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
 <p>Methods for sending query parameters to RequestData:</p>
@@ -1264,7 +1270,9 @@ You can use them in your Service Object methods and replace placeholders with va
 
 <p>Class <strong>SpecUpdater</strong> contains all variants of parameters supported by queryParams().
 <br />
+<br />
 If you need to add both path parameter and query parameter to your request, use pathParams(Object... pathParams).
+<br />
 <br />
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
 <br> 
@@ -1356,6 +1364,7 @@ If you need to add both path parameter and query parameter to your request, use 
 </tbody></table>
 
 <p>Use <em>MultiPartSpecBuilder</em> class for creating advanced multi-part requests.
+<br />
 <br>
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/MultiPartUploadTests.java" target="_blank">Test examples in Java</a><br>
 <br><br>
@@ -1742,12 +1751,6 @@ Fields of initialized object can be used to send requests from tests.
 <br />
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br /></p>
 <h3 id='use-predefined-restspecification'>Use predefined RestSpecification</h3><pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceTest</span> <span class="o">{</span>
 
@@ -1770,22 +1773,16 @@ In this example basic auth credentials will be passed to all endpoints.<br>
 <br />
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br /></p>
 <h2 id='working-with-objects'>Working with objects</h2>
 <p>There are key ability for any Rest Client is working with objects:</p>
 
 <ul>
-<li>Send object as request body</li>
+<li>Send an object as request body</li>
 <li>Get response body as object</li>
 </ul>
 <h3 id='setup-object-mapper'>Setup Object Mapper</h3>
-<p>JDI allows user to setup Object Mapper for serialization/deserialization objects within endpoints.
+<p>JDI allows the user to setup Object Mapper for serialization/deserialization objects within endpoints.
 After Object Mapper is set it will be used in all requests implicitly.</p>
 <pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BaseTest</span> <span class="o">{</span>
 
@@ -1822,23 +1819,11 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
 <p>There are 2 ways to setup Object Mapper:</p>
 
 <ul>
-<li>For whole project</li>
-<li>For specific service</li>
+<li>For the whole project</li>
+<li>For a specific service</li>
 </ul>
 
 <p>If Object Mapper isn&#39;t set default RestAssured mapper will be used.
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 <br />
@@ -1883,7 +1868,7 @@ After Object Mapper is set it will be used in all requests implicitly.</p>
     <span class="o">}</span>
   <span class="o">}</span>
 </code></pre>
-<p>JDI allows create tests on business language using Service classes and working with objects.
+<p>JDI allows creating tests on business language using Service classes and working with objects.
 <br />
 <br />
 <br />
