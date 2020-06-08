@@ -40,7 +40,7 @@ public static RestMethod putCookie;
 public void formParamsAcceptsIntArgumentsJDI() {
         RestResponse response = greetPost
                 .call(formParams()
-                        .addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
+                .addAll(new Object[][]{{"firstName", 1234}, {"lastName", 5678}}));
         response.isOk().body("greeting", equalTo("Greetings 1234 5678"));
     }
 
