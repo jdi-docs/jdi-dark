@@ -1,6 +1,5 @@
 # Simple JDI Dark examples
 ## 1. Service Object Model
-
 ```java
 @ServiceDomain("http://httpbin.org/")
 public class ServiceExample { 
@@ -11,7 +10,6 @@ public class ServiceExample {
     @DELETE("/delete") RestMethod delete;
 }
 ```
-
 JDI Dark provides capability to describe your API as a simple Service Object.
 That allows you to unify and combine your REST methods and endpoints in one class
 (similar to UI Page Object pattern).
@@ -62,7 +60,7 @@ public void noServiceObjectTest(){
 ```
 
 As it has been mentioned, you are still able to write tests without using Service Object model.
-It is possible to call HTTP methods directly from your tests. You just need to provide required information within method arguments.
+It is possible to call HTTP methods directly from your tests. All you need is just to provide required information within method arguments.
 
 In this test we are making an HTTP GET request with invoked request data containing URL and headers.
 
@@ -71,22 +69,18 @@ In this test we are making an HTTP GET request with invoked request data contain
 ```java
 @QueryParameter(name = "test", value = "test")
 @GET("/get") RestMethod getInfo;
-```
 
-```java
 @QueryParameter(name = "param1", value = "test")
 @QueryParameter(name = "param2", value = "test")
 @GET("/get") RestMethod getInfo;
-```
 
-```java
 @Header(name = "Name", value = "Roman")
 @Header(name = "Id", value = "Test")
 @Cookie(name = "session_id", value = "1234")
 @GET("/get") RestMethod getInfo;
 ```
 
-JDI Dark has support for query parameters, you can specify them in your service class.
+JDI Dark supports query parameters, so you can specify them in your service class.
 You just need to use the *@QueryParameter* annotation in your method or service class description.
 
 If you need to specify several query parameters, do it with the *@QueryParameters* annotation.
