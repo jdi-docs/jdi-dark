@@ -452,10 +452,24 @@
               </ul>
           </li>
           <li>
-            <a href="#jdi-dark-generators" class="toc-h1 toc-link" data-title="JDI Dark Generators">JDI Dark Generators</a>
+            <a href="#jdi-dark-generator" class="toc-h1 toc-link" data-title="JDI Dark Generator">JDI Dark Generator</a>
                 <ul class="toc-list-h2">
                     <li>
                       <a href="#rest-objects-generation-from-swagger" class="toc-h2 toc-link" data-title="REST objects generation from Swagger">REST objects generation from Swagger</a>
+                          <ul class="toc-list-h2">
+                              <li>
+                                <a href="#algorithm" class="toc-h2 h3 toc-link" data-title="Algorithm">Algorithm</a>
+                              </li>
+                              <li>
+                                <a href="#building" class="toc-h2 h3 toc-link" data-title="Building">Building</a>
+                              </li>
+                              <li>
+                                <a href="#execution" class="toc-h2 h3 toc-link" data-title="Execution">Execution</a>
+                              </li>
+                              <li>
+                                <a href="#documentation" class="toc-h2 h3 toc-link" data-title="Documentation">Documentation</a>
+                              </li>
+                          </ul>
                     </li>
                     <li>
                       <a href="#soap-objects-generation-from-wsdl" class="toc-h2 toc-link" data-title="SOAP objects generation from WSDL">SOAP objects generation from WSDL</a>
@@ -2909,73 +2923,371 @@ object
 <li>It&#39;s better to tell someone about a problem than to not take action at all</li>
 <li>Always end your files with a newline</li>
 </ol>
-<h1 id='jdi-dark-generators'>JDI Dark Generators</h1><h2 id='rest-objects-generation-from-swagger'>REST objects generation from Swagger</h2>
-<p>You can generate automatically maven project with service object classes, model classes and also test classes based on a swagger scheme.</p>
-
+<h1 id='jdi-dark-generator'>JDI Dark Generator</h1><h2 id='rest-objects-generation-from-swagger'>REST objects generation from Swagger</h2>
+<p>You can generate automatically maven project with service object classes, model classes and test classes based on a swagger scheme.</p>
+<h3 id='algorithm'>Algorithm</h3>
 <ol>
 <li>Clone <a href="https://github.com/jdi-testing/jdi-dark-generator" target="_blank">JDI Dark generator</a><br></li>
 <li>Build JDI Dark generator by command <strong>mvn clean package</strong><br></li>
-<li>Run this command for auto-generation:<br></li>
+<li>Run generate command for auto-generation.</li>
 </ol>
 
-<p><code>
-  java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i &lt;specification swagger file&gt; -o &lt;output directory&gt; -p &lt;package&gt;
-</code></p>
+<p>java -jar DarkGenerator.jar generate [ <em>command-args</em> ]</p>
 
-<p>For example, for <a href="http://petstore.swagger.io/v2/swagger.json" target="_blank">the petshop swagger scheme</a> after running the command  </p>
+<p>Command may look like this: </p>
+
+<p>java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i <specification swagger file> -o <output directory> -p <package>
+ ``</p>
+
+<p>For example, for <a href="https://petstore.swagger.io/v2/swagger.json" target="_blank">the petshop swagger scheme</a> after running the command  </p>
 
 <p><code>
- java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i http://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop  
+  java -jar jdi-dark-rest-generator/target/DarkGenerator.jar generate -i https://petstore.swagger.io/v2/swagger.json -o ../sample -p com.petshop  
 </code></p>
 
 <p>the project with the following structure will be created:<br>
-<img src="images/generated-structure.png" alt="project structure" width="50%" height="50%"/></p>
+ <img src="images/generated-structure.png" alt="project structure" width="50%" height="50%"/></p>
+<h3 id='building'>Building</h3>
+<p>After cloning the project, you can build it from the source with this command:</p>
 
-<p><strong>Options</strong></p>
+<p>mvn clean package</p>
 
-<table><thead>
-<tr>
-<th>Method</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>-i &lt;spec file&gt; or --input-spec &lt;spec file&gt;</strong></td>
-<td>location file specification</td>
-</tr>
-<tr>
-<td><strong>-o &lt;output directory&gt; or --output &lt;output directory&gt;</strong></td>
-<td>project directory name</td>
-</tr>
-<tr>
-<td><strong>--invoker-package &lt;invoker package&gt; or -p&lt;invoker package&gt;</strong></td>
-<td>name main package</td>
-</tr>
-<tr>
-<td><strong>--model-package &lt;model package&gt;</strong></td>
-<td>name package for model classes</td>
-</tr>
-<tr>
-<td><strong>--api-package &lt;api package&gt;</strong></td>
-<td>name package for api classes</td>
-</tr>
-<tr>
-<td><strong>-a &lt;authorization&gt; or --auth &lt;authorization&gt;</strong></td>
-<td>add auth data in header(specify in key:value format)</td>
-</tr>
-<tr>
-<td><strong>--artifact-id &lt;artifact id&gt;</strong></td>
-<td>project artifact id</td>
-</tr>
-<tr>
-<td><strong>--artifact-version &lt;artifact version&gt;</strong></td>
-<td>project artifact version</td>
-</tr>
-<tr>
-<td><strong>--group-id &lt;group id&gt;</strong></td>
-<td>project group id</td>
-</tr>
-</tbody></table>
+<p>If you don&#39;t have maven installed, you may directly use the included maven wrapper, and build with the command:</p>
+
+<p>./mvnw clean package</p>
+<h3 id='execution'>Execution</h3>
+<p><code>java -jar DarkGenerator.jar</code> <em>command</em> [ <em>command-args</em> ]</p>
+
+<p><code>java -jar DarkGenerator.jar</code> <code>generate</code> - Generate JDI annotated classes from
+Open API (Swagger) specification</p>
+<h4 id='commands'>COMMANDS</h4>
+<ul>
+<li><code>generate</code></li>
+</ul>
+
+<p>Generate JDI annotated classes from Open API/Swagger specification</p>
+
+<ul>
+<li><code>help</code></li>
+</ul>
+
+<p>Display help information</p>
+<h5 id='generate'>GENERATE</h5><h6 id='synopsis'>SYNOPSIS</h6>
+<p><code>java -jar DarkGenerator.jar</code> <code>generate</code> [ { <code>-a</code> | <code>--auth</code> } <em>authorization</em>
+] [ <code>--additional-properties</code> <em>additional properties</em> <em>...</em> ] [ <code>--api-package</code>
+<em>api package</em> ] [ <code>--artifact-id</code> <em>artifact id</em> ] [ <code>--artifact-version</code>
+<em>artifact version</em> ] [ { <code>-c</code> | <code>--config</code> } <em>configuration file</em> ] [
+<code>--codegen-arguments</code> <em>codegen arguments</em> <em>...</em> ] [ <code>-D</code> <em>system properties</em>
+<em>...</em> ] [ <code>--date-library</code> <em>date library</em> ] [ <code>--disable-examples</code> ] [
+<code>--flatten-inline-schema</code> ] [ <code>--git-repo-id</code> <em>git repo id</em> ] [ <code>--git-user-id</code>
+<em>git user id</em> ] [ <code>--group-id</code> <em>group id</em> ] [ { <code>-h</code> | <code>--help</code> } ] [
+<code>--hide-generation-timestamp</code> ] [ <code>--http-user-agent</code> <em>http user agent</em> ] [ {
+<code>-i</code> | <code>--input-spec</code> } <em>spec file</em> ] [ <code>--ignore-file-override</code> <em>ignore file
+override location</em> ] [ <code>--ignore-import-mapping</code> <em>ignore import mapping</em> ] [
+<code>--import-mappings</code> <em>import mappings</em> <em>...</em> ] [ <code>--instantiation-types</code>
+<em>instantiation types</em> <em>...</em> ] [ <code>--language-specific-primitives</code> <em>language
+specific primitives</em> <em>...</em> ] [ <code>--model-name-prefix</code> <em>model name prefix</em> ] [
+<code>--model-name-suffix</code> <em>model name suffix</em> ] [ <code>--model-package</code> <em>model package</em>
+] [ { <code>-o</code> | <code>--output</code> } <em>output directory</em> ] [ { <code>-p</code> | <code>--invoker-package</code> }
+<em>invoker package</em> ] [ <code>--release-note</code> <em>release note</em> ] [
+<code>--remove-operation-id-prefix</code> ] [ <code>--reserved-words-mappings</code> <em>reserved word
+mappings</em> <em>...</em> ] [ { <code>-s</code> | <code>--skip-overwrite</code> } ] [ <code>--serialization-library</code>
+<em>serialization library</em> ] [ <code>--skip-alias-generation</code> ] [ { <code>-t</code> |
+<code>--template-dir</code> } <em>template directory</em> ] [ <code>--template-engine</code> <em>template
+engine</em> ] [ <code>--type-mappings</code> <em>type mappings</em> <em>...</em> ] [ <code>--use-oas2</code> ] [ { <code>-v</code>
+| <code>--verbose</code> } ]</p>
+<h6 id='options'>OPTIONS</h6>
+<p>It is obligatory to specify input specification either as command line option or in supplied config file. Other options are not required and have reasonable defaults.</p>
+
+<ul>
+<li><code>-a</code> <em>authorization</em> , <code>--auth</code> <em>authorization</em></li>
+</ul>
+
+<p>adds authorization headers when fetching the swagger definitions remotely.
+  Pass in a URL-encoded string of name:header with a comma separating multiple
+  values</p>
+
+<ul>
+<li><code>--additional-properties</code> <em>additional properties</em></li>
+</ul>
+
+<p>sets additional properties that can be referenced by the mustache templates
+  in the format of name=value,name=value. You can also have multiple
+  occurrences of this option.</p>
+
+<ul>
+<li><code>--api-package</code> <em>api package</em></li>
+</ul>
+
+<p>package for generated api classes</p>
+
+<ul>
+<li><code>--artifact-id</code> <em>artifact id</em></li>
+</ul>
+
+<p>artifactId in generated pom.xml</p>
+
+<ul>
+<li><code>--artifact-version</code> <em>artifact version</em></li>
+</ul>
+
+<p>artifact version in generated pom.xml</p>
+
+<ul>
+<li><code>-c</code> <em>configuration file</em> , <code>--config</code> <em>configuration file</em></li>
+</ul>
+
+<p>Path to json configuration file. File content should be in a json format
+  {&quot;optionKey&quot;:&quot;optionValue&quot;, &quot;optionKey1&quot;:&quot;optionValue1&quot;...} Supported options
+  can be different for each language. Run config-help -l {lang} command for
+  language specific config options.</p>
+
+<ul>
+<li><code>--codegen-arguments</code> <em>codegen arguments</em></li>
+</ul>
+
+<p>codegen arguments</p>
+
+<ul>
+<li><code>-D</code> <em>system properties</em></li>
+</ul>
+
+<p>sets specified system properties in the format of name=value,name=value (or
+  multiple options, each with name=value)</p>
+
+<ul>
+<li><code>--date-library</code> <em>date library</em></li>
+</ul>
+
+<p>Option. Date library to use
+  . joda - Joda (for legacy app only)
+  . legacy - Legacy java.util.Date (if you really have a good reason not to use
+  threetenbp
+  . java8-localdatetime - Java 8 using LocalDateTime (for legacy app only)
+  . java8 - Java 8 native JSR310 (preferred for jdk 1.8+) - note: this also
+  sets &quot;java8&quot; to true
+  . threetenbp - Backport of JSR310 (preferred for jdk &lt; 1.8)
+  . Default Java 8</p>
+
+<ul>
+<li><code>--disable-examples</code></li>
+</ul>
+
+<p>disable examples</p>
+
+<ul>
+<li><code>--flatten-inline-schema</code></li>
+</ul>
+
+<p>flattenInlineSchema</p>
+
+<ul>
+<li><code>--git-repo-id</code> <em>git repo id</em></li>
+</ul>
+
+<p>Git repo ID, e.g. swagger-codegen.</p>
+
+<ul>
+<li><code>--git-user-id</code> <em>git user id</em></li>
+</ul>
+
+<p>Git user ID, e.g. swagger-api.</p>
+
+<ul>
+<li><code>--group-id</code> <em>group id</em></li>
+</ul>
+
+<p>groupId in generated pom.xml</p>
+
+<ul>
+<li><code>-h</code> , <code>--help</code></li>
+</ul>
+
+<p>Display help information</p>
+
+<ul>
+<li><code>--hide-generation-timestamp</code></li>
+</ul>
+
+<p>Hides the generation timestamp when files are generated.</p>
+
+<ul>
+<li><code>--http-user-agent</code> <em>http user agent</em></li>
+</ul>
+
+<p>HTTP user agent, e.g. codegen_csharp_api_client, default to
+  &#39;Swagger-Codegen/{packageVersion}}/{language}&#39;</p>
+
+<ul>
+<li><code>-i</code> <em>spec file</em> , <code>--input-spec</code> <em>spec file</em></li>
+</ul>
+
+<p>location of the swagger spec, as URL or file (required)</p>
+
+<ul>
+<li><code>--ignore-file-override</code> <em>ignore file override location</em></li>
+</ul>
+
+<p>Specifies an override location for the .swagger-codegen-ignore file. Most
+  useful on initial generation.</p>
+
+<ul>
+<li><code>--ignore-import-mapping</code> <em>ignore import mapping</em></li>
+</ul>
+
+<p>allow generate model classes using names previously listed on import
+  mappings.</p>
+
+<ul>
+<li><code>--import-mappings</code> <em>import mappings</em></li>
+</ul>
+
+<p>specifies mappings between a given class and the import that should be used
+  for that class in the format of type=import,type=import. You can also have
+  multiple occurrences of this option.</p>
+
+<ul>
+<li><code>--instantiation-types</code> <em>instantiation types</em></li>
+</ul>
+
+<p>sets instantiation type mappings in the format of
+  type=instantiatedType,type=instantiatedType.For example (in Java):
+  array=ArrayList,map=HashMap. In other words array types will get instantiated
+  as ArrayList in generated code. You can also have multiple occurrences of
+  this option.</p>
+
+<ul>
+<li><code>--language-specific-primitives</code> <em>language specific primitives</em></li>
+</ul>
+
+<p>specifies additional language specific primitive types in the format of
+  type1,type2,type3,type3. For example: String,boolean,Boolean,Double. You can
+  also have multiple occurrences of this option.</p>
+
+<ul>
+<li><code>--model-name-prefix</code> <em>model name prefix</em></li>
+</ul>
+
+<p>Prefix that will be prepended to all model names. Default is the empty
+  string.</p>
+
+<ul>
+<li><code>--model-name-suffix</code> <em>model name suffix</em></li>
+</ul>
+
+<p>Suffix that will be appended to all model names. Default is the empty string.</p>
+
+<ul>
+<li><code>--model-package</code> <em>model package</em></li>
+</ul>
+
+<p>package for generated models</p>
+
+<ul>
+<li><code>-o</code> <em>output directory</em> , <code>--output</code> <em>output directory</em></li>
+</ul>
+
+<p>where to write the generated files. Defaults to generated-code folder</p>
+
+<ul>
+<li><code>-p</code> <em>invoker package</em> , <code>--invoker-package</code> <em>invoker package</em></li>
+</ul>
+
+<p>root package for generated code</p>
+
+<ul>
+<li><code>--release-note</code> <em>release note</em></li>
+</ul>
+
+<p>Release note, default to &#39;Minor update&#39;.</p>
+
+<ul>
+<li><code>--remove-operation-id-prefix</code></li>
+</ul>
+
+<p>Remove prefix of operationId, e.g. config_getId =&gt; getId</p>
+
+<ul>
+<li><code>--reserved-words-mappings</code> <em>reserved word mappings</em></li>
+</ul>
+
+<p>specifies how a reserved name should be escaped to. Otherwise, the default
+  _<name> is used. For example id=identifier. You can also have multiple
+  occurrences of this option.</p>
+
+<ul>
+<li><code>-s</code> , <code>--skip-overwrite</code></li>
+</ul>
+
+<p>specifies if the existing files should be overwritten during the generation.</p>
+
+<ul>
+<li><code>--serialization-library</code> <em>serialization library</em></li>
+</ul>
+
+<p>Serialization library (Default: Jackson)</p>
+
+<ul>
+<li><code>--skip-alias-generation</code></li>
+</ul>
+
+<p>skip code generation for models identified as alias.</p>
+
+<ul>
+<li><code>-t</code> <em>template directory</em> , <code>--template-dir</code> <em>template directory</em></li>
+</ul>
+
+<p>folder containing the template files</p>
+
+<ul>
+<li><code>--template-engine</code> <em>template engine</em></li>
+</ul>
+
+<p>template engine</p>
+
+<ul>
+<li><code>--type-mappings</code> <em>type mappings</em></li>
+</ul>
+
+<p>sets mappings between swagger spec types and generated code types in the
+  format of swaggerType=generatedType,swaggerType=generatedType. For example:
+  array=List,map=Map,string=String. You can also have multiple occurrences of
+  this option.</p>
+
+<ul>
+<li><code>--use-oas2</code></li>
+</ul>
+
+<p>use OpenAPI v2.0 (Swagger 1.5.x)</p>
+
+<ul>
+<li><code>-v</code> , <code>--verbose</code></li>
+</ul>
+
+<p>verbose mode</p>
+
+<hr>
+<h5 id='help'>HELP</h5>
+<p><code>java -jar DarkGenerator.jar</code> <code>help</code> - Display help information</p>
+<h6 id='synopsis-2'>SYNOPSIS</h6>
+<p><code>java -jar DarkGenerator.jar</code> <code>help</code> [ <code>--</code> ] [ <em>command</em> ]</p>
+<h6 id='options-2'>OPTIONS</h6>
+<ul>
+<li><code>--</code></li>
+</ul>
+
+<p>This option can be used to separate command-line options from the list of
+  arguments (useful when arguments might be mistaken for command-line options)</p>
+
+<ul>
+<li><em>command</em></li>
+</ul>
+<h3 id='documentation'>Documentation</h3>
+<p>Documentation can be generated with  running following command:</p>
+
+<p>mvn airline:generate</p>
+
+<p>Documentation will appear in target/help folder.</p>
 <h2 id='soap-objects-generation-from-wsdl'>SOAP objects generation from WSDL</h2>
 <p>You can generate automatically JDI Dark SOAP object classes based on your WSDL scheme.</p>
 
