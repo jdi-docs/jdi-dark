@@ -2,7 +2,7 @@
 ## Framework usage
 
 JDI Dark Framework provides great opportunities for web services testing.  
-Below you will find the description of their features and the ways of using with code examples.
+Below you will find the description of JDI's features and the ways of using them with code examples.
 
 ## HTTP methods
 JDI Dark supports the following HTTP methods:
@@ -15,7 +15,7 @@ JDI Dark supports the following HTTP methods:
  - OPTIONS
  - HEAD
 
-For all of these methods there are annotations named after them in the *com.epam.http.annotations.** package.
+For all these methods there are annotations named after them in the *com.epam.http.annotations.** package.
 All of these annotations take the call request URI value. The annotations are supposed to be used in your Service Object class.
 
 To point to the base URI of your service, it's convenient to use the *@ServiceDomain* annotation with URL provided as argument.
@@ -207,8 +207,8 @@ Methods for passing path parameters (with/without query params) in RestMethod:
 
 ### Query parameters
 ```java
-@POST("/greet")
-public static RestMethod greetPost;
+@GET("/greet")
+public static RestMethod getGreet;
 
 @Test
 public void whenLastParamInGetRequestEndsWithEqualItsTreatedAsANoValueParam() {
@@ -275,6 +275,11 @@ If you need to add both path parameter and query parameter to your request, use 
 <br />
 <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/httptests/examples/requestparams/ParamTests.java" target="_blank">Test examples in Java</a>
 <br> 
+<br />
+<br />
+<br /> 
+<br />
+<br />
 <br />
 <br />
 <br /> 
@@ -748,7 +753,7 @@ There are 2 ways to setup Object Mapper:
  - For the whole project
  - For a specific service
 
-If Object Mapper isn't set default RestAssured mapper will be used.
+If Object Mapper has not been set by default, RestAssured mapper will be used.
 <br />
 <br />
 <br />
@@ -847,12 +852,6 @@ JDI allows creating tests on business language using Service classes and working
  ```
 
 For convenient working with objects user can add additional wrapper methods to service classes.
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 <br />
@@ -1181,20 +1180,14 @@ There are methods to add cookies to Request Data. Cookies can be passed as name 
 ```java
 @GET("/cookie_with_no_value")
 public static RestMethod getCookieWithNoValue;
-public static RestResponse getCookieWithOnlyName(String name) {
-    return getCookieWithNoValue.call(cookies().add(name));
-}
 
 @GET("/cookie")
 public static RestMethod getCookie;
-public static RestResponse getCookieSpecifiedUsingMap(Map<String, String> cookieMap) {
-    return getCookie.call(cookies().addAll(cookieMap));
-}
 
 @Test
 public void requestSpecificationAllowsSpecifyingCookieWithNoValue() {
-    RestResponse response = JettyService.getCookieWithOnlyName("some_cookie");
-    assertThat(response.getBody(), equalTo("some_cookie"));
+ RestResponse response = JettyService.getCookieWithNoValue.call(cookies().add("some_cookie"));
+ assertThat(response.getBody(), equalTo("some_cookie"));
 }
 
 @Test
@@ -1203,7 +1196,7 @@ public void requestSpecificationAllowsSpecifyingCookieUsingMap() {
     cookies.put("username", "John");
     cookies.put("token", "1234");
 
-    RestResponse response = JettyService.getCookieSpecifiedUsingMap(cookies);
+    RestResponse response = JettyService.getCookie.call(cookies().addAll(cookies));
     assertThat(response.getBody(), equalTo("username, token"));
 }
 ```
@@ -1292,6 +1285,14 @@ public class OauthCustomAuthScheme extends DataClass<OauthCustomAuthScheme> impl
                 + timestamp +",oauth_nonce="+ nonce +",oauth_version="
                 + version +",oauth_signature="+ signature));
     }
+
+@BeforeClass
+public void before() {
+    BasicAuthScheme authScheme = new BasicAuthScheme();
+    authScheme.setUserName("postman");
+    authScheme.setPassword("password");
+    init(AuthorizationPostman.class, authScheme);
+    }
 }
 ```
 Perform authentication using AuthenticationScheme interface. The following authentication methods have been implemented: 
@@ -1301,15 +1302,6 @@ Basic, Digest, NTLM, OAuth1, OAuth2, Form, Certificate.
 In order to create a custom authentication scheme implement AuthenticationScheme interface realising authenticate() method.
 </br>
 
-```java
-@BeforeClass
-public void before() {
-    BasicAuthScheme authScheme = new BasicAuthScheme();
-    authScheme.setUserName("postman");
-    authScheme.setPassword("password");
-    init(AuthorizationPostman.class, authScheme);
-    }
-```
 Authentication can be instantiated on service level. To do so just put your authentication scheme into the service's init() function.
 <br/>
 If you put your authentication scheme on the test level, the service level authentication will be overwritten.
