@@ -1549,49 +1549,101 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 
 ##WebSockets
 
-Use JDI Dark module *jdi-dark-ws* for working with sockets.
+Use JDI Dark module *jdi-dark-ws* for working with websockets.
 
 ###JDI Dark methods for WebSockets 
 
-For working with sockets create the WebSocket class extending the JdiWSServer class. Mark it with the annotation @ServerEndpoint("")
+For working with sockets import and use WebSocketJsonClient, WebSocketTextClient classes or create your own client class, extending and parametrizing WebSocketGenericEndpoint class and passing your own javax.websocket.Decoder and Encoder classes.
 
-There are available methods for working with sockets:  
+These are available methods of WebSocketGenericEndpoint class for working with sockets:
 
 ```java
-@ServerEndpoint("")
-public class TrelloSocket extends JdiWSServer {
+public class WebSocketClientTests extends WithJettyWebSockets {
 
-}
-
-public class TrelloTest {
-    private TrelloSocket trelloSocket = new TrelloSocket();
-
-    @Test
-    public void checkMessages() throws IOException, InterruptedException, DeploymentException, URISyntaxException {
-        trelloSocket.connect("wss://trello.com/1/Session/socket?token=" + token);
-        trelloSocket.sendMessage("{\"type\":\"subscribe\",\"modelType\":\"Member\",\"idModel\":\"5e8ef65b384f806fbb911f5d\",\"tags\":[\"messages\",\"updates\"],\"invitationTokens\":[],\"reqid\":5}");
-        trelloSocket.waitNewMessage(30);     
-    }
+        @Test
+        public void textMessageTest()
+                throws DeploymentException, IOException, URISyntaxException, InterruptedException
+        {
+            String message = "Simple text test message";
+            WebSocketTextClient client = new WebSocketTextClient();
+    
+            client.connect(host + "/echo-ws");
+            client.sendPlainText(message);
+            assertTrue(client.waitNewMessage(100));
+            assertEquals(
+                    client.getLastMessage(), message,
+                    "Unexpected response from server"
+            );
+            client.close();
+        }
 }
 ```
+
 |Method | Description | Return Type
 --- | --- | ---
 **connect(URI path)** | connect to the URI | void
 **connect(String path)** | connect to specified path | void
-**closeSession()** | close the session | void
-**sendMessage(String text)** | send the web-socket message as a String| void
-**sendMessage(Object object)** | send the web-socket message as an Object| void
+**close()** | close the session | void
+**setClientProperties(Map<String, Object> properties)** | set properties to Tyrus client manager | void
+**setClientProperties(Properties properties)** | set properties to Tyrus client manager | void
+**setClientSslConfig(String trustStorePath, String trustStorePassword, Boolean clientMode, Boolean needClientAuth, Boolean wantClientAuth)** | configure ssl for ws client | void
+**sendPlainText(String text)** | send the web-socket message as a String| void
+**sendMessage(T message)** | send the web-socket message as object of parametrized type T (you should implement javax.websocket.Decoder and javax.websocket.Encoder for that)| void
 **sendBinary(ByteBuffer data)** | send the web-socket message as a binary data | void
-**waitNewMessage(int sec)** | wait for the message | void
-**waitAndGetNewMessage(int sec)** | wait for the message and return it | JsonElement
-**waitNewMessages(int count, int sec)** | wait for the messages | void
+**waitNewMessage(int millis)** | wait for the message for time period specified in milliseconds | boolean
+**waitAndGetNewMessage(int millis)** | wait for the message and return it | parametrized type T
+**waitNewMessages(int count, int millis)** | wait for the messages | boolean
+**getLastMessage()** | get the last received message| parametrized type T
+**getMessages()** | get Queue with received messages| Queue<T>
+**clearMessages()** | clear the received messages| void
+
+```java
+@ClientEndpoint(
+        decoders = ItemDecoder.class,
+        encoders = ItemEncoder.class
+)
+public class WSItemClient extends WebSocketGenericEndpoint<Item> {
+
+        @OnMessage
+        public void onMessage(Item message, Session session) {
+            logger.info("Received message");
+            lastMessage = message;
+            messages.add(lastMessage);
+            latch.countDown();
+        }
+}
+
+public class WebSocketClientTests extends WithJettyWebSockets {
+
+        @Test
+        public void sendObjectGenericTest()
+                throws DeploymentException, IOException, URISyntaxException, InterruptedException, EncodeException
+        {
+            Item message = new Item(2, "sofa");
+            WSItemClient client = new WSItemClient();
+    
+            client.connect(host + "/item-ws");
+            client.sendMessage(message);
+            assertTrue(client.waitNewMessage(100));
+            assertEquals(
+                    client.waitAndGetNewMessage(100), message,
+                    "Unexpected response from server"
+            );
+            client.close();
+        }
+}
+```
+
+WebSocketJsonClient class, in addition, has following methods:
+
+|Method | Description | Return Type
+--- | --- | ---
 **waitNewMessageMatches(String regex, int maxMsgCount, int sec)** | wait the message which matches regexp | void
 **waitNewMessageContainsText(String text, int maxMsgCount, int sec)** | wait the message which contains the specified text | void
 **waitNewMessageContainsKey(String key, int maxMsgCount, int sec)** |wait the message which contains the specified JSON key| void
-**getNewMessageAsJsonObject()** | get the message as Object | JsonObject
-**clearMessages()** | clear the received messages| void
+**getLastMessageAsJsonObject()** | get the message as Object | JsonObject
 
-See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettest/TrelloTest.java" target="_blank">here</a>
+See test examples <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettests" target="_blank">here</a>
 
 ## SOAP
 ###Creating Service Object
