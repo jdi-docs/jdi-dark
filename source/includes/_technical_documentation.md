@@ -1579,6 +1579,24 @@ public class WebSocketClientTests extends WithJettyWebSockets {
 }
 ```
 
+|Method | Description | Return Type
+--- | --- | ---
+**connect(URI path)** | connect to the URI | void
+**connect(String path)** | connect to specified path | void
+**close()** | close the session | void
+**setClientProperties(Map<String, Object> properties)** | set properties to Tyrus client manager | void
+**setClientProperties(Properties properties)** | set properties to Tyrus client manager | void
+**setClientSslConfig(String trustStorePath, String trustStorePassword, Boolean clientMode, Boolean needClientAuth, Boolean wantClientAuth)** | configure ssl for ws client | void
+**sendPlainText(String text)** | send the web-socket message as a String| void
+**sendMessage(T message)** | send the web-socket message as object of parametrized type T (you should implement javax.websocket.Decoder and javax.websocket.Encoder for that)| void
+**sendBinary(ByteBuffer data)** | send the web-socket message as a binary data | void
+**waitNewMessage(int millis)** | wait for the message for time period specified in milliseconds | boolean
+**waitAndGetNewMessage(int millis)** | wait for the message and return it | parametrized type T
+**waitNewMessages(int count, int millis)** | wait for the messages | boolean
+**getLastMessage()** | get the last received message| parametrized type T
+**getMessages()** | get Queue with received messages| Queue<T>
+**clearMessages()** | clear the received messages| void
+
 ```java
 @ClientEndpoint(
         decoders = ItemDecoder.class,
@@ -1615,25 +1633,6 @@ public class WebSocketClientTests extends WithJettyWebSockets {
         }
 }
 ```
-
-|Method | Description | Return Type
---- | --- | ---
-**connect(URI path)** | connect to the URI | void
-**connect(String path)** | connect to specified path | void
-**close()** | close the session | void
-**setClientProperties(Map<String, Object> properties)** | set properties to Tyrus client manager | void
-**setClientProperties(Properties properties)** | set properties to Tyrus client manager | void
-**setClientSslConfig(String trustStorePath, String trustStorePassword, Boolean clientMode, Boolean needClientAuth, Boolean wantClientAuth)** | configure ssl for ws client | void
-**sendPlainText(String text)** | send the web-socket message as a String| void
-**sendMessage(T message)** | send the web-socket message as object of parametrized type T (you should implement javax.websocket.Decoder and javax.websocket.Encoder for that)| void
-**sendBinary(ByteBuffer data)** | send the web-socket message as a binary data | void
-**waitNewMessage(int millis)** | wait for the message for time period specified in milliseconds | boolean
-**waitAndGetNewMessage(int millis)** | wait for the message and return it | parametrized type T
-**waitNewMessages(int count, int millis)** | wait for the messages | boolean
-**getLastMessage()** | get the last received message| parametrized type T
-**getMessages()** | get Queue with received messages| Queue<T>
-**clearMessages()** | clear the received messages| void
-
 
 WebSocketJsonClient class, in addition, has following methods:
 
