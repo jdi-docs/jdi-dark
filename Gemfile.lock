@@ -7,7 +7,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.8.0)
-      public_suffix (~> 2.0, >= 2.0.2)
+      public_suffix (>= 2.0.2, < 5.0)
     autoprefixer-rails (6.6.1)
       execjs
     backports (3.6.8)
