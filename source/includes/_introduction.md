@@ -14,10 +14,10 @@ JDI Dark provides capability to describe your API as a simple Service Object.
 That allows you to unify and combine your REST methods and endpoints in one class
 (similar to UI Page Object pattern).
 
-Let&quote;s say we have a website for REST testing located at the following address: [http://httpbin.org](http://httpbin.org/) and we need to test some of its endpoints.
+Let's say we have a website for REST testing located at the following address: [http://httpbin.org](http://httpbin.org/) and we need to test some of its endpoints.
 We can create a Java class and describe the methods we want to test.
 
-*Isn&quote;t that simple?*
+*Isn't that simple?*
 
 ## 2. Create simple test using Service Object
 
