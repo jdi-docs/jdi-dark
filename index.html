@@ -2603,25 +2603,29 @@ In order to restore the initial RestAssured config after test execution, the <co
 See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-bdd-tests/src/test/resources/features" target="_blank">here</a>.
 <br></p>
 <h2 id='websockets'>WebSockets</h2>
-<p>Use JDI Dark module <em>jdi-dark-ws</em> for working with sockets.</p>
+<p>Use JDI Dark module <em>jdi-dark-ws</em> for working with websockets.</p>
 <h3 id='jdi-dark-methods-for-websockets'>JDI Dark methods for WebSockets</h3>
-<p>For working with sockets create the WebSocket class extending the JdiWSServer class. Mark it with the annotation @ServerEndpoint(&quot;&quot;)</p>
+<p>For working with sockets import and use WebSocketJsonClient, WebSocketTextClient classes or create your own client class, extending and parametrizing WebSocketGenericEndpoint class and passing your own javax.websocket.Decoder and Encoder classes.</p>
 
-<p>There are available methods for working with sockets:  </p>
-<pre class="highlight java tab-java"><code><span class="nd">@ServerEndpoint</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloSocket</span> <span class="kd">extends</span> <span class="n">JdiWSServer</span> <span class="o">{</span>
+<p>These are available methods of WebSocketGenericEndpoint class for working with sockets:</p>
+<pre class="highlight java tab-java"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebSocketClientTests</span> <span class="kd">extends</span> <span class="n">WithJettyWebSockets</span> <span class="o">{</span>
 
-<span class="o">}</span>
+        <span class="nd">@Test</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">textMessageTest</span><span class="o">()</span>
+                <span class="kd">throws</span> <span class="n">DeploymentException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">URISyntaxException</span><span class="o">,</span> <span class="n">InterruptedException</span>
+        <span class="o">{</span>
+            <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="s">"Simple text test message"</span><span class="o">;</span>
+            <span class="n">WebSocketTextClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WebSocketTextClient</span><span class="o">();</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrelloTest</span> <span class="o">{</span>
-    <span class="kd">private</span> <span class="n">TrelloSocket</span> <span class="n">trelloSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TrelloSocket</span><span class="o">();</span>
-
-    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">checkMessages</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span><span class="o">,</span> <span class="n">DeploymentException</span><span class="o">,</span> <span class="n">URISyntaxException</span> <span class="o">{</span>
-        <span class="n">trelloSocket</span><span class="o">.</span><span class="na">connect</span><span class="o">(</span><span class="s">"wss://trello.com/1/Session/socket?token="</span> <span class="o">+</span> <span class="n">token</span><span class="o">);</span>
-        <span class="n">trelloSocket</span><span class="o">.</span><span class="na">sendMessage</span><span class="o">(</span><span class="s">"{\"type\":\"subscribe\",\"modelType\":\"Member\",\"idModel\":\"5e8ef65b384f806fbb911f5d\",\"tags\":[\"messages\",\"updates\"],\"invitationTokens\":[],\"reqid\":5}"</span><span class="o">);</span>
-        <span class="n">trelloSocket</span><span class="o">.</span><span class="na">waitNewMessage</span><span class="o">(</span><span class="mi">30</span><span class="o">);</span>     
-    <span class="o">}</span>
+            <span class="n">client</span><span class="o">.</span><span class="na">connect</span><span class="o">(</span><span class="n">host</span> <span class="o">+</span> <span class="s">"/echo-ws"</span><span class="o">);</span>
+            <span class="n">client</span><span class="o">.</span><span class="na">sendPlainText</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+            <span class="n">assertTrue</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="na">waitNewMessage</span><span class="o">(</span><span class="mi">100</span><span class="o">));</span>
+            <span class="n">assertEquals</span><span class="o">(</span>
+                    <span class="n">client</span><span class="o">.</span><span class="na">getLastMessage</span><span class="o">(),</span> <span class="n">message</span><span class="o">,</span>
+                    <span class="s">"Unexpected response from server"</span>
+            <span class="o">);</span>
+            <span class="n">client</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
 <table><thead>
@@ -2642,18 +2646,33 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 <td>void</td>
 </tr>
 <tr>
-<td><strong>closeSession()</strong></td>
+<td><strong>close()</strong></td>
 <td>close the session</td>
 <td>void</td>
 </tr>
 <tr>
-<td><strong>sendMessage(String text)</strong></td>
+<td><strong>setClientProperties(Map<String, Object> properties)</strong></td>
+<td>set properties to Tyrus client manager</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>setClientProperties(Properties properties)</strong></td>
+<td>set properties to Tyrus client manager</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>setClientSslConfig(String trustStorePath, String trustStorePassword, Boolean clientMode, Boolean needClientAuth, Boolean wantClientAuth)</strong></td>
+<td>configure ssl for ws client</td>
+<td>void</td>
+</tr>
+<tr>
+<td><strong>sendPlainText(String text)</strong></td>
 <td>send the web-socket message as a String</td>
 <td>void</td>
 </tr>
 <tr>
-<td><strong>sendMessage(Object object)</strong></td>
-<td>send the web-socket message as an Object</td>
+<td><strong>sendMessage(T message)</strong></td>
+<td>send the web-socket message as object of parametrized type T (you should implement javax.websocket.Decoder and javax.websocket.Encoder for that)</td>
 <td>void</td>
 </tr>
 <tr>
@@ -2662,20 +2681,80 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 <td>void</td>
 </tr>
 <tr>
-<td><strong>waitNewMessage(int sec)</strong></td>
-<td>wait for the message</td>
-<td>void</td>
+<td><strong>waitNewMessage(int millis)</strong></td>
+<td>wait for the message for time period specified in milliseconds</td>
+<td>boolean</td>
 </tr>
 <tr>
-<td><strong>waitAndGetNewMessage(int sec)</strong></td>
+<td><strong>waitAndGetNewMessage(int millis)</strong></td>
 <td>wait for the message and return it</td>
-<td>JsonElement</td>
+<td>parametrized type T</td>
 </tr>
 <tr>
-<td><strong>waitNewMessages(int count, int sec)</strong></td>
+<td><strong>waitNewMessages(int count, int millis)</strong></td>
 <td>wait for the messages</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td><strong>getLastMessage()</strong></td>
+<td>get the last received message</td>
+<td>parametrized type T</td>
+</tr>
+<tr>
+<td><strong>getMessages()</strong></td>
+<td>get Queue with received messages</td>
+<td>Queue<T></td>
+</tr>
+<tr>
+<td><strong>clearMessages()</strong></td>
+<td>clear the received messages</td>
 <td>void</td>
 </tr>
+</tbody></table>
+<pre class="highlight java tab-java"><code><span class="nd">@ClientEndpoint</span><span class="o">(</span>
+        <span class="n">decoders</span> <span class="o">=</span> <span class="n">ItemDecoder</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+        <span class="n">encoders</span> <span class="o">=</span> <span class="n">ItemEncoder</span><span class="o">.</span><span class="na">class</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WSItemClient</span> <span class="kd">extends</span> <span class="n">WebSocketGenericEndpoint</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
+
+        <span class="nd">@OnMessage</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMessage</span><span class="o">(</span><span class="n">Item</span> <span class="n">message</span><span class="o">,</span> <span class="n">Session</span> <span class="n">session</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Received message"</span><span class="o">);</span>
+            <span class="n">lastMessage</span> <span class="o">=</span> <span class="n">message</span><span class="o">;</span>
+            <span class="n">messages</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">lastMessage</span><span class="o">);</span>
+            <span class="n">latch</span><span class="o">.</span><span class="na">countDown</span><span class="o">();</span>
+        <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebSocketClientTests</span> <span class="kd">extends</span> <span class="n">WithJettyWebSockets</span> <span class="o">{</span>
+
+        <span class="nd">@Test</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendObjectGenericTest</span><span class="o">()</span>
+                <span class="kd">throws</span> <span class="n">DeploymentException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">URISyntaxException</span><span class="o">,</span> <span class="n">InterruptedException</span><span class="o">,</span> <span class="n">EncodeException</span>
+        <span class="o">{</span>
+            <span class="n">Item</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Item</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"sofa"</span><span class="o">);</span>
+            <span class="n">WSItemClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WSItemClient</span><span class="o">();</span>
+
+            <span class="n">client</span><span class="o">.</span><span class="na">connect</span><span class="o">(</span><span class="n">host</span> <span class="o">+</span> <span class="s">"/item-ws"</span><span class="o">);</span>
+            <span class="n">client</span><span class="o">.</span><span class="na">sendMessage</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+            <span class="n">assertTrue</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="na">waitNewMessage</span><span class="o">(</span><span class="mi">100</span><span class="o">));</span>
+            <span class="n">assertEquals</span><span class="o">(</span>
+                    <span class="n">client</span><span class="o">.</span><span class="na">waitAndGetNewMessage</span><span class="o">(</span><span class="mi">100</span><span class="o">),</span> <span class="n">message</span><span class="o">,</span>
+                    <span class="s">"Unexpected response from server"</span>
+            <span class="o">);</span>
+            <span class="n">client</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+<p>WebSocketJsonClient class, in addition, has following methods:</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Return Type</th>
+</tr>
+</thead><tbody>
 <tr>
 <td><strong>waitNewMessageMatches(String regex, int maxMsgCount, int sec)</strong></td>
 <td>wait the message which matches regexp</td>
@@ -2692,18 +2771,13 @@ See Cucumber examples <a href="https://github.com/jdi-testing/jdi-dark/blob/mast
 <td>void</td>
 </tr>
 <tr>
-<td><strong>getNewMessageAsJsonObject()</strong></td>
+<td><strong>getLastMessageAsJsonObject()</strong></td>
 <td>get the message as Object</td>
 <td>JsonObject</td>
 </tr>
-<tr>
-<td><strong>clearMessages()</strong></td>
-<td>clear the received messages</td>
-<td>void</td>
-</tr>
 </tbody></table>
 
-<p>See test examples <a href="https://github.com/jdi-testing/jdi-dark/blob/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettest/TrelloTest.java" target="_blank">here</a></p>
+<p>See test examples <a href="https://github.com/jdi-testing/jdi-dark/tree/master/jdi-dark-tests/src/test/java/com/epam/jdi/websockettests" target="_blank">here</a></p>
 <h2 id='soap'>SOAP</h2><h3 id='creating-service-object'>Creating Service Object</h3><pre class="highlight java tab-java"><code><span class="nd">@ServiceDomain</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V04_01.asmx"</span><span class="o">)</span>
 <span class="nd">@SOAPNamespace</span><span class="o">(</span><span class="s">"https://geoservices.tamu.edu/"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">GeoServices</span> <span class="o">{</span>
